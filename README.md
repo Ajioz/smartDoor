@@ -11,7 +11,7 @@ The latest version of the codes contains code to program finger but was commente
 In the future this code will be extended to contain 
 
 <ol>
-    <li>Smart Camera - ESP232Cam</li>
+    <li>Smart Camera - ESP32-Cam</li>
     <li>Web and mobile App to replace hardware keypad</li>
     <li>Motion sensor to detect the presence of human</li>
     <li>AWS IoT core for remote control and monitoring</li>
