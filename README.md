@@ -2,20 +2,50 @@
 
 Door Security is an open source project intended to secure home, office and public structure!
 
-This repo contains two code versions developed in Arduino, very basic.
-
-The basic code contains `Keypad and FingerPrint`.  
-
-The latest version of the codes contains code to program finger but was commented out due to mcu insufficient flash size,  to have both the keypad and fingerprint in program mode a bigger mcu is required.
-
-In the future this code will be extended to contain 
+This repo contains two major folders, viz.
 
 <ol>
-    <li>Smart Camera - ESP32-Cam</li>
-    <li>Web and mobile App to replace hardware keypad</li>
-    <li>Motion sensor to detect the presence of human</li>
-    <li>AWS IoT core for remote control and monitoring</li>
+    <li>firmware</li>
+    <li>client</li>
 </ol>
+
+## The Firmware directory contains cpp code written in Arduino.
+
+`Four sub-directory are contain there in, viz`
+
+<ol>
+    <li><strong>esp32Camera</strong>: dedicated for camera functions</li>
+    <li><strong>keypad_fingerSensor_v1</strong>: Dedicated for keypad and fingerprint functions, a version 1 </li>
+    <li><strong>keypad_fingerSensor_v1</strong>: Dedicated for keypad and fingerprint functions, a version 2.  This version contains finger-print programmable functionality, however, the program function was commented out due to mcu insufficient flash memory, to have both the keypad and fingerprint in program mode all blended together, an mcu with larger flash memory is required.</li>
+    <li><strong>smart_door</strong>: dedicated to integrate all necessary firmware code together as a <em>single entity</em></li>
+</ol>
+
+## The client directory .
+
+Key thing to note
+
+`The client is built with reactjs and react-native`
+
+<ol>
+    <li>Web</li>
+    <li>Android, and</li>
+    <li>iOS devices</li>
+</ol>
+
+`Web and mobile App would contain keypad, which may replace hardware keypad, however they would have the soft-keypad to access the home, even if in the future it won't replace the hardware keypad`
+
+## Pro Tip.
+
+Feature of the security door includes but not limited to:
+
+<ul>
+    <li>Motion sensor to detect the presence of human and activate the while creating an alert flow</li>
+    <li>Keypad for input password to access the home</li>
+    <li>Camera for surveillance, which would only be active when human is detected</li>
+    <li>AWS IoT core serverless for remote control and monitoring</li>
+</ul>
+
+In the future this code will be extended to contain, latest tech as found needed for this solution
 
 Author : [Ajiroghene Sunny](https://github.com/Ajioz)
 
