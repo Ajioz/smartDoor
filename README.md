@@ -1,4 +1,4 @@
-# This Project is about developing home security with focus on DOOR
+# This Project is about developing DOOR SECURITY
 
 Door Security is an open source project intended to secure home, office and public structure!
 
@@ -9,30 +9,31 @@ This repo contains two major folders, viz.
     <li>client</li>
 </ol>
 
-## The Firmware directory contains cpp code written in Arduino.
+## The Firmware Directory 
 
-`Four sub-directory are contain there in, viz`
+This directory contains cpp code written in Arduino. 
+
+Four sub-directory are contain there in, viz.
 
 <ol>
-    <li><strong>esp32Camera</strong>: dedicated for camera functions</li>
+    <li><strong>esp32Camera</strong>: Dedicated for camera functions</li>
     <li><strong>keypad_fingerSensor_v1</strong>: Dedicated for keypad and fingerprint functions, a version 1 </li>
     <li><strong>keypad_fingerSensor_v1</strong>: Dedicated for keypad and fingerprint functions, a version 2.  This version contains finger-print programmable functionality, however, the program function was commented out due to mcu insufficient flash memory, to have both the keypad and fingerprint in program mode all blended together, an mcu with larger flash memory is required.</li>
-    <li><strong>smart_door</strong>: dedicated to integrate all necessary firmware code together as a <em>single entity</em></li>
+    <li><strong>smart_door</strong>: Dedicated to integrate all necessary firmware code together as a <em>single entity</em></li>
 </ol>
 
-## The client directory .
+## The Client Directory 
 
-Key thing to note
+`Key things to note`
 
-`The client is built with reactjs and react-native`
-
+The client is built with ReactJs and react-native for:
 <ol>
     <li>Web</li>
     <li>Android, and</li>
     <li>iOS devices</li>
 </ol>
 
-`Web and mobile App would contain keypad, which may replace hardware keypad, however they would have the soft-keypad to access the home, even if in the future it won't replace the hardware keypad`
+*Web and mobile App would contain keypad, which may replace hardware keypad, however they would have the soft-keypad to access the home, even if in the future it won't replace the hardware keypad*
 
 ## Pro Tip.
 
