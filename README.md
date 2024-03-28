@@ -2,16 +2,17 @@
 
 Door Security is an open source project intended to secure home, office and public structure!
 
-This repo contains two major folders, viz.
+This repo contains three major folders, viz.
 
 <ol>
     <li>firmware</li>
     <li>client</li>
+    <li>gen_demo_sample</li>
 </ol>
 
-## The Firmware Directory 
+## The Firmware Directory
 
-This directory contains cpp code written in Arduino. 
+This directory contains cpp code written in Arduino.
 
 Four sub-directory are contain there in, viz.
 
@@ -22,18 +23,23 @@ Four sub-directory are contain there in, viz.
     <li><strong>smart_door</strong>: Dedicated to integrate all necessary firmware code together as a <em>single entity</em></li>
 </ol>
 
-## The Client Directory 
+## The Client Directory
 
 `Key things to note`
 
 The client is built with ReactJs and react-native for:
+
 <ol>
     <li>Web</li>
     <li>Android, and</li>
     <li>iOS devices</li>
 </ol>
 
-*Web and mobile App would contain keypad, which may replace hardware keypad, however they would have the soft-keypad to access the home, even if in the future it won't replace the hardware keypad*
+_Web and mobile App would contain keypad, which may replace hardware keypad, however they would have the soft-keypad to access the home, even if in the future it won't replace the hardware keypad_
+
+## The gen_demo_sample Directory
+
+This sub directory contains generated image of the finished, though not completely exact, but close to finish.
 
 ## Pro Tip.
 
