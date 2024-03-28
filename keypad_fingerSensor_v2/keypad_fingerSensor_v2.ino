@@ -2,7 +2,7 @@
 //  Name          : Electronic Door Lock                                       //
 //  Author        : Turyn                                                      //
 //  Modified      : Ajiroghene Sunday                                          //
-//  Version       : 4.0                                                        // 
+//  Version       : 2.0                                                        // 
 //  Notes         : An electronic door lock using a matrix keypad and lcd      //
 //                : display that controls an electric door strike              //           
 //*****************************************************************************//
