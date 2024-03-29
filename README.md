@@ -46,7 +46,7 @@ This sub directory contains generated image of the finished, though not complete
 Feature of the security door includes but not limited to:
 
 <ul>
-    <li>Motion sensor to detect the presence of human and activate the while creating an alert flow</li>
+    <li>Proximity sensor (LD2410) to detect the presence of human and activate, the fingerprint reader, surveillance CAM, create a vibration alert of the monitoring device (mobile phone)</li>
     <li>Keypad for input password to access the home</li>
     <li>Camera for surveillance, which would only be active when human is detected</li>
     <li>AWS IoT core serverless for remote control and monitoring</li>
