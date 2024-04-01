@@ -31,7 +31,7 @@ const Register = () => {
         initialValues={initialValues}
         question={"Have an account"}
         action={"Login"}
-        url={"/login"}
+        url={"/"}
       />
     </Container>
   );
