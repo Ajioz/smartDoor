@@ -12,6 +12,7 @@ function App() {
           <Route path="/register" element={<Register relative="path" />} />
           <Route path="/dashboard" element={<Dashboard />} relative="path" />
         </Routes>
+        {/* <Sidebar /> */}
       </Router>
     </>
   );
