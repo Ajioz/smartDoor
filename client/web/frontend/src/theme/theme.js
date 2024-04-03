@@ -174,6 +174,80 @@ export const ClaimBtn = styled.button`
   margin: 0 0 -10px 0;
 `;
 
+export const Button = styled.button`
+  position: fixed;
+  top: 2rem;
+  left: 3rem;
+  font-size: 2rem;
+  background: transparent;
+  border-color: transparent;
+  color: hsl(205, 78%, 60%);
+  transition: all 0.3s linear;
+  cursor: pointer;
+  animation: bounce 2s ease-in-out infinite;
+`;
+
+export const SidebarHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+`;
+
+export const CloseBtn = styled.button`
+  font-size: 1.75rem;
+  background: transparent;
+  border-color: transparent;
+  color: hsl(205, 78%, 60%);
+  transition: all 0.3s linear;
+  cursor: pointer;
+  color: hsl(360, 67%, 44%);
+  margin-top: 0.2rem;
+  &:hover {
+    color: hsl(360, 71%, 66%);
+  }
+`;
+
+export const Mylink = styled.ul`
+  list-style-type: none;
+`;
+
+export const SocialIcon = styled.ul`
+  justify-self: center;
+  display: flex;
+  padding-bottom: 2rem;
+`;
+
+export const SocialIconTag = styled.a`
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+  color: hsl(205, 78%, 60%);
+  transition: all 0.3s linear;
+  &:hover {
+    color: hsl(205, 86%, 17%);
+  }
+`;
+
+export const Linka = styled.a`
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  text-transform: capitalize;
+  padding: 1rem 1.5rem;
+  color: hsl(209, 34%, 30%);
+  transition: all 0.3s linear;
+  letter-spacing: 0.1rem;
+  &:hover {
+    background: hsl(210, 36%, 96%);
+    color: hsl(211, 39%, 23%);
+  }
+`;
+
+export const Logo = styled.img`
+  justify-self: center;
+  height: 40px;
+`;
+
 export const Info = styled.p`
   font-size: 11px;
   font-weight: bold;

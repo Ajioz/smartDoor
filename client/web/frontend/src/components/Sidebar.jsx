@@ -1,40 +1,45 @@
-import React from 'react'
-import logo from './logo.svg'
-import { FaTimes } from 'react-icons/fa'
-import { social, links } from './data'
-import { useGlobalContext } from './context'
+import React from "react";
+import logo from "../logo.svg";
+import { FaTimes } from "react-icons/fa";
+import { social, links } from "../data";
+import { useGlobalContext } from "../context/context";
+import { CloseBtn, Linka, Logo, Mylink, SidebarHeader, SocialIcon, SocialIconTag } from "../theme/theme";
 
 const Sidebar = () => {
-
-  const { showSidebar, setShowSidebar } = useGlobalContext()
+  const { showSidebar, setShowSidebar } = useGlobalContext();
   return (
-    <aside className={`sidebar ${showSidebar && 'show-sidebar'}`}>
-      <div className="sidebar-header">
-        <img src={logo} className='logo' alt="coding" />
-        <button className="close-btn" onClick={()=> setShowSidebar(!showSidebar)}><FaTimes /></button>
-      </div>
-      <ul className="links">
-        {links.map((link)=> {
-          const { id, url, text, icon } = link
+    <aside className={`sidebar ${showSidebar && "show-sidebar"}`}>
+      <SidebarHeader>
+        <Logo src={logo} alt="coding" />
+        <CloseBtn onClick={() => setShowSidebar(!showSidebar)}>
+          <FaTimes />
+        </CloseBtn>
+      </SidebarHeader>
+      <Mylink>
+        {links.map((link) => {
+          const { id, url, text, icon } = link;
           return (
             <li key={id}>
-              <a href={url}>{icon}{text}</a>
+              <Linka href={url}>
+                {icon}
+                {text}
+              </Linka>
             </li>
-          )
+          );
         })}
-      </ul>
-      <ul className="social-icons">
-        {social.map((social)=> {
-          const { id, url, icon } = social
+      </Mylink>
+      <SocialIcon>
+        {social.map((social) => {
+          const { id, url, icon } = social;
           return (
             <li key={id}>
-              <a href={url}>{icon}</a>
+              <SocialIconTag href={url}>{icon}</SocialIconTag>
             </li>
-          )
+          );
         })}
-      </ul>
+      </SocialIcon>
     </aside>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

@@ -9,19 +9,30 @@ import {
   Adhoc,
 } from "../theme/theme";
 import CustomInput from "./CustomInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const onSubmit = async (values, actions) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  actions.resetForm();
-  console.log(values);
+const passkey = {
+  username: "Ajiozi",
+  password: "sandiewhyte",
 };
 
 const initialValues = { username: "", password: "" };
+
 const FormBox = (props) => {
   const initialValuesArray = Object.entries(props.initialValues); //Create an array from the object
+  const navigate = useNavigate();
   const toCapital = (str) => str[0].toUpperCase() + str.substring(1);
 
+  const onSubmit = async (values, actions) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    actions.resetForm();
+    if (
+      values.password === passkey.password &&
+      values.username === passkey.username
+    ) {
+      return navigate("/dashboard");
+    }
+  };
   return (
     <Wrapper>
       <Formik

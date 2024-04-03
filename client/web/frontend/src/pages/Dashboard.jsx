@@ -1,23 +1,19 @@
 import React from "react";
 import { FaBars } from "react-icons/fa";
-import { useGlobalContext } from "./context";
+import { useGlobalContext } from "../context/context";
+import Sidebar from "../components/Sidebar";
+import { Button } from "../theme/theme";
 
 const Dashboard = () => {
-   const { showModal, setShowModal, showSidebar, setShowSidebar } =
-     useGlobalContext();
-   return (
-     <main>
-       <button
-         className="sidebar-toggle"
-         onClick={() => setShowSidebar(!showSidebar)}
-       >
-         <FaBars />
-       </button>
-       <button className="btn" onClick={() => setShowModal(!showModal)}>
-         show Modal
-       </button>
-     </main>
-   );
+  const { showSidebar, setShowSidebar } = useGlobalContext();
+  return (
+    <main>
+      <Button onClick={() => setShowSidebar(!showSidebar)}>
+        <FaBars />
+      </Button>
+      <Sidebar />
+    </main>
+  );
 };
 
 export default Dashboard;
