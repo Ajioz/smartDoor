@@ -1,8 +1,12 @@
 import React from "react";
 import FormBox from "../components/FormBox";
 import Greeting from "../components/Greeting";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Container, QuickInfo, ContentWrapper } from "../theme/theme";
 import { loginSchema } from "../schemas";
+
+
 
 const initialValues = { username: "", password: "" };
 
