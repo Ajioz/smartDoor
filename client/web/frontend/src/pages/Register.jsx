@@ -2,6 +2,7 @@ import React from "react";
 import FormBox from "../components/FormBox";
 import { Container, QuickInfo, ContentWrapper } from "../theme/theme";
 import { registerSchema } from "../schemas";
+import bgImg from "../images/bg-intro-desktop.png";
 
 const initialValues = {
   Name: "",
@@ -13,7 +14,7 @@ const initialValues = {
 
 const Register = () => {
   return (
-    <Container background="#009688">
+    <Container background="#009688" imageUrl={bgImg}>
       <QuickInfo>
         <ContentWrapper>
           <h1>IoT Door Security</h1>

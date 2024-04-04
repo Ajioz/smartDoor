@@ -1,73 +1,56 @@
-import React from 'react';
+import React from "react";
 import {
-  FaBehance,
   FaFacebook,
   FaLinkedin,
   FaTwitter,
-  FaSketch,
-  FaHome,
-  FaUserFriends,
-  FaFolderOpen,
-  FaCalendarAlt,
-  FaWpforms,
-} from 'react-icons/fa';
+  FaAdjust,
+  FaTools,
+  FaSignOutAlt,
+} from "react-icons/fa";
+
 export const links = [
   {
     id: 1,
-    url: '/',
-    text: 'home',
-    icon: <FaHome />,
+    url: "/instruction",
+    text: "Instruction",
+    icon: <FaAdjust />,
   },
   {
     id: 2,
-    url: '/team',
-    text: 'team',
-    icon: <FaUserFriends />,
-  },
-  {
-    id: 3,
-    url: '/projects',
-    text: 'projects',
-    icon: <FaFolderOpen />,
-  },
-  {
-    id: 4,
-    url: '/calendar',
-    text: 'calendar',
-    icon: <FaCalendarAlt />,
-  },
-  {
-    id: 5,
-    url: '/documents',
-    text: 'documents',
-    icon: <FaWpforms />,
+    url: "/setting",
+    text: "Setting",
+    icon: <FaTools />,
   },
 ];
 
 export const social = [
   {
     id: 1,
-    url: 'https://www.twitter.com',
+    color: "#3b5998",
+    url: "https://www.facebook.com",
     icon: <FaFacebook />,
+    target: "_blank",
   },
   {
     id: 2,
-    url: 'https://www.twitter.com',
+    color: "#00aced",
+    url: "https://www.twitter.com",
     icon: <FaTwitter />,
+    target: "_blank",
   },
   {
     id: 3,
-    url: 'https://www.twitter.com',
+    color: "#007bb6",
+    url: "https://www.linkedin/in.com",
     icon: <FaLinkedin />,
+    target: "_blank",
   },
+
   {
-    id: 4,
-    url: 'https://www.twitter.com',
-    icon: <FaBehance />,
-  },
-  {
-    id: 5,
-    url: 'https://www.twitter.com',
-    icon: <FaSketch />,
+    id: 6,
+    color: "#eee",
+    url: "/",
+    icon: <FaSignOutAlt />,
+    target: "",
   },
 ];

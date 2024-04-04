@@ -1,8 +1,10 @@
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -15,6 +17,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} relative="path" />
         </Routes>
       </Router>
+      <ToastContainer />
     </>
   );
 }

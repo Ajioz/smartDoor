@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import bgImg from "../images/bg-intro-desktop.png";
 
 export const Container = styled.div`
   width: 100%;
   height: 100vh;
-  background-image: url(${bgImg});
-  background-color: ${(prop) => prop.background};
+  background-image: url(${(prop) => prop.imageUrl});
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: ${(prop) => prop.background || "#212121"};
   display: flex;
   flex-direction: row;
   align-content: center;
@@ -16,6 +17,14 @@ export const Container = styled.div`
     flex-direction: column;
     overflow-y: scroll;
   }
+
+  /* Mobile */
+  @media only screen and (max-width: 568px) {
+    flex-direction: column;
+    overflow-y: scroll;
+    margin: 20 auto;
+    background-size: cover;
+  }
 `;
 
 export const QuickInfo = styled.div`
@@ -23,12 +32,16 @@ export const QuickInfo = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-
   /* Tablet */
   @media only screen and (max-width: 768px) {
     width: 100%;
     justify-content: center;
     align-items: center;
+  }
+  @media only screen and (max-width: 560px) {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: -10px;
   }
 `;
 
@@ -58,24 +71,26 @@ export const ContentWrapper = styled.div`
       padding: 0 12px;
       margin-bottom: 20px;
     }
-
     p {
       text-align: center;
     }
   }
 
   /* MOBILE */
-  @media only screen and (max-width: 460px) {
+  @media only screen and (max-width: 560px) {
+    width: 90%;
+    overflow-y: scroll;
     h1 {
       font-size: 28px;
       letter-spacing: -0.29px;
       text-align: center;
-      padding: 0 12px;
-      margin-bottom: 20px;
+      padding: 0;
+      margin: 10px 0 0 0;
     }
-
     p {
       text-align: center;
+      margin-top: 0;
+      padding-bottom: 0px;
     }
   }
 `;
@@ -146,11 +161,9 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   outline: none;
-  width: 35ch;
+  width: 75%;
   height: 40px;
   padding: 5px 25px;
-  /* margin: 0 auto; */
-  /* background-color: #3d3b48; */
   font-size: 16px;
   font-weight: 200;
   color: #3d3b48;
@@ -172,19 +185,41 @@ export const ClaimBtn = styled.button`
   box-shadow: 0px 2px 0px #70c09d;
   cursor: pointer;
   margin: 0 0 -10px 0;
+  @media only screen and (max-width: 560px) {
+    width: fit-content;
+    width: 50%;
+  }
+`;
+
+export const VerticalSide = styled.aside`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 100vh;
+  background-color: #263238;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 1rem;
+  box-shadow: hsl(360, 67%, 44%);
+`;
+export const LinkContainer = styled.li`
+  margin-left: -20px;
+  margin-right: 10px;
 `;
 
 export const Button = styled.button`
   position: fixed;
   top: 2rem;
-  left: 3rem;
+  left: 0.2rem;
   font-size: 2rem;
   background: transparent;
   border-color: transparent;
-  color: hsl(205, 78%, 60%);
-  transition: all 0.3s linear;
+  color: #bdbdbd;
   cursor: pointer;
-  animation: bounce 2s ease-in-out infinite;
+  &:hover {
+    color: #fff;
+  }
 `;
 
 export const SidebarHeader = styled.div`
@@ -192,39 +227,44 @@ export const SidebarHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
+  margin-left: -20px;
+  margin-right: 10px;
 `;
 
 export const CloseBtn = styled.button`
   font-size: 1.75rem;
   background: transparent;
   border-color: transparent;
-  color: hsl(205, 78%, 60%);
-  transition: all 0.3s linear;
+  color: #bdbdbd;
   cursor: pointer;
-  color: hsl(360, 67%, 44%);
   margin-top: 0.2rem;
   &:hover {
-    color: hsl(360, 71%, 66%);
+    color: #fff;
   }
 `;
 
 export const Mylink = styled.ul`
   list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
 `;
 
 export const SocialIcon = styled.ul`
   justify-self: center;
   display: flex;
-  padding-bottom: 2rem;
+  justify-content: space-between;
+  padding-bottom: 0.2rem;
+  width: 80%;
 `;
 
 export const SocialIconTag = styled.a`
   font-size: 1.5rem;
   margin: 0 0.5rem;
-  color: hsl(205, 78%, 60%);
-  transition: all 0.3s linear;
+  color: ${(props) => props.color};
   &:hover {
-    color: hsl(205, 86%, 17%);
+    color: #fff;
   }
 `;
 
@@ -233,13 +273,12 @@ export const Linka = styled.a`
   align-items: center;
   font-size: 1.25rem;
   text-transform: capitalize;
-  padding: 1rem 1.5rem;
-  color: hsl(209, 34%, 30%);
-  transition: all 0.3s linear;
+  padding: 1rem 0.1rem;
+  margin: 1rem 0.5rem;
+  color: #e0e0e0;
   letter-spacing: 0.1rem;
   &:hover {
-    background: hsl(210, 36%, 96%);
-    color: hsl(211, 39%, 23%);
+    color: #fff;
   }
 `;
 

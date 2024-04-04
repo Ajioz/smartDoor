@@ -1,18 +1,15 @@
 import React from "react";
 import FormBox from "../components/FormBox";
 import Greeting from "../components/Greeting";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { Container, QuickInfo, ContentWrapper } from "../theme/theme";
 import { loginSchema } from "../schemas";
-
-
+import bgImg from "../images/bg-intro-desktop.png";
 
 const initialValues = { username: "", password: "" };
 
 const Login = () => {
   return (
-    <Container background="#006064">
+    <Container background="#006064" imageUrl={bgImg}>
       <QuickInfo>
         <ContentWrapper>
           <h1>Welcome Back</h1>

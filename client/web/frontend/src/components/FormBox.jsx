@@ -8,17 +8,16 @@ import {
   Info,
   Adhoc,
 } from "../theme/theme";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import CustomInput from "./CustomInput";
 import { Link, useNavigate } from "react-router-dom";
 
 const toastParam = {
-  position: "bottom-right",
+  position: "top-right",
   autoClose: 3000,
   pauseOnHover: true,
   draggable: true,
-  theme: "dark",
+  theme: "light",
 };
 
 const passkey = {
@@ -32,35 +31,41 @@ const FormBox = (props) => {
   const initialValuesArray = Object.entries(props.initialValues); //Create an array from the object
   const navigate = useNavigate();
   const toCapital = (str) => str[0].toUpperCase() + str.substring(1);
-  const toastId = useRef(null);
+  const hasRun = useRef(false);
 
   const handleValidation = (obj) => {
-    for (let key in obj) {
-      let values = obj[key];
-      if (values === " ") {
-        if (!toast.isActive(toastId.current))
-          toastId.current = toast.error(
-            "Username and password must not be empty",
-            toastParam
-          );
-      } else {
-        if (
-          values.password === passkey.password &&
-          values.username === passkey.username
-        ) {
-          if (!toast.isActive(toastId.current))
-            toastId.current = toast.success("details match!", toastParam);
-          return navigate("/dashboard");
-        }
+    if (
+      obj.password !== passkey.password ||
+      obj.username !== passkey.username
+    ) {
+      if (!hasRun.current) {
+        toast.error("Incorrect login details", toastParam);
+        hasRun.current = true;
+      }
+    } else if (
+      obj.password === passkey.password &&
+      obj.username === passkey.username
+    ) {
+      if (!hasRun.current) {
+        toast.success("Details match!", toastParam);
+        hasRun.current = true;
+        delay(1000);
+        return navigate("/dashboard");
       }
     }
   };
 
-  const onSubmit = async (values, actions) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  const delay = async (time) => {
+    await new Promise((resolve) => setTimeout(resolve, time));
+  };
+
+  const onSubmit = (values, actions) => {
+    delay(1000);
     actions.resetForm();
+    hasRun.current = false;
     handleValidation(values);
   };
+
   return (
     <>
       <Wrapper>
@@ -101,7 +106,6 @@ const FormBox = (props) => {
           )}
         </Formik>
       </Wrapper>
-      <ToastContainer />
     </>
   );
 };
