@@ -5,6 +5,7 @@ import {
   FaTwitter,
   FaAdjust,
   FaTools,
+  FaHome,
   FaSignOutAlt,
 } from "react-icons/fa";
 
@@ -20,6 +21,12 @@ export const links = [
     url: "/setting",
     text: "Setting",
     icon: <FaTools />,
+  },
+  {
+    id: 3,
+    url: "/play",
+    text: "play",
+    icon: <FaHome />,
   },
 ];
 

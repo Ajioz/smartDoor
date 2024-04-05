@@ -27,6 +27,88 @@ export const Container = styled.div`
   }
 `;
 
+export const DashboardMain = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+`;
+export const UpperSection = styled.section`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 300px;
+  background-color: inherit;
+  padding: 20px 0px;
+`;
+
+export const Notify = styled.section`
+  width: 30%;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #9e9e9e;
+
+  img {
+    color: #fff;
+    width: 70px;
+    margin-top: 20px;
+  }
+
+  h3 {
+    color: #fff;
+    font-size: 20px;
+  }
+`;
+
+export const ChipContainer = styled.section`
+  background-color: inherit;
+  width: 30%;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Circle = styled.section`
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  background-color: #1a237e;
+  border: 12px solid #bbdefb;
+`;
+
+export const Rectangle = styled.section`
+  height: 40px;
+  width: 78%;
+  margin: -5px;
+  background-color: #bbdefb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h5 {
+    font-family: monospace;
+    margin-left: -20px;
+    font-weight: 300;
+    font-size: 18px;
+    color: #424242;
+  }
+`;
+
+export const LowerSection = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 900px;
+  background-color: inherit;
+`;
+
 export const QuickInfo = styled.div`
   width: 100%;
   display: flex;
@@ -312,4 +394,69 @@ export const Text = styled.p`
   font-size: 0.75rem;
   text-align: left;
   margin-top: 0.25rem;
+`;
+
+// Video Styled Components
+export const VideoPlayerContainer = styled.div`
+  width: 100%;
+  max-width: 550px;
+  margin: 0 20px;
+`;
+
+export const Video = styled.video`
+  width: 100%;
+  display: block;
+`;
+
+export const Controls = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+`;
+
+export const PlayButton = styled.button`
+  margin: 0 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+`;
+
+// Keypad Styled Components
+export const KeypadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #263238;
+  border: 4px solid #ddd;
+  border-radius: 50px;
+  padding: 10px;
+  height: fit-content;
+  width: 180px;
+`;
+
+export const KeypadButton = styled.button`
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+  font-size: 1.2rem;
+  border: 2px solid transparent;
+  background-color: #00838f;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: #333;
+    color: #ddd;
+  }
+`;
+
+export const Display = styled.div`
+  margin-top: 20px;
+  font-size: 2.5rem;
+  color: #fff;
+  height: 50px;
 `;
