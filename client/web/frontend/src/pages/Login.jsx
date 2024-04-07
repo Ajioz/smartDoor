@@ -9,7 +9,7 @@ const initialValues = { username: "", password: "" };
 
 const Login = () => {
   return (
-    <Container background="#006064" imageUrl={bgImg}>
+    <Container background="#006064" imageurl={bgImg}>
       <QuickInfo>
         <ContentWrapper>
           <h1>Welcome Back</h1>

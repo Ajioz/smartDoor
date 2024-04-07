@@ -4,6 +4,7 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState(false);
   const [item, setItem] = useState(false);
 
@@ -13,6 +14,8 @@ export const AppProvider = ({ children }) => {
         showSidebar,
         status,
         item,
+        showModal,
+        setShowModal,
         setShowSidebar,
         setStatus,
         setItem,

@@ -5,8 +5,9 @@ import {
   Video,
   VideoPlayerContainer,
 } from "../theme/theme";
+import AddItemBtn from "./AddItemBtn";
 
-const VideoPlayer = ({ src, item }) => {
+const VideoPlayer = ({ src, item, id, handleItem }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -36,7 +37,7 @@ const VideoPlayer = ({ src, item }) => {
         </VideoPlayerContainer>
       ) : (
         <>
-          <h3 style={{ background: "#fff" }}>Video + </h3>
+          <AddItemBtn id={id} handleItem={handleItem} />
         </>
       )}
     </>

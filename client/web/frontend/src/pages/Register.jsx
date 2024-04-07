@@ -14,7 +14,7 @@ const initialValues = {
 
 const Register = () => {
   return (
-    <Container background="#009688" imageUrl={bgImg}>
+    <Container background="#009688" imageurl={bgImg}>
       <QuickInfo>
         <ContentWrapper>
           <h1>IoT Door Security</h1>

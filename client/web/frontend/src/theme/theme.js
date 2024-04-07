@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import img from "../images/add_item2.svg";
 
 export const Container = styled.div`
   width: 100%;
   height: 100vh;
-  background-image: url(${(prop) => prop.imageUrl});
+  background-image: url(${(prop) => prop.imageurl});
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-color: ${(prop) => prop.background || "#212121"};
@@ -436,7 +437,7 @@ export const KeypadContainer = styled.div`
   width: 180px;
 `;
 
-export const KeypadButton = styled.button`
+export const KeypadBtn = styled.button`
   height: 40px;
   width: 40px;
   margin: 5px;
@@ -459,4 +460,43 @@ export const Display = styled.div`
   font-size: 2.5rem;
   color: #fff;
   height: 50px;
+`;
+
+export const ItemContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.7);
+  background-image: url(${img});
+  background-size: 180px;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  h3 {
+    margin-bottom: 0px;
+    color: #ddd;
+  }
+`;
+
+export const ModalContainer = styled.div`
+  background: #fff;
+  border-radius: 0.25rem;
+  width: 40%;
+  min-height: 30vh;
+  text-align: center;
+  display: grid;
+  place-items: center;
+  position: relative;
+`;
+
+export const CloseModalBtn = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  background: transparent;
+  border-color: transparent;
+  color: hsl(360, 67%, 44%);
+  cursor: pointer;
 `;
