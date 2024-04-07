@@ -27,10 +27,10 @@ export const AlertNotify = (props) => {
 export const Boardchip = () => {
   return (
     <ChipContainer>
-      <Circle></Circle>
       <Rectangle>
         <h5>Dashboard</h5>
       </Rectangle>
+      <Circle></Circle>
     </ChipContainer>
   );
 };

@@ -37,8 +37,8 @@ const Dashboard = () => {
       <Sidebar />
       <DashboardMain>
         <UpperSection>
-          <AlertNotify status={status} />
           <Boardchip />
+          {item && <AlertNotify status={status} />}
         </UpperSection>
         <LowerSection>
           <DoorSecurityKeypad item={item} id={"doorLock"} handleItem={handleItem} />

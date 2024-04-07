@@ -255,19 +255,25 @@ export const Input = styled.input`
 `;
 
 export const ClaimBtn = styled.button`
-  width: 40%;
-  height: 45px;
-  background-color: #38cc8b;
-  color: #fff;
-  font-size: 15px;
-  font-weight: bold;
-  letter-spacing: 0.27px;
-  line-height: 20px;
-  border-radius: 30px;
+  font-size: 1rem;
+  text-decoration: none;
+  color: white;
+  background: #333;
+  text-transform: capitalize;
+  padding: 10px 20px;
   border: none;
-  box-shadow: 0px 2px 0px #70c09d;
-  cursor: pointer;
-  margin: 0 0 -10px 0;
+  letter-spacing: 5px;
+  font-family: monospace;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0 0.3);
+  transition: 0.5s;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+    transform: translateY(-0.1rem);
+    transition: transform 150ms;
+    background: rgb(3, 139, 230);
+  }
   @media only screen and (max-width: 560px) {
     width: fit-content;
     width: 50%;
@@ -473,6 +479,7 @@ export const ItemContainer = styled.div`
   width: 200px;
   height: 200px;
   margin: 10px;
+  cursor: pointer;
   h3 {
     margin-bottom: 0px;
     color: #ddd;
@@ -492,11 +499,155 @@ export const ModalContainer = styled.div`
 
 export const CloseModalBtn = styled.button`
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0.6rem;
+  right: 0.6rem;
   font-size: 2rem;
-  background: transparent;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #333;
   border-color: transparent;
-  color: hsl(360, 67%, 44%);
+  color: #ddd;
   cursor: pointer;
+  &:hover {
+    color: #fff;
+  }
+`;
+
+export const Form = styled.form`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  margin: 15px auto;
+  height: fit-content;
+  justify-content: space-between;
+`;
+
+export const FormGroup = styled.div`
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin: 10px 0;
+
+  & > span {
+    white-space: nowrap;
+    display: block;
+    &:not(:first-child):not(:last-child) {
+      border-radius: 0;
+    }
+    &:first-child {
+      border-radius: 6px 0 0 6px;
+    }
+    &:last-child {
+      border-radius: 0 6px 6px 0;
+    }
+    &:not(:first-child) {
+      margin-left: -1px;
+    }
+  }
+  & > span {
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 25px;
+    color: #99a3ba;
+    background: #eef4ff;
+    border: 1px solid #a1bae6;
+    transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+  }
+  &:focus-within {
+    & > span {
+      color: #fff;
+      background: #678efe;
+      border-color: #275efe;
+    }
+  }
+`;
+
+export const FormField = styled.input`
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  line-height: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 2px;
+  -webkit-appearance: none;
+  color: #99a3ba;
+  border: 1px solid #becfeb;
+  background: #fff;
+  transition: border 0.3s ease;
+  &::placeholder {
+    color: #cbd1dc;
+  }
+  &:focus {
+    outline: none;
+    border-color: darkcyan;
+  }
+`;
+
+export const BtnCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Header = styled.header`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  width: 100%;
+  h3 {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.6rem;
+  }
+`;
+export const Footer = styled.footer`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ddd;
+  width: 100%;
+  height: 50px;
+  padding: 10px 0;
+  h3 {
+    color: #000;
+    font-family: monospace;
+    font-size: 1.5rem;
+  }
+`;
+
+export const InstructionInfo = styled.div`
+  background-color: #f5f4f4;
+  width: 100%;
+  height: fit-content;
+
+  div {
+    display: flex;
+    padding: 20px auto;
+  }
+  p {
+    color: #333;
+    font-weight: bolder;
+    margin: 10px;
+    font-size: 1.4rem;
+  }
+  ol,
+  ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    color: #333;
+    font-family: monospace;
+    font-size: 1.2rem;
+    margin: 10px;
+  }
 `;

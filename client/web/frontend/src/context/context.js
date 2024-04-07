@@ -8,6 +8,10 @@ export const AppProvider = ({ children }) => {
   const [status, setStatus] = useState(false);
   const [item, setItem] = useState(false);
 
+  const ajiozItem = (obj) => {
+    console.log(obj);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -15,6 +19,7 @@ export const AppProvider = ({ children }) => {
         status,
         item,
         showModal,
+        ajiozItem,
         setShowModal,
         setShowSidebar,
         setStatus,
