@@ -1,7 +1,20 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
-import connectDb from "./connect/connectDB";
+import ConnectDb from "./dbConnect/connectDB.js";
+import authRouter from "./routes/authRoute.js";
+import thingRouter from "./routes/thingRoute.js";
+
+//Extra security
+import helmet from "helmet";
+import cors from "cors";
+import xss from "xss-clean";
+import rateLimiter from "express-rate-limit";
+
+// Import error handlers
+import NotFound from "./middlewares/notFound.js"
+import errorHandler from "./middlewares/errorHandler.js";
+import authenticateUser from "./middlewares/authentication.js";
 
 const app = express();
 
@@ -23,14 +36,23 @@ app.use(xss());
 app.set("trust proxy", 1);
 app.use(
   rateLimiter({
-    windowMs: 10 * 60 * 1000, //10 minutes
+    windowMs: 2 * 60 * 1000, //2 minutes
     max: 500, //limit each IP to 500 requests per windowMs
   })
 );
 
+
+app.use("/api/user", authRouter);
+app.use("/api/thing", authenticateUser, thingRouter);
+
+app.use(NotFound);
+app.use(errorHandler);
+
+
+
 const start = async () => {
   try {
-    await connectDb(url);
+    await ConnectDb(url);
     app.listen(port, () =>
       console.log(`server running at http://127.0.1:${port}/api`)
     );

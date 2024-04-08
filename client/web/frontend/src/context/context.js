@@ -6,7 +6,7 @@ export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState(false);
-  const [item, setItem] = useState(false);
+  const [item, setItem] = useState(true);
 
   const ajiozItem = (obj) => {
     console.log(obj);
