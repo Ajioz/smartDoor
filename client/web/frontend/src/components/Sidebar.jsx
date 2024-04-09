@@ -3,6 +3,7 @@ import logo from "../logo.png";
 import { FaArrowLeft } from "react-icons/fa";
 import { social, links } from "../data";
 import { useGlobalContext } from "../context/context";
+import { useNavigate } from "react-router-dom";
 import {
   CloseBtn,
   Linka,
@@ -15,12 +16,13 @@ import {
 } from "../theme/theme";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const { showSidebar, setShowSidebar } = useGlobalContext();
   return (
     <aside className={`sidebar ${showSidebar && "show-sidebar"}`}>
       <section>
         <SidebarHeader>
-          <Logo src={logo} alt="coding" />
+          <Logo src={logo} alt="coding" onClick={() =>  navigate("/dashboard")}/>
           <CloseBtn onClick={() => setShowSidebar(!showSidebar)}>
             <FaArrowLeft />
           </CloseBtn>

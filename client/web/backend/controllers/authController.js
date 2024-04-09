@@ -9,27 +9,10 @@ export const signup = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
 };
 
-// export const login = async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     if (!email.trim() || !password.trim())
-//       throw new BadRequestError("Please provide email and password");
-
-//     const user = await User.findOne({ email });
-//     if (!user) throw new UnauthenticatedError("Invalid credentials");
-
-//     const isPasswordCorrect = await user.comparePassword(password);
-//     if (!isPasswordCorrect)
-//       throw new UnauthenticatedError("Invalid credentials");
-
-//     const token = user.createJWT();
-//     res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
-//   } catch (error) {}
-// };
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-  
+
   try {
     if (!email.trim() || !password.trim()) {
       throw new BadRequestError("Please provide email and password");

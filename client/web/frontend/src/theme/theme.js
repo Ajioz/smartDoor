@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import img from "../images/add_item2.svg";
+import instructionImg from "../images/bg-intro-desktop.png";
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url(${(prop) => prop.imageurl});
   background-size: 100% 100%;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-color: ${(prop) => prop.background || "#212121"};
   display: flex;
   flex-direction: row;
@@ -35,13 +36,14 @@ export const DashboardMain = styled.section`
   width: 100%;
   height: 100%;
 `;
+
 export const UpperSection = styled.section`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 300px;
+  height: 200px;
   background-color: inherit;
   padding: 20px 0px;
 `;
@@ -103,11 +105,12 @@ export const Rectangle = styled.section`
 export const LowerSection = styled.section`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  height: 900px;
-  background-color: inherit;
+  height: 100%;
+  margin: 30px 0;
 `;
 
 export const QuickInfo = styled.div`
@@ -291,7 +294,13 @@ export const VerticalSide = styled.aside`
   grid-template-rows: auto 1fr auto;
   row-gap: 1rem;
   box-shadow: hsl(360, 67%, 44%);
+
+  @media only screen and (max-width: 560px) {
+    width: fit-content;
+    height: fit-content;
+  }
 `;
+
 export const LinkContainer = styled.li`
   margin-left: -20px;
   margin-right: 10px;
@@ -308,6 +317,13 @@ export const Button = styled.button`
   cursor: pointer;
   &:hover {
     color: #fff;
+  }
+  @media only screen and (max-width: 560px) {
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
   }
 `;
 
@@ -406,7 +422,7 @@ export const Text = styled.p`
 // Video Styled Components
 export const VideoPlayerContainer = styled.div`
   width: 100%;
-  max-width: 550px;
+  max-width: 400px;
   margin: 0 20px;
 `;
 
@@ -461,6 +477,35 @@ export const KeypadBtn = styled.button`
   }
 `;
 
+export const Line = styled.section`
+  height: 4px;
+  width: 100%;
+  background-color: #333;
+`;
+export const LowerContainer = styled.section`
+  width: 75%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+export const Tag = styled.section`
+  background-color: #333;
+  width: 25%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px 0 0 10px;
+
+  p {
+    font-size: 19px;
+    font-family: monospace;
+    color: #fff;
+  }
+`;
+
 export const Display = styled.div`
   margin-top: 20px;
   font-size: 2.5rem;
@@ -474,14 +519,14 @@ export const ItemContainer = styled.div`
   align-items: flex-end;
   background: rgba(0, 0, 0, 0.7);
   background-image: url(${img});
-  background-size: 180px;
+  background-size: 190px;
   background-repeat: no-repeat;
   width: 200px;
-  height: 200px;
-  margin: 10px;
+  height: 220px;
+  margin: 15px;
   cursor: pointer;
   h3 {
-    margin-bottom: 0px;
+    margin-bottom: 10px;
     color: #ddd;
   }
 `;
@@ -601,7 +646,8 @@ export const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #333;
+  background-color: inherit;
+  background-image: url(${instructionImg});
   width: 100%;
   h3 {
     color: #fff;
@@ -609,23 +655,14 @@ export const Header = styled.header`
     font-size: 1.6rem;
   }
 `;
-export const Footer = styled.footer`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ddd;
-  width: 100%;
-  height: 50px;
-  padding: 10px 0;
-  h3 {
-    color: #000;
-    font-family: monospace;
-    font-size: 1.5rem;
-  }
-`;
 
+export const InstructionContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+`;
 export const InstructionInfo = styled.div`
-  background-color: #f5f4f4;
   width: 100%;
   height: fit-content;
 
@@ -634,7 +671,8 @@ export const InstructionInfo = styled.div`
     padding: 20px auto;
   }
   p {
-    color: #333;
+    /* color: #333; */
+    color: #fff;
     font-weight: bolder;
     margin: 10px;
     font-size: 1.4rem;
@@ -645,9 +683,15 @@ export const InstructionInfo = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    color: #333;
+    color: #fff;
     font-family: monospace;
     font-size: 1.2rem;
     margin: 10px;
   }
+`;
+
+export const AddContainer = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

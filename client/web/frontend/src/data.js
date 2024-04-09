@@ -1,25 +1,32 @@
 import React from "react";
 import {
-  FaFacebook,
-  FaLinkedin,
-  FaTwitter,
   FaAdjust,
-  FaTools,
+  FaTwitter,
+  FaLinkedin,
+  FaFacebook,
   FaSignOutAlt,
+  FaPlus,
+  FaHome,
 } from "react-icons/fa";
 
 export const links = [
   {
     id: 1,
-    url: "/instruction",
+    url: "/dashboard",
+    text: "Dashboard",
+    icon: <FaHome />,
+  },
+  {
+    id: 2,
+    url: "/instruct",
     text: "Instruction",
     icon: <FaAdjust />,
   },
   {
-    id: 2,
-    url: "/setting",
-    text: "Setting",
-    icon: <FaTools />,
+    id: 3,
+    url: "/add_doors",
+    text: "More Door",
+    icon: <FaPlus />,
   },
 ];
 
