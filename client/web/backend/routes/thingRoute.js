@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getAllThings,
+  getUserThings,
   getThing,
   createThing,
   updateThing,
@@ -9,7 +9,7 @@ import {
 
 const thingRouter = express.Router();
 
-thingRouter.route("/").get(getAllThings).post(createThing);
+thingRouter.route("/").get(getUserThings).post(createThing);
 thingRouter.route("/:id").get(getThing).patch(updateThing).delete(deleteThing);
 
 export default thingRouter;

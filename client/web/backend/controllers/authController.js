@@ -26,14 +26,20 @@ export const login = async (req, res) => {
       throw new UnauthenticatedError("Invalid password");
     }
     const token = user.createJWT(); // Assuming createJWT() generates a token
+    
     // Respond with success and token
-    res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
+    // res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
+    // res, statusCode, user, options --> res, statusCode, token
 
+    sendResponseWithCookie({
+      res,
+      statusCode: StatusCodes.OK,
+      user: { name: user.name, userId: user._id, role: user.role },
+    });
   } catch (error) {
     // Handle errors appropriately, providing user-friendly messages
     console.error(error); // Log the error for debugging
     let errorMessage = "An error occurred during login.";
-
     if (error instanceof BadRequestError) {
       errorMessage = error.message; // Use the custom error message
     } else if (error instanceof UnauthenticatedError) {

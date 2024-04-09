@@ -12,7 +12,7 @@ import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
 
 // Import error handlers
-import NotFound from "./middlewares/notFound.js"
+import NotFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import authenticateUser from "./middlewares/authentication.js";
 
@@ -41,14 +41,11 @@ app.use(
   })
 );
 
-
 app.use("/api/user", authRouter);
 app.use("/api/thing", authenticateUser, thingRouter);
 
 app.use(NotFound);
 app.use(errorHandler);
-
-
 
 const start = async () => {
   try {
