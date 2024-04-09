@@ -5,7 +5,7 @@ import NotFoundError from "../errors/notFound.js";
 
 export const getUserThings = async (req, res) => {
   try {
-    console.log({user:req.user.userId})
+    // console.log({user:req.user.userId})
     const thing = await Thing.find({ user: req.user.userId }).sort({ _id: -1 });
     res.status(StatusCodes.OK).json({ thing, count: thing.length });
   } catch (error) {
@@ -27,7 +27,7 @@ export async function getThing(req, res) {
       user: { userId },
       params: { id: thingId },
     } = req;
-    const thing = await Thing.findOne({ _id: thingId, createdBy: userId });
+    const thing = await Thing.findOne({ _id: thingId, user: req.user.userId });
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
 
@@ -56,7 +56,7 @@ export async function updateThing(req, res) {
     if (company === "" || position === "")
       throw new BadRequestError("Company or Position fields cannot be empty");
     const thing = await Thing.findByIdAndUpdate(
-      { _id: thingId, createdBy: userId },
+      { _id: thingId, user: req.user.userId },
       req.body,
       { new: true, runValidators: true }
     );
@@ -79,7 +79,7 @@ export async function deleteThing(req, res) {
 
     const thing = await Thing.findByIdAndRemove({
       _id: thingId,
-      createdAt: userId,
+      user: req.user.userId,
     });
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
