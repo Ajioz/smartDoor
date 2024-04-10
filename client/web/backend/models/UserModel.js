@@ -34,6 +34,7 @@ const UserSchema = new Schema({
     required: [true, "Please provide password"],
     minLength: 6,
   },
+  isVerified: { type: Boolean, default: false },
 });
 
 UserSchema.pre("save", async function () {

@@ -44,6 +44,7 @@ app.use(
 app.use("/api/user", authRouter);
 app.use("/api/thing", authenticateUser, thingRouter);
 
+
 app.use(NotFound);
 app.use(errorHandler);
 
