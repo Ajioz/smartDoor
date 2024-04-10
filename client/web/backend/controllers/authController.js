@@ -5,34 +5,34 @@ import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/badRequest.js";
 import UnauthenticatedError from "../errors/unAuthenticated.js";
 import DuplicateError from "../errors/duplicateError.js";
+import { sendSingleEmail } from "../util/emailSender.js";
 
 export const signup = async (req, res) => {
   const { email } = req.body;
   try {
     const userExist = await User.findOne({ email });
     if (userExist) throw new DuplicateError("User Already Exist!");
-    
+
     let user = new User({
       name: req.body.name,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password,
     });
-    
-    // console.log({ user });
+
     // Create a verification token for this user
-    let regToken = new Token({
+    const regToken = new Token({
       userId: user._id,
       token: crypto.randomBytes(16).toString("hex"),
     });
-    
-    // console.log({ regToken });
-    req.body.regToken = regToken.token;
 
-    console.log({token: regToken.token});
-    // const user = await User.create({ ...req.body });
-    // const token = user.createJWT();
-    // // Send the email
-    // res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+    const token = user.createJWT();
+    await user.save();
+    await regToken.save();
+
+    // Send the email
+    sendSingleEmail(email, regToken.token, req.headers.host);
+    res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
   } catch (error) {
     console.log(error);  //print error for debugging purposes
     let errorMessage = "An error occurred during login.";
@@ -51,7 +51,6 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-
   try {
     if (!email.trim() || !password.trim()) {
       throw new BadRequestError("Please provide email and password");
@@ -91,7 +90,6 @@ export const login = async (req, res) => {
       // Handle other unexpected errors (consider logging details)
       errorMessage = "Internal Server Error";
     }
-
     // Send a user-friendly error response with status code
     res
       .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
