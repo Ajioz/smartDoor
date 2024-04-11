@@ -96,7 +96,7 @@ const FormBox = (props) => {
                   {props.btn}
                 </ClaimBtn>
                 <Info>
-                  {props.question} ?{" "}
+                  {props.question}{" "}
                   <Adhoc>
                     <Link to={props.url}>{props.action}</Link>
                   </Adhoc>

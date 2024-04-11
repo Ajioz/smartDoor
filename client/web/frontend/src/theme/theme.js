@@ -149,6 +149,12 @@ export const ContentWrapper = styled.div`
     margin-right: 10px;
   }
 
+  section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
   /* TABLET */
   @media only screen and (max-width: 768px) {
     h1 {
@@ -270,6 +276,36 @@ export const ClaimBtn = styled.button`
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0 0.3);
   transition: 0.5s;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+    transform: translateY(-0.1rem);
+    transition: transform 150ms;
+    background: rgb(3, 139, 230);
+  }
+  @media only screen and (max-width: 560px) {
+    width: fit-content;
+    width: 50%;
+  }
+`;
+
+export const Backbtn = styled.button`
+  font-size: 1rem;
+  text-decoration: none;
+  color: white;
+  background: #333;
+  text-transform: capitalize;
+  padding: 10px 20px;
+  border: none;
+  letter-spacing: 5px;
+  font-family: monospace;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0 0.3);
+  transition: 0.5s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
   &:hover {
     cursor: pointer;
     box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);

@@ -32,3 +32,19 @@ export const loginSchema = yup.object().shape({
 
   password: yup.string().min(5).required("Required"),
 });
+
+export const resetSchema = yup.object().shape({
+  email: yup.string().email("Please enter a valid email").required("Required"),
+});
+
+export const resetPasswordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .min(5)
+    .matches(passwordRules, { message: "Please create a stronger password" })
+    .required("Required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Required"),
+});
