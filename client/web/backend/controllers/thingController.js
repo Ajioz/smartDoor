@@ -2,6 +2,7 @@ import Thing from "../models/ThingModel.js";
 import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/badRequest.js";
 import NotFoundError from "../errors/notFound.js";
+import { errorHandler } from "../util/errorHandler.js";
 
 export const getUserThings = async (req, res) => {
   try {
@@ -34,7 +35,7 @@ export async function getThing(req, res) {
     res.status(StatusCodes.OK).json({ thing });
   } catch (error) {
     console.log(error);
-    errorMsg(error, res, NotFoundError, BadRequestError);
+    errorHandler(error, res, NotFoundError, BadRequestError);
   }
 }
 
@@ -66,7 +67,7 @@ export async function updateThing(req, res) {
     res.status(StatusCodes.OK).json(thing);
   } catch (error) {
     console.log(error);
-    errorMsg(error, res, NotFoundError, BadRequestError);
+    errorHandler(error, res, NotFoundError, BadRequestError);
   }
 }
 
@@ -87,22 +88,6 @@ export async function deleteThing(req, res) {
     res.status(StatusCodes.OK).send("Successfully Removed thing");
   } catch (error) {
     console.log(error);
-    errorMsg(error, res, NotFoundError, BadRequestError);
+    errorHandler(error, res, NotFoundError, BadRequestError);
   }
 }
-
-const errorMsg = (error, res, errorType1, errorType2) => {
-  let errorMessage = "An error occurred";
-  if (error instanceof errorType1) {
-    errorMessage = error.message; // Use the custom error message
-  } else if (error instanceof errorType2) {
-    errorMessage = error.message;
-  } else {
-    // Handle other unexpected errors (consider logging details)
-    errorMessage = "Internal Server Error";
-  }
-  // Send a user-friendly error response with status code
-  res
-    .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
-    .json({ message: errorMessage });
-};

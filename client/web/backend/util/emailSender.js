@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport(config);
 */
 const sendEmail = (subject, email, message, cb) => {
   const mailOptions = {
-    from: process.env.EMAIL,
+    from: process.env.EMAIL || "no-reply@smartDoor.io",
     to: email,
     subject,
     text: message,
@@ -32,7 +32,7 @@ export const sendSingleEmail = async (email, token, host) => {
     "Hello,\n\n" +
     "Please verify your account by clicking the link: \nhttp://" +
     host +
-    "/confirmation/" +
+    "/api/user/" +
     token +
     ".\n";
   const subject = "Account Verification Token";

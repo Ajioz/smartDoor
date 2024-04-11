@@ -9,6 +9,7 @@ import {
   ClaimBtn,
   Backbtn,
 } from "../theme/theme";
+
 import { loginSchema, resetSchema, resetPasswordSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
 
@@ -21,9 +22,11 @@ const Login = () => {
     emailReset: false,
     passwordReset: false,
   });
+
   const resetForm = (props) => {
     setReset({ ...reset, emailReset: props });
   };
+
   return (
     <Container background="#006064" imageurl={bgImg}>
       {reset.passwordReset ? (

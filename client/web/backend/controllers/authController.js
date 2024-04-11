@@ -1,4 +1,4 @@
-import crypto from "crypto"
+import crypto from "crypto";
 import User from "../models/UserModel.js";
 import Token from "../models/tokenModel.js";
 import { StatusCodes } from "http-status-codes";
@@ -6,7 +6,11 @@ import BadRequestError from "../errors/badRequest.js";
 import UnauthenticatedError from "../errors/unAuthenticated.js";
 import DuplicateError from "../errors/duplicateError.js";
 import { sendSingleEmail } from "../util/emailSender.js";
+import { errorHandler } from "../util/errorHandler.js";
 
+/*
+ * POST /registration
+ */
 export const signup = async (req, res) => {
   const { email } = req.body;
   try {
@@ -34,21 +38,13 @@ export const signup = async (req, res) => {
     sendSingleEmail(email, regToken.token, req.headers.host);
     res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
   } catch (error) {
-    console.log(error);  //print error for debugging purposes
-    let errorMessage = "An error occurred during login.";
-    if (error instanceof DuplicateError) {
-      errorMessage = error.message; // Use the custom error message
-    } else {
-      // Handle other unexpected errors (consider logging details)
-      errorMessage = "Internal Server Error";
-    }
-    // Send a user-friendly error response with status code
-    res
-      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: errorMessage });
+    errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
 };
 
+/*
+ * POST /login
+ */
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -57,7 +53,9 @@ export const login = async (req, res) => {
     }
     const user = await User.findOne({ email });
     if (!user) {
-      throw new UnauthenticatedError("The email address " + email + " is not associated with any account.");
+      throw new UnauthenticatedError(
+        "The email address " + email + " is not associated with any account."
+      );
     }
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
@@ -69,7 +67,7 @@ export const login = async (req, res) => {
         type: "not-verified",
         msg: "Your account has not been verified.",
       });
-    const token = user.createJWT(); // Assuming createJWT() generates a token
+    const token = await user.createJWT(); // Assuming createJWT() generates a token
     // Respond with success and token
     // res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
     // res, statusCode, user, options --> res, statusCode, token
@@ -79,20 +77,41 @@ export const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    // Handle errors appropriately, providing user-friendly messages
-    console.error(error); // Log the error for debugging
-    let errorMessage = "An error occurred during login.";
-    if (error instanceof BadRequestError) {
-      errorMessage = error.message; // Use the custom error message
-    } else if (error instanceof UnauthenticatedError) {
-      errorMessage = error.message; // Use the custom error message
-    } else {
-      // Handle other unexpected errors (consider logging details)
-      errorMessage = "Internal Server Error";
-    }
-    // Send a user-friendly error response with status code
-    res
-      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: errorMessage });
+    errorHandler(error, res, BadRequestError, UnauthenticatedError);
+  }
+};
+
+/*
+ * POST /confirmation
+ */
+export const confirmationPost = async (req, res, next) => {
+  try {
+    // Find a matching token
+    const { tokenId } = req.params;
+    const token = await Token.findOne({ token: tokenId });
+
+    if (!token)
+      throw new UnauthenticatedError(
+        "We were unable to find a valid token. Your token may have expired."
+      );
+    // If we found a token, find a matching user
+    const user = await User.findOne({
+      _id: token.userId,
+    });
+    // console.log("user found: ", user);
+    if (!user)
+      throw new BadRequestError(
+        "We were unable to find a user for this token."
+      );
+    if (user.isVerified)
+      throw new DuplicateError("This user has already been verified.");
+
+    // // Verify and save the user
+    user.isVerified = true;
+    await user.save();
+    res.status(200).send("The account has been verified. Please log in.");
+  } catch (error) {
+    console.log(error); //for debugging purpose
+    errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };
