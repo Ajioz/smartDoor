@@ -95,19 +95,14 @@ export const confirmationPost = async (req, res) => {
       throw new BadRequestError(
         "We were unable to find a user for this token."
       );
-    if (user.isVerified) return res.redirect(302, `http://127.0.1:5002/api/confirm/confirmation`);
+    if (user.isVerified) return res.redirect(302, "http://localhost:3000/confirmed");;
     // if (user.isVerified) return res.redirect(302, `http://localhost:3000/`);
 
     //   throw new DuplicateError("This user has already been verified.");
     // // Verify and save the user
     user.isVerified = true;
     await user.save();
-    res
-      .status(200)
-      .json({
-        data: "success",
-        msg: "The account has been verified. Please log in.",
-      });
+    res.redirect(302, "http://localhost:3000/confirmed");
   } catch (error) {
     errorHandler(error, res, BadRequestError, DuplicateError);
   }

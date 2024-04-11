@@ -10,7 +10,7 @@ export const AppContext = createContext();
 
 
 
-const url = "http://127.0.1:5002/api/confirm/confirmation";
+const url = "/";
 export const AppProvider = ({ children }) => {
 
   const [showSidebar, setShowSidebar] = useState(false);

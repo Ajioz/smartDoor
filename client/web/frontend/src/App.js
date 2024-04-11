@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import { ToastContainer } from "react-toastify";
 import Instruction from "./pages/Instruction";
 import AddDoors from "./pages/AddDoors";
+import ConfirmPage from "./pages/ConfirmPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} relative="path" />
           <Route path="/instruct" element={<Instruction />} relative="path" />
           <Route path="/Add_doors" element={<AddDoors />} relative="path" />
+          <Route path="/confirmed" element={<ConfirmPage />} relative="path" />
         </Routes>
       </Router>
       <ToastContainer />

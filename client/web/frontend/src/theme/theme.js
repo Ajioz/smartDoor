@@ -731,3 +731,14 @@ export const AddContainer = styled.section`
   justify-content: center;
   align-items: center;
 `;
+
+export const EmailConfirmed = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h3{
+    color: #fff;
+  }
+`
