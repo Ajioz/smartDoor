@@ -58,19 +58,16 @@ export const login = async (req, res) => {
       );
     }
     const isPasswordCorrect = await user.comparePassword(password);
-    if (!isPasswordCorrect) {
+    if (!isPasswordCorrect)
       throw new UnauthenticatedError("Invalid email or password");
-    }
     // Make sure the user has been verified
     if (!user.isVerified)
-      throw new UnauthenticatedError({
-        type: "not-verified",
-        msg: "Your account has not been verified.",
-      });
-    const token = await user.createJWT(); // Assuming createJWT() generates a token
+      throw new UnauthenticatedError(
+        "Your account has not been verified. Verify your email with the link sent to you before expiration!"
+      );
+    const token = await user.createJWT(); // createJWT() generates a token
     // Respond with success and token
     // res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
-    // res, statusCode, user, options --> res, statusCode, token
     sendResponseWithCookie({
       res,
       statusCode: StatusCodes.OK,
@@ -84,34 +81,34 @@ export const login = async (req, res) => {
 /*
  * POST /confirmation
  */
-export const confirmationPost = async (req, res, next) => {
+export const confirmationPost = async (req, res) => {
   try {
     // Find a matching token
     const { tokenId } = req.params;
     const token = await Token.findOne({ token: tokenId });
-
     if (!token)
       throw new UnauthenticatedError(
         "We were unable to find a valid token. Your token may have expired."
       );
-    // If we found a token, find a matching user
-    const user = await User.findOne({
-      _id: token.userId,
-    });
-    // console.log("user found: ", user);
+    const user = await User.findOne({ _id: token.userId });
     if (!user)
       throw new BadRequestError(
         "We were unable to find a user for this token."
       );
-    if (user.isVerified)
-      throw new DuplicateError("This user has already been verified.");
+    if (user.isVerified) return res.redirect(302, `http://127.0.1:5002/api/confirm/confirmation`);
+    // if (user.isVerified) return res.redirect(302, `http://localhost:3000/`);
 
+    //   throw new DuplicateError("This user has already been verified.");
     // // Verify and save the user
     user.isVerified = true;
     await user.save();
-    res.status(200).send("The account has been verified. Please log in.");
+    res
+      .status(200)
+      .json({
+        data: "success",
+        msg: "The account has been verified. Please log in.",
+      });
   } catch (error) {
-    console.log(error); //for debugging purpose
     errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };

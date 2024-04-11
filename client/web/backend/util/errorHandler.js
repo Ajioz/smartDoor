@@ -13,5 +13,5 @@ export const errorHandler = (error, res, errorType1, errorType2) => {
   // Send a user-friendly error response with status code
   res
     .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
-    .json({ message: errorMessage, url: `http://localhost:3000/` });
+    .json({ message: errorMessage});
 };

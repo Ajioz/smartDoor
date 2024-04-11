@@ -15,6 +15,7 @@ import rateLimiter from "express-rate-limit";
 import NotFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import authenticateUser from "./middlewares/authentication.js";
+import confirmRouter from "./routes/confirmRoute.js";
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use(
 );
 
 app.use("/api/user", authRouter);
+app.use("/api/confirm", confirmRouter);
 app.use("/api/thing", authenticateUser, thingRouter);
 
 
