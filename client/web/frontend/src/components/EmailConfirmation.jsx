@@ -20,7 +20,7 @@ const EmailConfirmation = (props) => {
   const resend = () => {
     console.log("Resend confirmation email");
     if (!hasRun.current) {
-      toast.success("Email Resent, check your mail", toastParam);
+      toast.success("Email resent, check your inbox", toastParam);
       hasRun.current = true;
       delay(1000);
     }

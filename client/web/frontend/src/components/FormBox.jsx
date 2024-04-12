@@ -11,6 +11,7 @@ import {
 import { toast } from "react-toastify";
 import CustomInput from "./CustomInput";
 import { Link, useNavigate } from "react-router-dom";
+import EmailConfirmation from "./EmailConfirmation";
 
 const toastParam = {
   position: "top-right",
@@ -64,6 +65,9 @@ const FormBox = (props) => {
     actions.resetForm();
     hasRun.current = false;
     handleValidation(values);
+    if (props.btn === "CREATE ACCOUNT") {
+      <EmailConfirmation />
+    }
   };
 
   return (

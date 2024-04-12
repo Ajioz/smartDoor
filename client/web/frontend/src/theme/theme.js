@@ -802,6 +802,21 @@ export const EmailInfo = styled.section`
     color: darkcyan;
     cursor: pointer;
   }
+
+  .tick{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    img{
+      width: 100px;
+    }
+  }
+
+  h3{
+    font-size: 25px;
+    font-family: monospace;
+  }
   /* MOBILE */
   @media only screen and (max-width: 560px) {
     width: 50%;
