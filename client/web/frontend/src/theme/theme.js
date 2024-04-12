@@ -732,13 +732,107 @@ export const AddContainer = styled.section`
   align-items: center;
 `;
 
-export const EmailConfirmed = styled.section`
+export const ContainerEmail = styled.main`
+  width: 100%;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
+  background-color: #333;
+`;
 
-  h3{
-    color: #fff;
+export const EmailInfo = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+  height: 70%;
+  background-color: #fff;
+  border-radius: 20px;
+
+  .img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    img {
+      width: 25%;
+    }
   }
-`
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80px;
+
+    h1 {
+      font-weight: 500;
+      color: #333;
+      margin: 10px;
+      padding: 0;
+    }
+    p {
+      font-size: 14px;
+      padding: 0;
+      margin: 0 auto;
+      width: 80%;
+      text-align: center;
+    }
+  }
+
+  .send {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 200;
+    font-size: 12px;
+    border-top: 1px solid #ddd;
+    width: 90%;
+    p {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
+  span {
+    font-weight: bolder;
+    color: darkcyan;
+    cursor: pointer;
+  }
+  /* MOBILE */
+  @media only screen and (max-width: 560px) {
+    width: 50%;
+  }
+`;
+
+export const CloseConfirmed = styled.button`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 7rem;
+  right: 26rem;
+  font-size: 2rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #333;
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    color: #ddd;
+  }
+
+  /* MOBILE */
+  @media only screen and (max-width: 560px) {
+    margin-top: 10px;
+    text-align: center;
+    line-height: 15px;
+    top: 6rem;
+    right: 8rem;
+  }
+`;
