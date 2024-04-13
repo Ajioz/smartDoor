@@ -33,7 +33,16 @@ export const AppProvider = ({ children }) => {
       console.log(error);
       setLoading(false);
     }
-  },[]);
+  }, []);
+  
+  const postData = async() => {
+    try {
+      const { data } = await axios.post("/user/resend");
+      console.log(data)
+    } catch (error) {
+      
+    }
+  }
 
   useEffect(() => {
     fetchData();
@@ -51,7 +60,8 @@ export const AppProvider = ({ children }) => {
         setShowSidebar,
         setStatus,
         setItem,
-        loading
+        loading,
+        postData
       }}
     >
       {children}

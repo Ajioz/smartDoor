@@ -3,7 +3,7 @@ import {
   confirmationPost,
   login,
   signup,
-//   resendTokenPost,
+  resendTokenPost,
 } from "../controllers/authController.js";
 
 const authRouter = express.Router();
@@ -11,6 +11,6 @@ const authRouter = express.Router();
 authRouter.post("/signup", signup);
 authRouter.post("/login", login);
 authRouter.get("/:tokenId", confirmationPost);
-// authRouter.post("/resend", resendTokenPost);
+authRouter.post("/resend", resendTokenPost);
 
 export default authRouter;

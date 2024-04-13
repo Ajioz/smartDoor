@@ -86,18 +86,14 @@ export const confirmationPost = async (req, res) => {
     // Find a matching token
     const { tokenId } = req.params;
     const token = await Token.findOne({ token: tokenId });
-    if (!token)
-      throw new UnauthenticatedError(
-        "We were unable to find a valid token. Your token may have expired."
-      );
+    if (!token) return res.redirect(302, "http://localhost:3000/expired"); //"Unable to find a valid token. Your token may have expired."
     const user = await User.findOne({ _id: token.userId });
     if (!user)
       throw new BadRequestError(
         "We were unable to find a user for this token."
       );
     if (user.isVerified)
-      return res.redirect(302, "http://localhost:3000/confirmed");
-    // if (user.isVerified) return res.redirect(302, `http://localhost:3000/`);
+      return res.redirect(302, "http://localhost:3000/status");
 
     //   throw new DuplicateError("This user has already been verified.");
     // // Verify and save the user
@@ -109,3 +105,9 @@ export const confirmationPost = async (req, res) => {
   }
 };
 
+// Resend
+
+export const resendTokenPost = async (req, res) => {
+  console.log({ msg: "email resent" });
+  return res.status(200).json({ msg: "email resent" });
+};

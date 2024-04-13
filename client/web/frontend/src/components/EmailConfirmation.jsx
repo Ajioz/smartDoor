@@ -4,6 +4,7 @@ import { CloseConfirmed, ContainerEmail, EmailInfo } from "../theme/theme";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useGlobalContext } from "../context/context";
 
 const toastParam = {
   position: "top-right",
@@ -14,6 +15,7 @@ const toastParam = {
 };
 
 const EmailConfirmation = (props) => {
+  const { postData } = useGlobalContext();
   const navigate = useNavigate();
   const hasRun = useRef(false);
 
@@ -23,6 +25,7 @@ const EmailConfirmation = (props) => {
       toast.success("Email resent, check your inbox", toastParam);
       hasRun.current = true;
       delay(1000);
+      postData();
     }
   };
   const delay = async (time) => {
