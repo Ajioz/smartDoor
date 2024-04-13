@@ -95,7 +95,8 @@ export const confirmationPost = async (req, res) => {
       throw new BadRequestError(
         "We were unable to find a user for this token."
       );
-    if (user.isVerified) return res.redirect(302, "http://localhost:3000/confirmed");;
+    if (user.isVerified)
+      return res.redirect(302, "http://localhost:3000/confirmed");
     // if (user.isVerified) return res.redirect(302, `http://localhost:3000/`);
 
     //   throw new DuplicateError("This user has already been verified.");
@@ -107,3 +108,4 @@ export const confirmationPost = async (req, res) => {
     errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };
+

@@ -748,7 +748,7 @@ export const EmailInfo = styled.section`
   justify-content: space-around;
   align-items: center;
   width: 40%;
-  height: 70%;
+  min-height: ${(props) => props.height || "70%"};
   background-color: #fff;
   border-radius: 20px;
 
@@ -803,19 +803,32 @@ export const EmailInfo = styled.section`
     cursor: pointer;
   }
 
-  .tick{
+  .tick {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
     width: 100%;
-    img{
+    min-height: 100px;
+    img {
       width: 100px;
     }
   }
 
-  h3{
-    font-size: 25px;
+  h3 {
+    width: 70%;
+    text-align: center;
+    font-size: 18px;
     font-family: monospace;
+    color: #2e7d32;
+  }
+
+  .back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    margin: 20px;
   }
   /* MOBILE */
   @media only screen and (max-width: 560px) {
@@ -828,8 +841,8 @@ export const CloseConfirmed = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 7rem;
-  right: 26rem;
+  top: ${props => props.top || "7rem"};
+  right: ${props => props.right || "26rem"};
   font-size: 2rem;
   width: 30px;
   height: 30px;

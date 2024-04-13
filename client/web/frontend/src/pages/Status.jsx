@@ -1,18 +1,18 @@
 import React from "react";
-import tick from "../images/tick.gif";
+import email from "../images/confirmed.jpg";
 import Confirmation from "../components/ConfirmBox";
 
-const ConfirmPage = () => {
+const Status = () => {
   return (
     <>
       <Confirmation
         imgType={true}
-        img={tick}
-        msg={"Email Successfully Confirmed!"}
+        img={email}
+        msg={"Email Already Confirmed, no further action required!"}
         action={"Login"}
       />
     </>
   );
 };
 
-export default ConfirmPage;
+export default Status;

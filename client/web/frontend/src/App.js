@@ -8,6 +8,8 @@ import { ToastContainer } from "react-toastify";
 import Instruction from "./pages/Instruction";
 import AddDoors from "./pages/AddDoors";
 import ConfirmPage from "./pages/ConfirmPage";
+import Status from "./pages/Status";
+import Expired from "./pages/Expired";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/instruct" element={<Instruction />} relative="path" />
           <Route path="/Add_doors" element={<AddDoors />} relative="path" />
           <Route path="/confirmed" element={<ConfirmPage />} relative="path" />
+          <Route path="/status" element={<Status />} relative="path" />
+          <Route path="/expired" element={<Expired />} relative="path" />
         </Routes>
       </Router>
       <ToastContainer />

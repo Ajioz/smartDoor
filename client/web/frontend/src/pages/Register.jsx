@@ -30,7 +30,7 @@ const Register = () => {
         btn={"CREATE ACCOUNT"}
         schema={registerSchema}
         initialValues={initialValues}
-        question={"Have an account"}
+        question={"Have an account ?"}
         action={"Login"}
         url={"/"}
       />
