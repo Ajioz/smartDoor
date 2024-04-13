@@ -305,7 +305,7 @@ export const Backbtn = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 30%;
+  width: ${props => props.width || "30%"};
   &:hover {
     cursor: pointer;
     box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
@@ -864,3 +864,4 @@ export const CloseConfirmed = styled.button`
     right: 8rem;
   }
 `;
+
