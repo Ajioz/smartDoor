@@ -33,10 +33,8 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   const postData = async (route, body) => {
-    // console.log("Received: ", route, body);
     try {
       const response = await axios.post(`${base_url}/${route}`, { body });
-      // console.log(response.data);
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -44,7 +42,7 @@ export const AppProvider = ({ children }) => {
           "Error fetching user data:",
           error.response.data.message || "No such user in database"
         );
-        return error.response.data.message;
+        return error.response.data;
       } else {
         console.error("Unexpected error:", error.response.data.message);
       }

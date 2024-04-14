@@ -58,11 +58,23 @@ const FormBox = (props) => {
         }
       }
     } else {
-      const { data } = await postData("user/signup", obj);
-      if (data.message) {
-        toast.success(data.message, toastParam);
-        hasRun.current = true;
-        <EmailConfirmation />;
+      const message = await postData("user/signup", obj);
+      console.log(message.server);
+      if (
+        message.server === 535 ||
+        message.server === "" ||
+        message.server === undefined
+      ) {
+        if (!hasRun.current) {
+          toast.error(message.message, toastParam);
+          hasRun.current = true;
+        }
+      } else {
+        if (message.message) {
+          toast.success(message.message, toastParam);
+          hasRun.current = true;
+          <EmailConfirmation />;
+        }
       }
     }
   };

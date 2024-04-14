@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import nodemailer from "nodemailer";
 import BadRequestError from "../errors/badRequest.js";
+import { StatusCodes } from "http-status-codes";
 
 let config = {
   service: "gmail",
@@ -27,7 +28,14 @@ const sendEmail = (subject, email, message, cb) => {
 };
 
 // Send Single Email controller
-export const sendSingleEmail = async (res, email, token, host) => {
+export const sendSingleEmail = async (
+  res,
+  email,
+  token,
+  host,
+  user = "",
+  regToken = ""
+) => {
   const message =
     "Hello,\n\n" +
     "Please verify your account by clicking the link: \nhttp://" +
@@ -38,13 +46,18 @@ export const sendSingleEmail = async (res, email, token, host) => {
   const subject = "Account Verification Token";
   try {
     sendEmail(subject, email, message, (err, data) => {
-      if (err) return res
-          .status(400)
-          .json({ message: "Authentication Server failed", server: 400 });
-      else {
-        return res
-          .status(200)
-          .json({ message: `A verification email has been sent to ${email}` });
+      console.log(subject, email, message)
+      if (err) {
+        return res.status(400).json({
+          message: "Authentication Server failed",
+          server: err.responseCode,
+        });
+      } else {
+        user.save();
+        regToken.save();
+        return res.status(StatusCodes.CREATED).json({
+          message: `A verification email has been sent to ${data.envelope.to[0]}`,
+        });
       }
     });
   } catch (error) {
@@ -55,7 +68,7 @@ export const sendSingleEmail = async (res, email, token, host) => {
       errorMsg = "Internal Server Error";
     }
     return res
-      .status(400)
+      .status(StatusCodes.EXPECTATION_FAILED)
       .json({ Message: "We couldn't process your request" });
   }
 };

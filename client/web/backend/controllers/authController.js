@@ -14,7 +14,6 @@ const base_url = "http://localhost:3000";
  */
 export const signup = async (req, res) => {
   const { name, username, email, password } = req.body;
-  console.log(req.body)
   try {
     const userExist = await User.findOne({ email });
     if (userExist) throw new DuplicateError("User Already Exist!");
@@ -28,16 +27,15 @@ export const signup = async (req, res) => {
       token: crypto.randomBytes(16).toString("hex"),
     });
 
-    // const token = user.createJWT();
-    await user.save();
-    await regToken.save();
-
     // Send the email
-    sendSingleEmail(email, regToken.token, req.headers.host);
-    console.log("success")
-    return res
-      .status(StatusCodes.CREATED)
-      .json({ message: "User created successfully!" });
+    sendSingleEmail(
+      res,
+      email,
+      regToken.token,
+      req.headers.host,
+      user,
+      regToken
+    );
   } catch (error) {
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
