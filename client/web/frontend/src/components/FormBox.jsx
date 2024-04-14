@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import CustomInput from "./CustomInput";
 import { Link, useNavigate } from "react-router-dom";
 import EmailConfirmation from "./EmailConfirmation";
+import { useGlobalContext } from "../context/context";
 
 const toastParam = {
   position: "top-right",
@@ -29,29 +30,39 @@ const passkey = {
 const initialValues = { username: "", password: "" };
 
 const FormBox = (props) => {
+  const { postData } = useGlobalContext();
   const initialValuesArray = Object.entries(props.initialValues); //Create an array from the object
   const navigate = useNavigate();
   const toCapital = (str) => str[0].toUpperCase() + str.substring(1);
   const hasRun = useRef(false);
 
-  const handleValidation = (obj) => {
-    if (
-      obj.password !== passkey.password ||
-      obj.username !== passkey.username
-    ) {
-      if (!hasRun.current) {
-        toast.error("Incorrect login details", toastParam);
-        hasRun.current = true;
+  const handleValidation = async (obj) => {
+    if (props.btn === "LOGIN") {
+      if (
+        obj.password !== passkey.password ||
+        obj.username !== passkey.username
+      ) {
+        if (!hasRun.current) {
+          toast.error("Incorrect login details", toastParam);
+          hasRun.current = true;
+        }
+      } else if (
+        obj.password === passkey.password &&
+        obj.username === passkey.username
+      ) {
+        if (!hasRun.current) {
+          toast.success("Details match!", toastParam);
+          hasRun.current = true;
+          delay(1000);
+          return navigate("/dashboard");
+        }
       }
-    } else if (
-      obj.password === passkey.password &&
-      obj.username === passkey.username
-    ) {
-      if (!hasRun.current) {
-        toast.success("Details match!", toastParam);
+    } else {
+      const { data } = await postData("user/signup", obj);
+      if (data.message) {
+        toast.success(data.message, toastParam);
         hasRun.current = true;
-        delay(1000);
-        return navigate("/dashboard");
+        <EmailConfirmation />;
       }
     }
   };
@@ -65,9 +76,6 @@ const FormBox = (props) => {
     actions.resetForm();
     hasRun.current = false;
     handleValidation(values);
-    if (props.btn === "CREATE ACCOUNT") {
-      <EmailConfirmation />
-    }
   };
 
   return (
@@ -88,6 +96,7 @@ const FormBox = (props) => {
                   const item_rebirth = String(item).split(",")[0];
                   return (
                     <CustomInput
+                      id={item_rebirth}
                       key={index}
                       label={toCapital(item_rebirth)}
                       name={item_rebirth}

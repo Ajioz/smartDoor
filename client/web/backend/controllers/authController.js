@@ -8,23 +8,19 @@ import DuplicateError from "../errors/duplicateError.js";
 import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
 
-
-const base_url = "http://localhost:3000"
+const base_url = "http://localhost:3000";
 /*
  * POST /registration
  */
 export const signup = async (req, res) => {
-  const { email } = req.body;
+  const { name, username, email, password } = req.body;
+  console.log(req.body)
   try {
     const userExist = await User.findOne({ email });
     if (userExist) throw new DuplicateError("User Already Exist!");
 
-    let user = new User({
-      name: req.body.name,
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-    });
+    // create an a database bucket base on schema
+    let user = new User({ name, username, email, password });
 
     // Create a verification token for this user
     const regToken = new Token({
@@ -32,13 +28,16 @@ export const signup = async (req, res) => {
       token: crypto.randomBytes(16).toString("hex"),
     });
 
-    const token = user.createJWT();
+    // const token = user.createJWT();
     await user.save();
     await regToken.save();
 
     // Send the email
     sendSingleEmail(email, regToken.token, req.headers.host);
-    return res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+    console.log("success")
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ message: "User created successfully!" });
   } catch (error) {
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
@@ -98,8 +97,7 @@ export const confirmationPost = async (req, res) => {
         "We were unable to find a user for this token."
       );
 
-    if (user.isVerified)
-      return res.redirect(302, `${base_url}/status`);
+    if (user.isVerified) return res.redirect(302, `${base_url}/status`);
 
     // Verify and save the user
     user.isVerified = true;
@@ -115,7 +113,6 @@ export const resendTokenPost = async (req, res) => {
   console.log({ msg: "email resent" });
   return res.status(200).json({ msg: "email resent" });
 };
-
 
 // Find user by email
 export const findUserByEmail = async (req, res) => {
@@ -136,7 +133,6 @@ export const findUserByEmail = async (req, res) => {
     }
     return res.status(200).json({ message: "confirmed" });
   } catch (error) {
-    // console.log(error)
     errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };

@@ -4,6 +4,7 @@ import {
   CloseConfirmed,
   ContainerEmail,
   EmailInfo,
+  Error,
   Input,
 } from "../theme/theme";
 import { FaArrowLeft, FaTimes } from "react-icons/fa";
@@ -22,17 +23,21 @@ const toastParam = {
 const Confirmation = (props) => {
   const { postData } = useGlobalContext();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState({ email: "", status: false });
   const hasRun = useRef(false);
 
   const handleSubmit = async (action) => {
     if (action === "Login") {
       navigate("/");
     } else {
-      const message = await postData("user/email", email);
+      if (email.email === "") {
+        setEmail({ ...email, email: "", status: true });
+        return;
+      }
+      const message = await postData("user/email", email.email);
       // console.log(message)
       if (message.message === "confirmed") {
-        setEmail("");
+        setEmail({ ...email, email: "", status: false });
         navigate(`/${message.message}`);
       } else {
         if (message === "Authentication Server failed") {
@@ -40,7 +45,7 @@ const Confirmation = (props) => {
             toast.error(message, toastParam);
             hasRun.current = true;
             delay(1000);
-            setEmail("");
+            setEmail({ ...email, email: "", status: false });
           }
         } else {
           if (!hasRun.current) {
@@ -58,6 +63,7 @@ const Confirmation = (props) => {
     await new Promise((resolve) => {
       setTimeout(resolve, time);
       hasRun.current = false;
+      setEmail({ ...email, email: "", status: false });
     });
   };
 
@@ -67,7 +73,7 @@ const Confirmation = (props) => {
         <EmailInfo height={"65%"}>
           <CloseConfirmed
             onClick={() => navigate("/")}
-            top={"12rem"}
+            top={"9rem"}
             right={"26.5rem"}
           >
             <FaTimes />
@@ -81,15 +87,21 @@ const Confirmation = (props) => {
                 <img src={props.img} alt="tick" />
                 <Input
                   type="email"
-                  value={email}
+                  value={email.email}
                   placeholder="verify your email here"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) =>
+                    setEmail({ ...email, email: e.target.value })
+                  }
+                  required
                 />
+                {email.status && email.email.length < 1 && (
+                  <Error>This field cannot be empty</Error>
+                )}
               </>
             )}
           </section>
           <section className="back">
-            <Backbtn onClick={handleSubmit(props.action)}>
+            <Backbtn onClick={() => handleSubmit(props.action)}>
               <FaArrowLeft /> {props.action}
             </Backbtn>
           </section>

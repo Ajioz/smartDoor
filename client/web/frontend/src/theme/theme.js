@@ -902,3 +902,10 @@ export const CloseConfirmed = styled.button`
     right: 4rem;
   }
 `;
+
+export const Error = styled.p`
+  color: darkred;
+  font-size:10px;
+  margin: 0;
+  padding: 0;
+`
