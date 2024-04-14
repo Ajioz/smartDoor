@@ -5,10 +5,10 @@ import { registerSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
 
 const initialValues = {
-  Name: "",
-  Username: "",
-  Email: "",
-  Password: "",
+  name: "",
+  username: "",
+  email: "",
+  password: "",
   confirmPassword: "",
 };
 

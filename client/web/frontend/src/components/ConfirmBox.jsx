@@ -35,7 +35,7 @@ const Confirmation = (props) => {
                 <img src={props.img} alt="tick" />
                 <Input
                   type="email"
-                  placeholder="email"
+                  placeholder="enter your email here"
                   onClick={handleSubmit}
                 />
               </>

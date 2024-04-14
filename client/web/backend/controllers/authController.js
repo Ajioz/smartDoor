@@ -8,6 +8,8 @@ import DuplicateError from "../errors/duplicateError.js";
 import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
 
+
+const base_url = "http://localhost:3000/"
 /*
  * POST /registration
  */
@@ -36,7 +38,7 @@ export const signup = async (req, res) => {
 
     // Send the email
     sendSingleEmail(email, regToken.token, req.headers.host);
-    res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+    return res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
   } catch (error) {
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
@@ -79,35 +81,64 @@ export const login = async (req, res) => {
 };
 
 /*
- * POST /confirmation
+ * GET /confirmation
  */
 export const confirmationPost = async (req, res) => {
+  const { tokenId } = req.params;
+
   try {
     // Find a matching token
-    const { tokenId } = req.params;
     const token = await Token.findOne({ token: tokenId });
-    if (!token) return res.redirect(302, "http://localhost:3000/expired"); //"Unable to find a valid token. Your token may have expired."
+    if (!token) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
+
     const user = await User.findOne({ _id: token.userId });
+
     if (!user)
       throw new BadRequestError(
         "We were unable to find a user for this token."
       );
-    if (user.isVerified)
-      return res.redirect(302, "http://localhost:3000/status");
 
-    //   throw new DuplicateError("This user has already been verified.");
-    // // Verify and save the user
+    if (user.isVerified)
+      return res.redirect(302, `${base_url}/status`);
+
+    // Verify and save the user
     user.isVerified = true;
     await user.save();
-    res.redirect(302, "http://localhost:3000/confirmed");
+    return res.redirect(302, `${base_url}/confirmed`);
   } catch (error) {
     errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };
 
 // Resend
-
 export const resendTokenPost = async (req, res) => {
   console.log({ msg: "email resent" });
   return res.status(200).json({ msg: "email resent" });
+};
+
+// Find user by email
+
+export const findUserByEmail = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) throw new BadRequestError("No such user in our database");
+
+    if (!user.isVerified) {
+      // Create a verification token for this user
+      const regToken = new Token({
+        userId: user._id,
+        token: crypto.randomBytes(16).toString("hex"),
+      });
+
+      //save a new user token for the next 12 hours
+      await regToken.save();
+
+      // Send the email
+      return sendSingleEmail(email, regToken.token, req.headers.host);
+    }
+    return res.redirect(302, `${base_url}/confirmed`);
+  } catch (error) {
+    errorHandler(error, res, BadRequestError, DuplicateError);
+  }
 };
