@@ -305,7 +305,7 @@ export const Backbtn = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: ${props => props.width || "30%"};
+  width: ${(props) => props.width || "30%"};
   &:hover {
     cursor: pointer;
     box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
@@ -833,6 +833,37 @@ export const EmailInfo = styled.section`
   /* MOBILE */
   @media only screen and (max-width: 560px) {
     width: 50%;
+    .img {
+      img {
+        width: 20%;
+      }
+    }
+
+    h3 {
+      width: 60%;
+      font-size: 15px;
+    }
+    .back {
+      width: 300px;
+      margin: 20px;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    width: 70%;
+    .img {
+      img {
+        width: 20%;
+      }
+    }
+
+    h3 {
+      width: 60%;
+      font-size: 15px;
+    }
+    .back {
+      width: 300px;
+      margin: 20px;
+    }
   }
 `;
 
@@ -841,8 +872,8 @@ export const CloseConfirmed = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  top: ${props => props.top || "7rem"};
-  right: ${props => props.right || "26rem"};
+  top: ${(props) => props.top || "7rem"};
+  right: ${(props) => props.right || "26rem"};
   font-size: 2rem;
   width: 30px;
   height: 30px;
@@ -863,5 +894,11 @@ export const CloseConfirmed = styled.button`
     top: 6rem;
     right: 8rem;
   }
+  @media only screen and (max-width: 400px) {
+    margin-top: 10px;
+    text-align: center;
+    line-height: 15px;
+    top: 7rem;
+    right: 4rem;
+  }
 `;
-

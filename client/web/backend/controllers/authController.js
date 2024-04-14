@@ -9,7 +9,7 @@ import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
 
 
-const base_url = "http://localhost:3000/"
+const base_url = "http://localhost:3000"
 /*
  * POST /registration
  */
@@ -116,29 +116,27 @@ export const resendTokenPost = async (req, res) => {
   return res.status(200).json({ msg: "email resent" });
 };
 
-// Find user by email
 
+// Find user by email
 export const findUserByEmail = async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.body;
   try {
     const user = await User.findOne({ email });
     if (!user) throw new BadRequestError("No such user in our database");
-
     if (!user.isVerified) {
       // Create a verification token for this user
       const regToken = new Token({
         userId: user._id,
         token: crypto.randomBytes(16).toString("hex"),
       });
-
       //save a new user token for the next 12 hours
       await regToken.save();
-
       // Send the email
-      return sendSingleEmail(email, regToken.token, req.headers.host);
+      return sendSingleEmail(res, email, regToken.token, req.headers.host);
     }
-    return res.redirect(302, `${base_url}/confirmed`);
+    return res.status(200).json({ message: "confirmed" });
   } catch (error) {
+    // console.log(error)
     errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };

@@ -5,14 +5,11 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import axios from "axios"
+import axios from "axios";
 export const AppContext = createContext();
 
-
-
-const url = "/";
+const base_url = "http://127.0.1:5002/api";
 export const AppProvider = ({ children }) => {
-
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState(false);
@@ -26,23 +23,33 @@ export const AppProvider = ({ children }) => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`${url}`);
-      console.log(data);
+      // const { data } = await axios.get(`${base_url}`);
+      // console.log(data);
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   }, []);
-  
-  const postData = async() => {
+
+  const postData = async (route, body) => {
+    // console.log("Received: ", route, body);
     try {
-      const { data } = await axios.post("/user/resend");
-      console.log(data)
+      const response = await axios.post(`${base_url}/${route}`, { body });
+      // console.log(response.data);
+      return response.data;
     } catch (error) {
-      
+      if (error.response && error.response.status === 400) {
+        console.error(
+          "Error fetching user data:",
+          error.response.data.message || "No such user in database"
+        );
+        return error.response.data.message;
+      } else {
+        console.error("Unexpected error:", error.response.data.message);
+      }
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -61,7 +68,7 @@ export const AppProvider = ({ children }) => {
         setStatus,
         setItem,
         loading,
-        postData
+        postData,
       }}
     >
       {children}

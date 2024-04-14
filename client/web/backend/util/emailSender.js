@@ -27,7 +27,7 @@ const sendEmail = (subject, email, message, cb) => {
 };
 
 // Send Single Email controller
-export const sendSingleEmail = async (email, token, host) => {
+export const sendSingleEmail = async (res, email, token, host) => {
   const message =
     "Hello,\n\n" +
     "Please verify your account by clicking the link: \nhttp://" +
@@ -38,14 +38,16 @@ export const sendSingleEmail = async (email, token, host) => {
   const subject = "Account Verification Token";
   try {
     sendEmail(subject, email, message, (err, data) => {
-      if (err) throw new BadRequestError("Authentication Server failed");
-      else
+      if (err) return res
+          .status(400)
+          .json({ message: "Authentication Server failed", server: 400 });
+      else {
         return res
           .status(200)
-          .send("A verification email has been sent to " + email + ".");
+          .json({ message: `A verification email has been sent to ${email}` });
+      }
     });
   } catch (error) {
-    console.error(error);
     let errorMsg = "An error occurred during sending email";
     if (error instanceof BadRequestError) {
       errorMsg = error.message;
