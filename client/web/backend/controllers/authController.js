@@ -42,7 +42,7 @@ export const signup = async (req, res) => {
 };
 
 /*
- * POST /login
+ * POST --> login
  */
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -78,7 +78,7 @@ export const login = async (req, res) => {
 };
 
 /*
- * GET /confirmation
+ * GET  --> confirmation
  */
 export const confirmationPost = async (req, res) => {
   const { tokenId } = req.params;
@@ -106,10 +106,33 @@ export const confirmationPost = async (req, res) => {
   }
 };
 
+
 // Resend
 export const resendTokenPost = async (req, res) => {
-  console.log({ msg: "email resent" });
-  return res.status(200).json({ msg: "email resent" });
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new UnauthenticatedError(
+        "The email address " + email + " is not associated with any account."
+      );
+    }
+    const tokenExist = await Token.findOne({ userId: user._id });
+    let regToken;
+    if (!tokenExist) {
+      console.log("regToken doesn't exist: creating one...");
+      regToken = await Token.create({
+        userId: user._id,
+        token: crypto.randomBytes(16).toString("hex"),
+      });
+    } else {
+      regToken = tokenExist;
+      console.log("regToken exist: ", regToken);
+    }
+    return sendSingleEmail(res, email, regToken.token, req.headers.host);
+  } catch (error) {
+    errorHandler(error, res, BadRequestError, UnauthenticatedError);
+  }
 };
 
 // Find user by email

@@ -276,6 +276,7 @@ export const ClaimBtn = styled.button`
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0 0.3);
   transition: 0.5s;
+  margin: 10px auto -10px auto;
   &:hover {
     cursor: pointer;
     box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
@@ -778,7 +779,7 @@ export const EmailInfo = styled.section`
       font-size: 14px;
       padding: 0;
       margin: 0 auto;
-      width: 80%;
+      width: 86%;
       text-align: center;
     }
   }
@@ -832,7 +833,7 @@ export const EmailInfo = styled.section`
   }
   /* MOBILE */
   @media only screen and (max-width: 560px) {
-    width: 50%;
+    width: 55%;
     .img {
       img {
         width: 20%;
@@ -899,6 +900,42 @@ export const CloseConfirmed = styled.button`
     text-align: center;
     line-height: 15px;
     top: 7rem;
+    right: 4rem;
+  }
+`;
+
+export const CloseConfirmed2 = styled.button`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: ${(props) => props.top || "7rem"};
+  right: ${(props) => props.right || "26rem"};
+  font-size: 2rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #333;
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    color: #ddd;
+  }
+
+  /* MOBILE */
+  @media only screen and (max-width: 560px) {
+    margin-top: 10px;
+    text-align: center;
+    line-height: 15px;
+    top: 15rem;
+    right: 7rem;
+  }
+  @media only screen and (max-width: 400px) {
+    margin-top: 10px;
+    text-align: center;
+    line-height: 15px;
+    top: 18rem;
     right: 4rem;
   }
 `;

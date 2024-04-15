@@ -52,9 +52,13 @@ export const sendSingleEmail = async (
           server: err.responseCode,
         });
       } else {
-        user.save();
-        regToken.save();
-        console.log(StatusCodes.CREATED);
+        if (user) {
+          user.save();
+          regToken.save();
+          console.log("There was a user")
+        } else {
+           console.log("There was a user again, resending...");
+        }
         return res.status(StatusCodes.CREATED).json({
           message: `A verification email has been sent to ${data.envelope.to[0]}`,
           server: StatusCodes.CREATED,

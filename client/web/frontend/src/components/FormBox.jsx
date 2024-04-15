@@ -33,7 +33,11 @@ const FormBox = (props) => {
   const navigate = useNavigate();
   const { postData } = useGlobalContext();
   const hasRun = useRef(false);
-  const [hasSent, setHasSent] = useState({status: true, recipient:""});
+  const [hasSent, setHasSent] = useState({
+    status: false,
+    recipient: "",
+    email: "",
+  });
 
   const initialValuesArray = Object.entries(props.initialValues); //Create an array from the object
   const toCapital = (str) => str[0].toUpperCase() + str.substring(1);
@@ -74,7 +78,12 @@ const FormBox = (props) => {
         if (message.message) {
           toast.success(message.message, toastParam);
           hasRun.current = true;
-          setHasSent({...hasSent, status: true, recipient: message.recipient});
+          setHasSent({
+            ...hasSent,
+            status: true,
+            recipient: message.recipient,
+            email: obj.email,
+          });
         }
       }
     }
@@ -86,9 +95,9 @@ const FormBox = (props) => {
 
   const onSubmit = (values, actions) => {
     delay(1000);
-    actions.resetForm();
     hasRun.current = false;
     handleValidation(values);
+    actions.resetForm();
   };
 
   return (
