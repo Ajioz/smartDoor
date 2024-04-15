@@ -22,10 +22,6 @@ const toastParam = {
   theme: "light",
 };
 
-const passkey = {
-  username: "Ajiozi",
-  password: "sandiewhyte",
-};
 
 const initialValues = { username: "", password: "" };
 
@@ -44,18 +40,16 @@ const FormBox = (props) => {
 
   const handleValidation = async (obj) => {
     if (props.btn === "LOGIN") {
+      const message = await postData("user/signup", obj);
       if (
-        obj.password !== passkey.password ||
-        obj.username !== passkey.username
+        message.server === "" ||
+        message.server === undefined
       ) {
         if (!hasRun.current) {
-          toast.error("Incorrect login details", toastParam);
+          toast.error(message.message, toastParam);
           hasRun.current = true;
         }
-      } else if (
-        obj.password === passkey.password &&
-        obj.username === passkey.username
-      ) {
+      } else{
         if (!hasRun.current) {
           toast.success("Details match!", toastParam);
           hasRun.current = true;

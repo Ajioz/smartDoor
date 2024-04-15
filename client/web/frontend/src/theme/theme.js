@@ -150,9 +150,13 @@ export const ContentWrapper = styled.div`
   }
 
   section {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    display: block;
+    /* justify-content: start;
+    align-items: start;
+    flex-direction:row;
+    background-color: #fff;
+    color: #000;
+    width: 100%; */
   }
 
   /* TABLET */
@@ -172,6 +176,13 @@ export const ContentWrapper = styled.div`
   @media only screen and (max-width: 560px) {
     width: 90%;
     overflow-y: scroll;
+    section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      width: 100%;
+    }
     h1 {
       font-size: 28px;
       letter-spacing: -0.29px;
@@ -287,6 +298,7 @@ export const ClaimBtn = styled.button`
   @media only screen and (max-width: 560px) {
     width: fit-content;
     width: 50%;
+    margin: 10px auto;
   }
 `;
 
@@ -942,7 +954,7 @@ export const CloseConfirmed2 = styled.button`
 
 export const Error = styled.p`
   color: darkred;
-  font-size:10px;
+  font-size: 10px;
   margin: 0;
   padding: 0;
-`
+`;
