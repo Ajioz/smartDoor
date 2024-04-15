@@ -19,6 +19,9 @@
     "yup": "^0.32.11",
     "proxy": "http://127.0.1:5002/api"
   },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "1.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

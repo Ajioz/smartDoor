@@ -34,13 +34,12 @@ const Confirmation = (props) => {
         setEmail({ ...email, email: "", status: true });
         return;
       }
-      const message = await postData("user/email", email.email);
-      // console.log(message)
+      const message = await postData("user/email", { email: email.email });
       if (message.message === "confirmed") {
         setEmail({ ...email, email: "", status: false });
         navigate(`/${message.message}`);
       } else {
-        if (message === "Authentication Server failed") {
+        if (message === "Check Your Internet Connection!") {
           if (!hasRun.current) {
             toast.error(message, toastParam);
             hasRun.current = true;

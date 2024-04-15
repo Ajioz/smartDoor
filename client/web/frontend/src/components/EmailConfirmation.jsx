@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGlobalContext } from "../context/context";
 
+
 const toastParam = {
   position: "top-right",
   autoClose: 3000,
@@ -14,7 +15,7 @@ const toastParam = {
   theme: "light",
 };
 
-const EmailConfirmation = (props) => {
+const EmailConfirmation = ({ recipient }) => {
   const { postData } = useGlobalContext();
   const navigate = useNavigate();
   const hasRun = useRef(false);
@@ -28,6 +29,7 @@ const EmailConfirmation = (props) => {
       postData();
     }
   };
+
   const delay = async (time) => {
     await new Promise((resolve) => {
       setTimeout(resolve, time);
@@ -38,7 +40,7 @@ const EmailConfirmation = (props) => {
   return (
     <ContainerEmail>
       <EmailInfo>
-        <CloseConfirmed onClick={() => navigate("/")}>
+        <CloseConfirmed onClick={() => navigate("/")} >
           <FaTimes />
         </CloseConfirmed>
         <section className="img">
@@ -47,9 +49,10 @@ const EmailConfirmation = (props) => {
         <section className="header">
           <h1>Email Confirmation</h1>
           <p>
-            We have sent email to {!props.email && "sunny@yahoo.com"} to confirm
-            the validity of your email address. After receiving the email follow
-            the link provided to complete your registration.
+            We have sent email to{" "}
+            {recipient ? recipient : "johnDoe@smardoor.io"} to
+            confirm the validity of your email address. After receiving the
+            email follow the link provided to complete your registration.
           </p>
         </section>
         <section className="send">

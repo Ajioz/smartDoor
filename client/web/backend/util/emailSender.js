@@ -46,17 +46,19 @@ export const sendSingleEmail = async (
   const subject = "Account Verification Token";
   try {
     sendEmail(subject, email, message, (err, data) => {
-      console.log(subject, email, message)
       if (err) {
         return res.status(400).json({
-          message: "Authentication Server failed",
+          message: "Check Your Internet Connection!",
           server: err.responseCode,
         });
       } else {
         user.save();
         regToken.save();
+        console.log(StatusCodes.CREATED);
         return res.status(StatusCodes.CREATED).json({
           message: `A verification email has been sent to ${data.envelope.to[0]}`,
+          server: StatusCodes.CREATED,
+          recipient: data.envelope.to[0],
         });
       }
     });

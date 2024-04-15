@@ -9,6 +9,7 @@ import axios from "axios";
 export const AppContext = createContext();
 
 const base_url = "http://127.0.1:5002/api";
+
 export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +35,7 @@ export const AppProvider = ({ children }) => {
 
   const postData = async (route, body) => {
     try {
-      const response = await axios.post(`${base_url}/${route}`, { body });
+      const response = await axios.post(`${base_url}/${route}`, body);
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 400) {
