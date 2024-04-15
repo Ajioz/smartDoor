@@ -5,6 +5,9 @@ import ConnectDb from "./dbConnect/connectDB.js";
 import authRouter from "./routes/authRoute.js";
 import thingRouter from "./routes/thingRoute.js";
 
+import cookieParser from "cookie-parser";
+
+
 //Extra security
 import helmet from "helmet";
 import cors from "cors";
@@ -40,6 +43,10 @@ app.use(
     max: 500, //limit each IP to 500 requests per windowMs
   })
 );
+
+
+// Add cookieParser middleware with a secret string
+app.use(cookieParser(process.env.JWT_SECRET));
 
 app.use("/api/user", authRouter);
 app.use("/api/thing", authenticateUser, thingRouter);

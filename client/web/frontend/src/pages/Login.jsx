@@ -13,7 +13,7 @@ import {
 import { loginSchema, resetSchema, resetPasswordSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
 
-const initialValues = { username: "", password: "" };
+const initialValues = { email: "", password: "" };
 const resetEmail = { email: "" };
 const resetPassword = { "New Password": "", "Verify Password": "" };
 

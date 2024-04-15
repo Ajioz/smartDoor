@@ -25,11 +25,7 @@ export const registerSchema = yup.object().shape({
 });
 
 export const loginSchema = yup.object().shape({
-  username: yup
-    .string()
-    .min(3, "Username must be at least 3 characters long")
-    .required("Required"),
-
+  email: yup.string().email("Please enter a valid email").required("Required"),
   password: yup.string().min(5).required("Required"),
 });
 

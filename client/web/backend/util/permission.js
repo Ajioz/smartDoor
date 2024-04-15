@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import { StatusCodes } from "http-status-codes";
 
 /*
 const createJWT = ({ payload, options }) => {
@@ -25,13 +26,20 @@ export const sendResponseWithCookie = ({ res, statusCode, user, options }) => {
 */
 
 export const sendResponseWithCookie = ({ res, statusCode, token }) => {
-  const oneDay = 1000 * 60 * 60 * 24;
+  // Set JWT token lifetime to 10 days (in milliseconds)
+  const tenDays = 10 * 24 * 60 * 60 * 1000;
+
+  // Send a successful response with a secure cookie
   res.cookie("token", token, {
     httpOnly: true,
-    expires: new Date(Date.now() + process.env.JWT_LIFETIME * oneDay),
+    expires: new Date(Date.now() + tenDays),
+    // secure: true, // Set for HTTPS connections only (consider for production)
     signed: true,
   });
-  res.status(statusCode).json({ user, token });
+  // Respond with success status and additional data if needed
+  return res
+    .status(statusCode)
+    .json({ success: true, message: "Login successful"});
 };
 
 export const checkPermissions = (user, item) => {

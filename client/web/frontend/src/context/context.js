@@ -45,6 +45,8 @@ export const AppProvider = ({ children }) => {
           error.response.data.message || "No such user in database"
         );
         return error.response.data;
+      } if (error.response && error.response.status === 401) {
+        return error.response.data;
       } else {
         console.error("Unexpected error:", error.response.data.message);
       }

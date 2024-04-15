@@ -23,8 +23,6 @@ const toastParam = {
 };
 
 
-const initialValues = { username: "", password: "" };
-
 const FormBox = (props) => {
   const navigate = useNavigate();
   const { postData } = useGlobalContext();
@@ -40,18 +38,15 @@ const FormBox = (props) => {
 
   const handleValidation = async (obj) => {
     if (props.btn === "LOGIN") {
-      const message = await postData("user/signup", obj);
-      if (
-        message.server === "" ||
-        message.server === undefined
-      ) {
+      const message = await postData("user/login", obj);
+      if (!message.success) {
         if (!hasRun.current) {
           toast.error(message.message, toastParam);
           hasRun.current = true;
         }
-      } else{
+      } else {
         if (!hasRun.current) {
-          toast.success("Details match!", toastParam);
+          toast.success(message.message, toastParam);
           hasRun.current = true;
           delay(1000);
           return navigate("/dashboard");
@@ -101,7 +96,7 @@ const FormBox = (props) => {
       ) : (
         <Wrapper>
           <Formik
-            initialValues={initialValues}
+            initialValues={props.initialValues}
             validationSchema={props.schema}
             onSubmit={onSubmit}
           >

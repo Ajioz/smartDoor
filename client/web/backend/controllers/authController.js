@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import crypto from "crypto";
 import User from "../models/UserModel.js";
 import Token from "../models/tokenModel.js";
@@ -7,6 +9,7 @@ import UnauthenticatedError from "../errors/unAuthenticated.js";
 import DuplicateError from "../errors/duplicateError.js";
 import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
+import { sendResponseWithCookie } from "../util/permission.js";
 
 const base_url = "http://localhost:3000";
 /*
@@ -45,8 +48,9 @@ export const signup = async (req, res) => {
  * POST --> login
  */
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+
   try {
+    const { email, password } = req.body;
     if (!email.trim() || !password.trim()) {
       throw new BadRequestError("Please provide email and password");
     }
@@ -56,26 +60,31 @@ export const login = async (req, res) => {
         "The email address " + email + " is not associated with any account."
       );
     }
+
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect)
       throw new UnauthenticatedError("Invalid email or password");
+
     // Make sure the user has been verified
     if (!user.isVerified)
       throw new UnauthenticatedError(
-        "Your account has not been verified. Verify your email with the link sent to you before expiration!"
+        "Your account has not been verified!"
       );
+    
     const token = await user.createJWT(); // createJWT() generates a token
+
     // Respond with success and token
-    // res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
     sendResponseWithCookie({
       res,
       statusCode: StatusCodes.OK,
       token,
     });
   } catch (error) {
+    console.log(error);
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
 };
+
 
 /*
  * GET  --> confirmation
@@ -105,7 +114,6 @@ export const confirmationPost = async (req, res) => {
     errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };
-
 
 // Resend
 export const resendTokenPost = async (req, res) => {
