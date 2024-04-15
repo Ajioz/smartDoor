@@ -24,8 +24,8 @@ export const AppProvider = ({ children }) => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      // const { data } = await axios.get(`${base_url}`);
-      // console.log(data);
+      const { data } = await axios.get(`${base_url}/status`);
+      console.log(data);
       setLoading(false);
     } catch (error) {
       console.log(error);

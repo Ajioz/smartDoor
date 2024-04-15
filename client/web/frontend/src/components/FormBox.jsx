@@ -52,6 +52,9 @@ const FormBox = (props) => {
           return navigate("/dashboard");
         }
       }
+    } else if (props.btn === "Reset Password") {
+      const message = await postData("user/resend", obj);
+      console.log(message);
     } else {
       const message = await postData("user/signup", obj);
       if (
@@ -78,6 +81,7 @@ const FormBox = (props) => {
     }
   };
 
+  
   const delay = async (time) => {
     await new Promise((resolve) => setTimeout(resolve, time));
   };
@@ -125,7 +129,8 @@ const FormBox = (props) => {
                   <Info>
                     {props.question}{" "}
                     <Adhoc>
-                      <Link to={props.url}>{props.action}</Link>
+                      <Link to={props.url}>{props.action}</Link> | &nbsp;
+                      <Link to={"/expired"}>verify email</Link>
                     </Adhoc>
                   </Info>
                 </FormWrapper>

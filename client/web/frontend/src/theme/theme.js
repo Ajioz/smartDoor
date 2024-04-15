@@ -151,12 +151,6 @@ export const ContentWrapper = styled.div`
 
   section {
     display: block;
-    /* justify-content: start;
-    align-items: start;
-    flex-direction:row;
-    background-color: #fff;
-    color: #000;
-    width: 100%; */
   }
 
   /* TABLET */
@@ -905,7 +899,7 @@ export const CloseConfirmed = styled.button`
     text-align: center;
     line-height: 15px;
     top: 6rem;
-    right: 8rem;
+    right: 7rem;
   }
   @media only screen and (max-width: 400px) {
     margin-top: 10px;

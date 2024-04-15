@@ -36,13 +36,21 @@ export const sendSingleEmail = async (
   user = "",
   regToken = ""
 ) => {
-  const message =
-    "Hello,\n\n" +
-    "Please verify your account by clicking the link: \nhttp://" +
-    host +
-    "/api/user/" +
-    token +
-    ".\n";
+  const message = `Hello,\n\n 
+    Please verify your account by clicking on the button below:
+    \n\n
+    <a href="http://${host}/api/user/${token}" style={ padding: 1px 6px;
+    border: 1px outset #333;
+    border-radius: 3px;
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;}">Verify</a>
+    \n
+    `;
+  const msg = `<button onclick="location.href="http://${host}/api/user/${token}" type="button">
+  Verify
+  </button>`;
+
   const subject = "Account Verification Token";
   try {
     sendEmail(subject, email, message, (err, data) => {

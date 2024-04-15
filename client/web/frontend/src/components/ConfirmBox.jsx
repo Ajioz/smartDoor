@@ -29,6 +29,24 @@ const Confirmation = (props) => {
   const handleSubmit = async (action) => {
     if (action === "Login") {
       navigate("/");
+    } else if (action === "Send") {
+      const message = await postData("user/resend", { email: email.email });
+      if (message.server === 201) {
+        if (!hasRun.current) {
+          toast.success(message.message, toastParam);
+          hasRun.current = true;
+          delay(1000);
+          setEmail({ ...email, email: "", status: false });
+          navigate("/");
+        }
+      } else {
+         if (!hasRun.current) {
+           toast.error(message.message, toastParam);
+           hasRun.current = true;
+           delay(1000);
+           setEmail({ ...email, email: "", status: false });
+         }
+      }
     } else {
       if (email.email === "") {
         setEmail({ ...email, email: "", status: true });

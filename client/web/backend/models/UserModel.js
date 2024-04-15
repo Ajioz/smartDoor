@@ -3,8 +3,9 @@ dotenv.config();
 import { Schema, model } from "mongoose";
 import helpers from "bcryptjs";
 import jsonSign from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
-const { hash, compare } = helpers;
+const { hash, compare, genSalt } = helpers;
 const { sign } = jsonSign;
 
 const UserSchema = new Schema({
@@ -37,8 +38,14 @@ const UserSchema = new Schema({
   isVerified: { type: Boolean, default: false },
 });
 
-UserSchema.pre("save", async function () {
-  this.password = await hash(this.password, 10);
+
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  const salt = await genSalt(10);
+  this.password = await hash(this.password, salt);
+  return this.password;
 });
 
 UserSchema.methods.createJWT = function () {

@@ -13,12 +13,7 @@ export const getUserThings = async (req, res) => {
     console.log({error})
   }
 };
-// export const getAllThings = async (req, res) => {
-//   const thing = await Thing.find({ createdBy: req.user.userId }).sort(
-//     "createdAt"
-//   );
-//   res.status(StatusCodes.OK).json({ thing, count: thing.length });
-// };
+
 
 export async function getThing(req, res) {
   // const { userId } = req.user;

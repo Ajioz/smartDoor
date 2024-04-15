@@ -8,7 +8,7 @@ const Status = () => {
       <StatusBox
         imgType={true}
         img={email}
-        msg={"Email Already Confirmed, no further action required!"}
+        msg={"Email Already Verified, no further action required!"}
         action={"Login"}
       />
     </>

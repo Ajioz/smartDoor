@@ -52,7 +52,7 @@ const Login = () => {
                 To reset your password, enter the registered email address and
                 we will send you password reset instructions on your e-mail
               </p>
-              <section>
+              <section style={{margin: "10px auto"}}>
                 <Backbtn onClick={() => resetForm(false)}>
                   <FaArrowLeft /> Back
                 </Backbtn>
@@ -88,7 +88,7 @@ const Login = () => {
             title={<Greeting />}
             schema={loginSchema}
             btn={"LOGIN"}
-            question={"Don'T have an account ?"}
+            question={"Don't have an account ?"}
             action={"Register Here"}
             url={"/register"}
             initialValues={initialValues}

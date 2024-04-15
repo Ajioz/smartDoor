@@ -48,7 +48,6 @@ export const signup = async (req, res) => {
  * POST --> login
  */
 export const login = async (req, res) => {
-
   try {
     const { email, password } = req.body;
     if (!email.trim() || !password.trim()) {
@@ -67,10 +66,8 @@ export const login = async (req, res) => {
 
     // Make sure the user has been verified
     if (!user.isVerified)
-      throw new UnauthenticatedError(
-        "Your account has not been verified!"
-      );
-    
+      throw new UnauthenticatedError("Your account has not been verified!");
+
     const token = await user.createJWT(); // createJWT() generates a token
 
     // Respond with success and token
@@ -80,11 +77,9 @@ export const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error);
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
 };
-
 
 /*
  * GET  --> confirmation
@@ -104,7 +99,9 @@ export const confirmationPost = async (req, res) => {
         "We were unable to find a user for this token."
       );
 
-    if (user.isVerified) return res.redirect(302, `${base_url}/status`);
+    if (user.isVerified) {
+      return res.status(201).redirect(302, `${base_url}/status`);
+    }
 
     // Verify and save the user
     user.isVerified = true;
@@ -115,8 +112,8 @@ export const confirmationPost = async (req, res) => {
   }
 };
 
-// Resend
-export const resendTokenPost = async (req, res) => {
+// UPDATE PROFILE FLOW
+export const updateProfile = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -125,17 +122,39 @@ export const resendTokenPost = async (req, res) => {
         "The email address " + email + " is not associated with any account."
       );
     }
-    const tokenExist = await Token.findOne({ userId: user._id });
-    let regToken;
-    if (!tokenExist) {
-      console.log("regToken doesn't exist: creating one...");
-      regToken = await Token.create({
-        userId: user._id,
-        token: crypto.randomBytes(16).toString("hex"),
-      });
+    user.password = req.body.password;
+    await user.save();
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ success: true, message: "Update was successful" });
+  } catch (error) {
+    errorHandler(error, res, BadRequestError, DuplicateError);
+  }
+};
+
+// RESEND EMAIL
+export const resendTokenPost = async (req, res) => {
+  try {
+    const { email, info } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new UnauthenticatedError(
+        `${email} is not associated with any account`
+      );
+    }
+    let regToken = {};
+    if (info !== "reset") {
+      const tokenExist = await Token.findOne({ userId: user._id });
+      if (!tokenExist) {
+        regToken = await Token.create({
+          userId: user._id,
+          token: crypto.randomBytes(16).toString("hex"),
+        });
+      } else {
+        regToken = tokenExist;
+      }
     } else {
-      regToken = tokenExist;
-      console.log("regToken exist: ", regToken);
+      regToken.token = email;
     }
     return sendSingleEmail(res, email, regToken.token, req.headers.host);
   } catch (error) {
