@@ -113,7 +113,7 @@ export const confirmationPost = async (req, res) => {
     } else {
       if (validEmail) {
         return res.redirect(
-         `${base_url}/email?=${encodeURIComponent(JSON.stringify({ email: tokenId, server: 200 }))}`
+         `${base_url}/email?=${encodeURIComponent(JSON.stringify({ email: tokenId, server: true }))}`
         );
       }
     }

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import FormBox from "../components/FormBox";
 import Greeting from "../components/Greeting";
 import { FaArrowLeft } from "react-icons/fa";
@@ -15,13 +16,31 @@ import bgImg from "../images/bg-intro-desktop.png";
 
 const initialValues = { email: "", password: "" };
 const resetEmail = { email: "" };
-const resetPassword = { "New Password": "", "Verify Password": "" };
+const resetPassword = { password: "", confirmPassword: "" };
 
 const Login = () => {
+  const location = useLocation();
+  const hasDecoded = useRef(false);
+  const [history, setHistory] = useState({});
   const [reset, setReset] = useState({
     emailReset: false,
     passwordReset: false,
   });
+
+  useEffect(() => {
+    if (!hasDecoded.current) {
+      const result = decode(location.search.split("=")[1]);
+      setHistory({ ...history, result });
+      hasDecoded.current = true;
+      setReset({ ...reset, passwordReset: result?.server });
+    }
+  }, [location.search, history, setHistory, reset]);
+
+  const decode = (str) => {
+    const decodedStr = decodeURIComponent(str);
+    if (decodedStr === "undefined") return;
+    return JSON.parse(decodedStr);
+  };
 
   const resetForm = (props) => {
     setReset({ ...reset, emailReset: props });
@@ -52,7 +71,7 @@ const Login = () => {
                 To reset your password, enter the registered email address and
                 we will send you password reset instructions on your e-mail
               </p>
-              <section style={{margin: "10px auto"}}>
+              <section style={{ margin: "10px auto" }}>
                 <Backbtn onClick={() => resetForm(false)}>
                   <FaArrowLeft /> Back
                 </Backbtn>

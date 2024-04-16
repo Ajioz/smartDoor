@@ -10,15 +10,7 @@ import {
 import { FaArrowLeft, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/context";
-import { toast } from "react-toastify";
-
-const toastParam = {
-  position: "top-right",
-  autoClose: 3000,
-  pauseOnHover: true,
-  draggable: true,
-  theme: "light",
-};
+import { handleSubmit } from "../utils/handler";
 
 const Confirmation = (props) => {
   const { postData } = useGlobalContext();
@@ -26,62 +18,8 @@ const Confirmation = (props) => {
   const [email, setEmail] = useState({ email: "", status: false });
   const hasRun = useRef(false);
 
-  const handleSubmit = async (action) => {
-    if (action === "Login") {
-      navigate("/");
-    } else if (action === "Send") {
-      const message = await postData("user/resend", { email: email.email });
-      if (message.server === 201) {
-        if (!hasRun.current) {
-          toast.success(message.message, toastParam);
-          hasRun.current = true;
-          delay(1000);
-          setEmail({ ...email, email: "", status: false });
-          navigate("/");
-        }
-      } else {
-         if (!hasRun.current) {
-           toast.error(message.message, toastParam);
-           hasRun.current = true;
-           delay(1000);
-           setEmail({ ...email, email: "", status: false });
-         }
-      }
-    } else {
-      if (email.email === "") {
-        setEmail({ ...email, email: "", status: true });
-        return;
-      }
-      const message = await postData("user/email", { email: email.email });
-      if (message.message === "confirmed") {
-        setEmail({ ...email, email: "", status: false });
-        navigate(`/${message.message}`);
-      } else {
-        if (message === "Check Your Internet Connection!") {
-          if (!hasRun.current) {
-            toast.error(message, toastParam);
-            hasRun.current = true;
-            delay(1000);
-            setEmail({ ...email, email: "", status: false });
-          }
-        } else {
-          if (!hasRun.current) {
-            toast.success("Email resent, check your inbox", toastParam);
-            hasRun.current = true;
-            delay(1000);
-          } else {
-          }
-        }
-      }
-    }
-  };
-
-  const delay = async (time) => {
-    await new Promise((resolve) => {
-      setTimeout(resolve, time);
-      hasRun.current = false;
-      setEmail({ ...email, email: "", status: false });
-    });
+  const submit = (action) => {
+    handleSubmit(action, postData, setEmail, email, hasRun, navigate);
   };
 
   return (
@@ -118,7 +56,7 @@ const Confirmation = (props) => {
             )}
           </section>
           <section className="back">
-            <Backbtn onClick={() => handleSubmit(props.action)}>
+            <Backbtn onClick={() => submit(props.action)}>
               <FaArrowLeft /> {props.action}
             </Backbtn>
           </section>

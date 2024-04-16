@@ -22,7 +22,7 @@ const sendEmail = (subject, email, message, cb) => {
     from: process.env.EMAIL || "no-reply@smartDoor.io",
     to: email,
     subject,
-    text: message,
+    html: message,
   };
   transporter.sendMail(mailOptions, cb);
 };
@@ -34,22 +34,13 @@ export const sendSingleEmail = async (
   token,
   host,
   user = "",
-  regToken = "",
+  regToken = ""
 ) => {
-  const message = `Hello,\n\n 
-    Please verify your account by clicking on the button below:
-    \n\n
-    <a href="http://${host}/api/user/${token}" style={ padding: 1px 6px;
-    border: 1px outset #333;
-    border-radius: 3px;
-    color: #fff;
-    background-color: #333;
-    text-decoration: none;}">Verify</a>
-    \n
-    `;
-  const msg = `<button onclick="location.href="http://${host}/api/user/${token}" type="button">
-  Verify
-  </button>`;
+  const message = `<h4>Welcome to smartDoorIO</h4>
+      <p>Please click the button below to verify your email address.</p>
+      <a href= http://${host}/api/user/${token} style="text-decoration: none;">
+        <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Verify Email</button>
+      </a>`;
 
   const subject = "Account Verification Token";
   try {
@@ -65,7 +56,7 @@ export const sendSingleEmail = async (
           regToken.save();
         }
         return res.status(StatusCodes.CREATED).json({
-          message: `A verification email has been sent to ${data.envelope.to[0]}`,
+          message: `Verification link has been sent to ${data.envelope.to[0]}`,
           server: StatusCodes.CREATED,
           recipient: data.envelope.to[0],
         });
