@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import crypto from "crypto";
+import axios from "axios";
 import User from "../models/UserModel.js";
 import Token from "../models/tokenModel.js";
 import { StatusCodes } from "http-status-codes";
@@ -87,9 +88,8 @@ export const login = async (req, res) => {
  */
 export const confirmationPost = async (req, res) => {
   const { tokenId } = req.params;
-
+  const validEmail = isEmail(tokenId.trim());
   try {
-    const validEmail = isEmail(tokenId);
     if (!validEmail) {
       // Find a matching token
       const token = await Token.findOne({ token: tokenId });
@@ -112,7 +112,9 @@ export const confirmationPost = async (req, res) => {
       return res.redirect(302, `${base_url}/confirmed`);
     } else {
       if (validEmail) {
-        return res.status(200).json({ email: tokenId, server: 200 });
+        return res.redirect(
+         `${base_url}/email?=${encodeURIComponent(JSON.stringify({ email: tokenId, server: 200 }))}`
+        );
       }
     }
     throw new NotFoundError("Resource not found");
@@ -120,6 +122,11 @@ export const confirmationPost = async (req, res) => {
     errorHandler(error, res, BadRequestError, NotFoundError);
   }
 };
+
+
+// http://127.0.0.1:5002/api/user/sunny.ajiroghene@gmail.com
+// http://127.0.0.1:5002/api/user/mike@ajiozi.com
+
 
 // RESEND EMAIL
 export const resendTokenPost = async (req, res) => {
@@ -175,6 +182,7 @@ export const findUserByEmail = async (req, res) => {
 };
 
 // UPDATE PROFILE FLOW
+
 export const updateProfile = async (req, res) => {
   try {
     const { email, password } = req.body;

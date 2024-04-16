@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Formik, Form } from "formik";
+import { useLocation } from "react-router-dom";
 import {
   Wrapper,
   FormWrapper,
@@ -22,16 +23,36 @@ const toastParam = {
   theme: "light",
 };
 
-
 const FormBox = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { postData } = useGlobalContext();
+
   const hasRun = useRef(false);
+  const hasDecoded = useRef(false);
+
   const [hasSent, setHasSent] = useState({
     status: false,
     recipient: "",
     email: "",
   });
+
+  const [history, setHistory] = useState({});
+
+  useEffect(() => {
+    if (!hasDecoded.current) {
+      const result = decode(location.search.split("=")[1]);
+      setHistory(result);
+      hasDecoded.current = true;
+    }
+  }, [location.search]);
+
+  const decode = (str) => {
+    const decodedStr = decodeURIComponent(str);
+    console.log(typeof decodedStr, decodedStr);
+    if (decodedStr === "undefined") return;
+    return JSON.parse(decodedStr);
+  };
 
   const initialValuesArray = Object.entries(props.initialValues); //Create an array from the object
   const toCapital = (str) => str[0].toUpperCase() + str.substring(1);
@@ -53,7 +74,7 @@ const FormBox = (props) => {
         }
       }
     } else if (props.btn === "Reset Password") {
-      const newObj = {...obj, info: "reset"}
+      const newObj = { ...obj, info: "reset" };
       const message = await postData("user/resend", newObj);
       console.log(message);
     } else {
@@ -82,7 +103,6 @@ const FormBox = (props) => {
     }
   };
 
-  
   const delay = async (time) => {
     await new Promise((resolve) => setTimeout(resolve, time));
   };

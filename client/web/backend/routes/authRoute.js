@@ -11,9 +11,9 @@ const authRouter = express.Router();
 
 authRouter.post("/signup", signup);
 authRouter.post("/login", login);
+authRouter.post("/email", findUserByEmail);
 authRouter.get("/:tokenId", confirmationPost);
 authRouter.post("/resend", resendTokenPost);
-authRouter.post("/email", findUserByEmail);
 
 export default authRouter;
 

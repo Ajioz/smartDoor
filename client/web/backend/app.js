@@ -7,7 +7,6 @@ import thingRouter from "./routes/thingRoute.js";
 
 import cookieParser from "cookie-parser";
 
-
 //Extra security
 import helmet from "helmet";
 import cors from "cors";
@@ -39,18 +38,16 @@ app.use(xss());
 app.set("trust proxy", 1);
 app.use(
   rateLimiter({
-    windowMs: 2 * 60 * 1000, //2 minutes
-    max: 500, //limit each IP to 500 requests per windowMs
+    windowMs: 2 * 60 * 1000, //  2 minutes
+    max: 500, //  limit each IP to 500 requests per windowMs
   })
 );
-
 
 // Add cookieParser middleware with a secret string
 app.use(cookieParser(process.env.JWT_SECRET));
 
 app.use("/api/user", authRouter);
 app.use("/api/thing", authenticateUser, thingRouter);
-
 
 app.use(NotFound);
 app.use(errorHandler);
