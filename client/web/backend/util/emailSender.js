@@ -34,7 +34,7 @@ export const sendSingleEmail = async (
   token,
   host,
   user = "",
-  regToken = ""
+  regToken = "",
 ) => {
   const message = `Hello,\n\n 
     Please verify your account by clicking on the button below:

@@ -10,6 +10,7 @@ import DuplicateError from "../errors/duplicateError.js";
 import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
 import { sendResponseWithCookie } from "../util/permission.js";
+import NotFoundError from "../errors/notFound.js";
 
 const base_url = "http://localhost:3000";
 /*
@@ -88,47 +89,35 @@ export const confirmationPost = async (req, res) => {
   const { tokenId } = req.params;
 
   try {
-    // Find a matching token
-    const token = await Token.findOne({ token: tokenId });
-    if (!token) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
+    const validEmail = isEmail(tokenId);
+    if (!validEmail) {
+      // Find a matching token
+      const token = await Token.findOne({ token: tokenId });
+      if (!token) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
 
-    const user = await User.findOne({ _id: token.userId });
+      const user = await User.findOne({ _id: token.userId });
 
-    if (!user)
-      throw new BadRequestError(
-        "We were unable to find a user for this token."
-      );
+      if (!user)
+        throw new BadRequestError(
+          "We were unable to find a user for this token."
+        );
 
-    if (user.isVerified) {
-      return res.status(201).redirect(302, `${base_url}/status`);
+      if (user.isVerified) {
+        return res.status(201).redirect(302, `${base_url}/status`);
+      }
+
+      // Verify and save the user
+      user.isVerified = true;
+      await user.save();
+      return res.redirect(302, `${base_url}/confirmed`);
+    } else {
+      if (validEmail) {
+        return res.status(200).json({ email: tokenId, server: 200 });
+      }
     }
-
-    // Verify and save the user
-    user.isVerified = true;
-    await user.save();
-    return res.redirect(302, `${base_url}/confirmed`);
+    throw new NotFoundError("Resource not found");
   } catch (error) {
-    errorHandler(error, res, BadRequestError, DuplicateError);
-  }
-};
-
-// UPDATE PROFILE FLOW
-export const updateProfile = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new UnauthenticatedError(
-        "The email address " + email + " is not associated with any account."
-      );
-    }
-    user.password = req.body.password;
-    await user.save();
-    return res
-      .status(StatusCodes.CREATED)
-      .json({ success: true, message: "Update was successful" });
-  } catch (error) {
-    errorHandler(error, res, BadRequestError, DuplicateError);
+    errorHandler(error, res, BadRequestError, NotFoundError);
   }
 };
 
@@ -184,3 +173,29 @@ export const findUserByEmail = async (req, res) => {
     errorHandler(error, res, BadRequestError, DuplicateError);
   }
 };
+
+// UPDATE PROFILE FLOW
+export const updateProfile = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new UnauthenticatedError(
+        `The email address ${email} is not associated with any account.`
+      );
+    }
+    user.password = password;
+    await user.save();
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ success: true, message: "Update was successful" });
+  } catch (error) {
+    errorHandler(error, res, UnauthenticatedError, DuplicateError);
+  }
+};
+
+function isEmail(email) {
+  // Regular expression pattern to match email addresses
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}

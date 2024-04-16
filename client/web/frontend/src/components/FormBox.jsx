@@ -53,7 +53,8 @@ const FormBox = (props) => {
         }
       }
     } else if (props.btn === "Reset Password") {
-      const message = await postData("user/resend", obj);
+      const newObj = {...obj, info: "reset"}
+      const message = await postData("user/resend", newObj);
       console.log(message);
     } else {
       const message = await postData("user/signup", obj);
