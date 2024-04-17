@@ -35,6 +35,11 @@ const FormBox = (props) => {
   const onSubmit = (values, actions) => {
     delay(1000);
     hasRun.current = false;
+    // if (props.email) {
+    //   values.email = props.email;
+    //   console.log(values);
+    // }
+    console.log(values);
     handleValidation(
       values,
       hasRun,

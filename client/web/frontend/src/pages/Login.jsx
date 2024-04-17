@@ -83,6 +83,7 @@ const Login = () => {
             schema={resetSchema}
             btn={"Reset Password"}
             initialValues={resetEmail}
+            email={history?.email}
           />
         </>
       ) : (
