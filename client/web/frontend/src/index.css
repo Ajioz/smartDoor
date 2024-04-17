@@ -34,6 +34,7 @@ a {
   box-shadow: hsl(360, 67%, 44%);
   transition: all 0.3s linear;
   transform: translate(-100%);
+  z-index: 2;
 }
 
 .show-sidebar {

@@ -129,6 +129,7 @@ export const LowerSection = styled.section`
   @media only screen and (max-width: 560px) {
     position: relative;
     height: 600px;
+    /* z-index: 0; */
   }
 `;
 
@@ -396,6 +397,7 @@ export const SidebarHeader = styled.div`
   padding: 1rem 1.5rem;
   margin-left: -20px;
   margin-right: 10px;
+  z-index: 1000;
 `;
 
 export const CloseBtn = styled.button`
