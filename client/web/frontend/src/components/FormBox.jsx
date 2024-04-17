@@ -35,11 +35,9 @@ const FormBox = (props) => {
   const onSubmit = (values, actions) => {
     delay(1000);
     hasRun.current = false;
-    // if (props.email) {
-    //   values.email = props.email;
-    //   console.log(values);
-    // }
-    console.log(values);
+    if (props.email) {
+      values.email = props.email;
+    }
     handleValidation(
       values,
       hasRun,
@@ -48,7 +46,7 @@ const FormBox = (props) => {
       delay,
       navigate,
       hasSent,
-      setHasSent
+      setHasSent,
     );
     actions.resetForm();
   };

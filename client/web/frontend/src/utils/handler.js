@@ -118,14 +118,13 @@ export const handleValidation = async (
     }
   } else if (props.btn === "Reset My Password") {
     const newObj = { ...obj, confirmPassword: undefined };
-    console.log(obj);
     const message = await postData("user/password", newObj);
-    // console.log(message);
-    if (message.server === 201) {
+    if (message.success) {
       if (message.message) {
         toast.success(message.message, toastParam);
         hasRun.current = true;
       }
+      return navigate("/", {state:true});
     } else {
       toastMsg(message);
     }

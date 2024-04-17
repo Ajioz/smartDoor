@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import FormBox from "../components/FormBox";
 import Greeting from "../components/Greeting";
 import { FaArrowLeft } from "react-icons/fa";
@@ -20,6 +20,8 @@ const resetPassword = { password: "", confirmPassword: "" };
 
 const Login = () => {
   const location = useLocation();
+  const { state } = useLocation();
+  const navigate = useNavigate();
   const hasDecoded = useRef(false);
   const [history, setHistory] = useState({});
   const [reset, setReset] = useState({
@@ -32,9 +34,11 @@ const Login = () => {
       const result = decode(location.search.split("=")[1]);
       setHistory({ ...history, result });
       hasDecoded.current = true;
+      navigate("/");
       setReset({ ...reset, passwordReset: result?.server });
     }
-  }, [location.search, history, setHistory, reset]);
+    state && setReset({ ...reset, passwordReset: !state });
+  }, [location.search, history, setHistory, reset, navigate, state]);
 
   const decode = (str) => {
     const decodedStr = decodeURIComponent(str);
@@ -61,6 +65,9 @@ const Login = () => {
             schema={resetPasswordSchema}
             btn={"Reset My Password"}
             initialValues={resetPassword}
+            email={history.result?.email}
+            setReset={setReset}
+            reset={reset}
           />
         </>
       ) : reset.emailReset ? (
@@ -83,7 +90,6 @@ const Login = () => {
             schema={resetSchema}
             btn={"Reset Password"}
             initialValues={resetEmail}
-            email={history?.email}
           />
         </>
       ) : (

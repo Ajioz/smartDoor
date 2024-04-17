@@ -125,8 +125,6 @@ export const confirmationPost = async (req, res) => {
   }
 };
 
-// http://127.0.0.1:5002/api/user/sunny.ajiroghene@gmail.com
-// http://127.0.0.1:5002/api/user/mike@ajiozi.com
 
 // RESEND EMAIL
 export const resendTokenPost = async (req, res) => {
@@ -185,19 +183,18 @@ export const findUserByEmail = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    // const { email, password } = req.body;
-    console.log(req.body);
-    // const user = await User.findOne({ email });
-    // if (!user) {
-    //   throw new UnauthenticatedError(
-    //     `The email address ${email} is not associated with any account.`
-    //   );
-    // }
-    // user.password = password;
-    // await user.save();
-    // return res
-    //   .status(StatusCodes.CREATED)
-    //   .json({ success: true, message: "Update was successful" });
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new UnauthenticatedError(
+        `The email address ${email} is not associated with any account.`
+      );
+    }
+    user.password = password;
+    await user.save();
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ success: true, message: "Update was successful" });
   } catch (error) {
     errorHandler(error, res, UnauthenticatedError, DuplicateError);
   }
@@ -208,3 +205,7 @@ function isEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
+
+
+// http://127.0.0.1:5002/api/user/sunny.ajiroghene@gmail.com
+// http://127.0.0.1:5002/api/user/mike@ajiozi.com
