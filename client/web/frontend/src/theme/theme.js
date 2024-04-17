@@ -42,10 +42,14 @@ export const UpperSection = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   width: 100%;
   height: 200px;
   background-color: inherit;
   padding: 20px 0px;
+  @media only screen and (max-width: 560px) {
+    justify-content: flex-end;
+  }
 `;
 
 export const Notify = styled.section`
@@ -66,6 +70,12 @@ export const Notify = styled.section`
     color: #fff;
     font-size: 20px;
   }
+  @media only screen and (max-width: 560px) {
+    width: 60%;
+    justify-content: flex-start;
+    height: 50px;
+    border-radius: 30px 0 0 30px;
+  }
 `;
 
 export const ChipContainer = styled.section`
@@ -75,6 +85,10 @@ export const ChipContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: 560px) {
+    display: none;
+  }
 `;
 
 export const Circle = styled.section`
@@ -110,7 +124,12 @@ export const LowerSection = styled.section`
   align-items: center;
   width: 100%;
   height: 100%;
-  margin: 30px 0;
+  margin: 30px auto;
+  background-color: inherit;
+  @media only screen and (max-width: 560px) {
+    position: relative;
+    height: 600px;
+  }
 `;
 
 export const QuickInfo = styled.div`
@@ -500,6 +519,7 @@ export const KeypadContainer = styled.div`
   padding: 10px;
   height: fit-content;
   width: 180px;
+  margin-bottom: 10px;
 `;
 
 export const KeypadBtn = styled.button`
@@ -531,6 +551,10 @@ export const LowerContainer = styled.section`
   justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
+  @media only screen and (max-width: 560px) {
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const Tag = styled.section`
@@ -546,6 +570,13 @@ export const Tag = styled.section`
     font-size: 19px;
     font-family: monospace;
     color: #fff;
+  }
+  @media only screen and (max-width: 560px) {
+    width: 50%;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 `;
 

@@ -13,7 +13,7 @@ const base_url = "http://127.0.1:5002/api";
 export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
   const [item, setItem] = useState(true);
   const [loading, setLoading] = useState(true);
 
