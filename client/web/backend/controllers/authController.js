@@ -131,7 +131,6 @@ export const confirmationPost = async (req, res) => {
         );
       }
     }
-    // throw new NotFoundError("Resource not found");
   } catch (error) {
     errorHandler(error, res, BadRequestError, NotFoundError);
   }

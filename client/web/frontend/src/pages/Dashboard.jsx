@@ -34,7 +34,7 @@ const Dashboard = () => {
   return (
     <Container imageurl={dashboard} background={"#212121"}>
       <VerticalSide />
-      <Button onClick={() => setShowSidebar(!showSidebar)}>
+      <Button onClick={() => { console.log("Clicked");  setShowSidebar(!showSidebar)}}>
         <FaArrowRight />
       </Button>
       <Sidebar />

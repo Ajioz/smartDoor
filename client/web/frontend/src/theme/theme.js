@@ -128,8 +128,7 @@ export const LowerSection = styled.section`
   background-color: inherit;
   @media only screen and (max-width: 560px) {
     position: relative;
-    height: 600px;
-    /* z-index: 0; */
+    height: 620px;
   }
 `;
 
@@ -387,6 +386,7 @@ export const Button = styled.button`
     justify-content: center;
     align-items: center;
     padding: 10px;
+    position: none;
   }
 `;
 
@@ -579,6 +579,7 @@ export const Tag = styled.section`
     position: absolute;
     top: 0;
     right: 0;
+    margin-bottom: 10px;
   }
 `;
 
