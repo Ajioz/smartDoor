@@ -12,6 +12,7 @@ import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
 import { sendResponseWithCookie } from "../util/permission.js";
 import NotFoundError from "../errors/notFound.js";
+import Reset from "../models/resetModel.js";
 
 const base_url = "http://localhost:3000";
 /*
@@ -148,7 +149,11 @@ export const resendTokenPost = async (req, res) => {
         regToken = tokenExist;
       }
     } else {
-      regToken.token = email;
+      let tokenization = crypto.randomBytes(16).toString("hex"),
+        regToken = await Reset.create({
+          userId: user._id,
+          token: `${tokenization}-${email}`,
+        });
     }
     return sendSingleEmail(res, email, regToken.token, req.headers.host);
   } catch (error) {

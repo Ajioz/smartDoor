@@ -74,3 +74,17 @@ export const sendSingleEmail = async (
       .json({ Message: "We couldn't process your request" });
   }
 };
+
+const message = (key) => {
+return key
+  ? `<h4>Welcome to smartDoorIO</h4>
+        <p>Please click the button below to verify your email address.</p>
+        <a href= http://${host}/api/user/${token} style="text-decoration: none;">
+          <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Verify Email</button>
+        </a>`
+  : `<h4>Welcome to smartDoorIO</h4>
+        <p>Please click the button below to verify your email address.</p>
+        <a href= http://${host}/api/user/${token} style="text-decoration: none;">
+          <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Verify Email</button>
+        </a>`;
+}
