@@ -14,7 +14,7 @@ const resetSchema = new mongoose.Schema({
     type: Date,
     required: true,
     default: Date.now,
-    expires: 60,
+    expires: 300,
   },
 });
 

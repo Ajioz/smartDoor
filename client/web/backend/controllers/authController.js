@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 import crypto from "crypto";
-import axios from "axios";
 import User from "../models/UserModel.js";
 import Token from "../models/tokenModel.js";
 import { StatusCodes } from "http-status-codes";
@@ -14,7 +13,9 @@ import { sendResponseWithCookie } from "../util/permission.js";
 import NotFoundError from "../errors/notFound.js";
 import Reset from "../models/resetModel.js";
 
+
 const base_url = "http://localhost:3000";
+
 /*
  * POST /registration
  */
@@ -89,14 +90,15 @@ export const login = async (req, res) => {
  */
 export const confirmationPost = async (req, res) => {
   const { tokenId } = req.params;
-  const validEmail = isEmail(tokenId.trim());
+  const { token, email } = findParams(tokenId);
+  const validEmail = isEmail(email.trim());
   try {
     if (!validEmail) {
       // Find a matching token
-      const token = await Token.findOne({ token: tokenId });
-      if (!token) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
+      const token_ = await Token.findOne({ token });
+      if (!token_) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
 
-      const user = await User.findOne({ _id: token.userId });
+      const user = await User.findOne({ _id: token_.userId });
 
       if (!user)
         throw new BadRequestError(
@@ -113,9 +115,21 @@ export const confirmationPost = async (req, res) => {
       return res.redirect(302, `${base_url}/confirmed`);
     } else {
       if (validEmail) {
+        // Find a matching token
+        const isToken = await Reset.findOne({ token: tokenId });
+
+        if (!isToken) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
+
+        const user = await User.findOne({ _id: isToken.userId });
+
+        if (!user)
+          throw new BadRequestError(
+            "We were unable to find a user for this token."
+          );
+
         return res.redirect(
           `${base_url}/email?=${encodeURIComponent(
-            JSON.stringify({ email: tokenId, server: true })
+            JSON.stringify({ email, server: true })
           )}`
         );
       }
@@ -125,7 +139,6 @@ export const confirmationPost = async (req, res) => {
     errorHandler(error, res, BadRequestError, NotFoundError);
   }
 };
-
 
 // RESEND EMAIL
 export const resendTokenPost = async (req, res) => {
@@ -149,11 +162,11 @@ export const resendTokenPost = async (req, res) => {
         regToken = tokenExist;
       }
     } else {
-      let tokenization = crypto.randomBytes(16).toString("hex"),
-        regToken = await Reset.create({
-          userId: user._id,
-          token: `${tokenization}-${email}`,
-        });
+      regToken = await Reset.create({
+        userId: user._id,
+        token: `${crypto.randomBytes(16).toString("hex")}-${email}`,
+      });
+      // console.log(regToken)
     }
     return sendSingleEmail(res, email, regToken.token, req.headers.host);
   } catch (error) {
@@ -205,12 +218,55 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-function isEmail(email) {
+const isEmail = (email) => {
   // Regular expression pattern to match email addresses
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
-}
+};
 
+const findParams = (str) => {
+  // Use indexOf to find the index of the dash
+  const isDash = str.indexOf("-");
+
+  // Check if a dash exists
+  if (isDash === -1) {
+    return { token: isDash, email: "" }; // Possibly a direct token, return token!
+  }
+
+  // Extract the first part (everything before the dash)
+  const token = str.substring(0, isDash);
+
+  // Extract the second part (everything after the dash)
+  const email = str.substring(isDash + 1);
+
+  return { token, email };
+};
 
 // http://127.0.0.1:5002/api/user/sunny.ajiroghene@gmail.com
 // http://127.0.0.1:5002/api/user/mike@ajiozi.com
+
+/**
+ * 
+ {
+    token: 'd7e8a73e65fd41de9df08fad12d2e258',  
+    email: 'sunny.ajiroghene@gmail.com',      
+    validEmail: true
+  }
+
+  {
+    _id:objectId("6621483a22eb4eba6433059e"),
+    userId:objectId("661d43a5c5ee7e4856237e5b"),
+    token:"d7e8a73e65fd41de9df08fad12d2e258-sunny.ajiroghene@gmail.com",
+    createdAt:2024-04-18T16:20:10.295Z,
+    __v:0
+  }
+
+ {"
+  _id":{"$oid":"6621483a22eb4eba6433059e"},
+  "userId":{"$oid":"661d43a5c5ee7e4856237e5b"},
+  "token":"d7e8a73e65fd41de9df08fad12d2e258-sunny.ajiroghene@gmail.com",
+  "createdAt":{"$date":"2024-04-18T16:20:10.295Z"},
+  "__v":0
+  }
+
+ */
