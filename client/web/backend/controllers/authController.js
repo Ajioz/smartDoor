@@ -13,7 +13,6 @@ import { sendResponseWithCookie } from "../util/permission.js";
 import NotFoundError from "../errors/notFound.js";
 import Reset from "../models/resetModel.js";
 
-
 const base_url = "http://localhost:3000";
 
 /*
@@ -94,16 +93,17 @@ export const confirmationPost = async (req, res) => {
   const validEmail = isEmail(email.trim());
   try {
     if (!validEmail) {
+      // For someone trying to spam the system, recheck if the token is in email format
+      const isSpam = isEmail(token.trim());
+      if (isSpam) return res.redirect(`${base_url}`);
+
       // Find a matching token
       const token_ = await Token.findOne({ token });
       if (!token_) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
 
       const user = await User.findOne({ _id: token_.userId });
 
-      if (!user)
-        throw new BadRequestError(
-          "We were unable to find a user for this token."
-        );
+      if (!user) return res.status(201).redirect(302, `${base_url}/register`);
 
       if (user.isVerified) {
         return res.status(201).redirect(302, `${base_url}/status`);
@@ -122,10 +122,7 @@ export const confirmationPost = async (req, res) => {
 
         const user = await User.findOne({ _id: isToken.userId });
 
-        if (!user)
-          throw new BadRequestError(
-            "We were unable to find a user for this token."
-          );
+        if (!user) return res.status(201).redirect(302, `${base_url}/register`);
 
         return res.redirect(
           `${base_url}/email?=${encodeURIComponent(
@@ -134,7 +131,7 @@ export const confirmationPost = async (req, res) => {
         );
       }
     }
-    throw new NotFoundError("Resource not found");
+    // throw new NotFoundError("Resource not found");
   } catch (error) {
     errorHandler(error, res, BadRequestError, NotFoundError);
   }
@@ -227,18 +224,14 @@ const isEmail = (email) => {
 const findParams = (str) => {
   // Use indexOf to find the index of the dash
   const isDash = str.indexOf("-");
-
   // Check if a dash exists
   if (isDash === -1) {
-    return { token: isDash, email: "" }; // Possibly a direct token, return token!
+    return { token: str, email: "" }; // Possibly a direct token, return token!
   }
-
   // Extract the first part (everything before the dash)
   const token = str.substring(0, isDash);
-
   // Extract the second part (everything after the dash)
   const email = str.substring(isDash + 1);
-
   return { token, email };
 };
 

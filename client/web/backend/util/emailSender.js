@@ -34,15 +34,10 @@ export const sendSingleEmail = async (
   token,
   host,
   user = "",
-  regToken = ""
+  regToken = "",
+  spam=""
 ) => {
-  const message = `<h4>Welcome to smartDoorIO</h4>
-      <p>Please click the button below to verify your email address.</p>
-      <a href= http://${host}/api/user/${token} style="text-decoration: none;">
-        <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Verify Email</button>
-      </a>`;
-
-  const subject = "Account Verification Token";
+  const { message, subject } = MessageInfo(spam, token, host);
   try {
     sendEmail(subject, email, message, (err, data) => {
       if (err) {
@@ -73,4 +68,25 @@ export const sendSingleEmail = async (
       .status(StatusCodes.EXPECTATION_FAILED)
       .json({ Message: "We couldn't process your request" });
   }
+};
+
+const MessageInfo = (spam, token, host) => {
+  if (spam)
+    return {
+      message: `<p>We detected a strange activity in your account</p>
+      <p>If this was initiated by you, click the button below to verify your email address, otherwise please ignore!</p>
+      <a href= http://${host}/api/user/${token} style="text-decoration: none;">
+        <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Verify Email</button>
+      </a>`,
+      subject: "Unusual Activity Detected!",
+    };
+  else
+    return {
+      message: `<h4>Welcome to smartDoorIO</h4>
+      <p>Please click the button below to verify your email address.</p>
+      <a href= http://${host}/api/user/${token} style="text-decoration: none;">
+        <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Verify Email</button>
+      </a>`,
+      subject: "Account Verification Token",
+    };
 };

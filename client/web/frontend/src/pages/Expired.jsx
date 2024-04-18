@@ -7,7 +7,7 @@ const Expired = () => {
     <ExpiredBox
       imgType={false}
       img={notAllowed}
-      msg={"We were unable to find a valid token. Your token may have expired"}
+      msg={"We were unable to find a valid token for you. This token doesn't exist or has expired"}
       action={"Send"}
     />
   );
