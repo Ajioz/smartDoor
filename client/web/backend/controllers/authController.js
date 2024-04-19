@@ -233,32 +233,3 @@ const findParams = (str) => {
   const email = str.substring(isDash + 1);
   return { token, email };
 };
-
-// http://127.0.0.1:5002/api/user/sunny.ajiroghene@gmail.com
-// http://127.0.0.1:5002/api/user/mike@ajiozi.com
-
-/**
- * 
- {
-    token: 'd7e8a73e65fd41de9df08fad12d2e258',  
-    email: 'sunny.ajiroghene@gmail.com',      
-    validEmail: true
-  }
-
-  {
-    _id:objectId("6621483a22eb4eba6433059e"),
-    userId:objectId("661d43a5c5ee7e4856237e5b"),
-    token:"d7e8a73e65fd41de9df08fad12d2e258-sunny.ajiroghene@gmail.com",
-    createdAt:2024-04-18T16:20:10.295Z,
-    __v:0
-  }
-
- {"
-  _id":{"$oid":"6621483a22eb4eba6433059e"},
-  "userId":{"$oid":"661d43a5c5ee7e4856237e5b"},
-  "token":"d7e8a73e65fd41de9df08fad12d2e258-sunny.ajiroghene@gmail.com",
-  "createdAt":{"$date":"2024-04-18T16:20:10.295Z"},
-  "__v":0
-  }
-
- */

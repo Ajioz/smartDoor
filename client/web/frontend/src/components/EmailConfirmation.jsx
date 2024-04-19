@@ -47,11 +47,14 @@ const EmailConfirmation = ({ recipient, email }) => {
         </section>
         <section className="header">
           <h1>Email Confirmation</h1>
+          <p>Congratulations!</p>
           <p>
-           Congratulations! {" "}
-            {recipient ? recipient : "johnDoe@smardoor.io"} to confirm you are
-            real with us, an email was sent to you. After receiving the email, please
-            follow the link provided to complete your registration.
+            To confirm you are real with us, &nbsp; an email was sent to you{" "}
+            <cite>
+              <strong>{recipient ? recipient : "johnDoe@smardoor.io"}</strong>
+            </cite>
+            . After receiving the email, please follow the link provided to
+            complete your registration.
           </p>
         </section>
         <section className="send">
