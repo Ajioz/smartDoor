@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import Cookies from "js-cookie"; // Import js-cookie
 
 const toastParam = {
   position: "top-right",
@@ -98,11 +99,25 @@ export const handleValidation = async (
     if (!message.success) {
       toastMsg(message);
     } else {
+      console.log(message);
       if (!hasRun.current) {
-        toast.success(message.message, toastParam);
-        hasRun.current = true;
-        delay(1000);
-        return navigate("/dashboard");
+        try {
+          // Set token in cookie
+           const token = Cookies.get("token");
+           if (token) {
+             console.log("Token found in cookie:", token);
+             // Store token in state or local storage for further use (optional)
+             // Navigate to a protected route or handle successful authentication
+           } else {
+             console.log("Cookie not found (unexpected)");
+           }
+          toast.success(message.message, toastParam);
+          hasRun.current = true;
+          // delay(1000);
+          // return navigate("/dashboard", { state: { logout, userToken } });
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   } else if (props.btn === "Reset Password") {
@@ -124,7 +139,7 @@ export const handleValidation = async (
         toast.success(message.message, toastParam);
         hasRun.current = true;
       }
-      return navigate("/", {state:true});
+      return navigate("/", { state: true });
     } else {
       toastMsg(message);
     }
@@ -149,4 +164,12 @@ export const handleValidation = async (
       }
     }
   }
+};
+
+// Get a cookie
+const userToken = Cookies.get("token");
+
+// Delete a cookie
+const logout = () => {
+  Cookies.remove("token");
 };

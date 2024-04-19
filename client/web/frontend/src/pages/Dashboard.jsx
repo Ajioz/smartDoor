@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
+import { useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 
 import {
@@ -19,10 +20,12 @@ import { AlertNotify, Boardchip } from "../components/Chips";
 import DoorSecurityKeypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const { showModal, showSidebar, status, item, setShowModal, setShowSidebar } =
     useGlobalContext();
+    const { state } = useLocation();
 
   const [category, setCategory] = useState("");
 
@@ -30,6 +33,10 @@ const Dashboard = () => {
     setShowModal(!showModal);
     setCategory((prev) => (prev = id));
   };
+
+    useEffect(() => {
+      console.log(state);
+    }, [state]);
 
   return (
     <Container imageurl={dashboard} background={"#212121"}>
@@ -43,7 +50,6 @@ const Dashboard = () => {
           <Boardchip />
           {item && <AlertNotify status={status} />}
         </UpperSection>
-
         <LowerSection>
           <LowerContainer>
             <DoorSecurityKeypad

@@ -72,13 +72,13 @@ export const login = async (req, res) => {
       throw new UnauthenticatedError("Your account has not been verified!");
 
     const token = await user.createJWT(); // createJWT() generates a token
+    console.log(token);
 
-    // Respond with success and token
-    sendResponseWithCookie({
-      res,
-      statusCode: StatusCodes.OK,
-      token,
-    });
+
+  // Respond with success status and additional data if needed
+  return res
+    .status(StatusCodes.OK)
+    .json({ success: true, message: "Login successful"});
   } catch (error) {
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
