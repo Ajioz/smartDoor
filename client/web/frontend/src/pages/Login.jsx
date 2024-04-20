@@ -33,12 +33,12 @@ const [username, setUsername, deleteUsername] = useCookie("token");
   });
 
   useEffect(() => {
-     const token = Cookies.get("token");
-     if (token) {
-       console.log("Token found in cookie on page load:", token);
-       // Handle existing token scenario (e.g., redirect to a protected route)
-     }
     if (!hasDecoded.current) {
+      const token = Cookies.get('token');
+      if (token) {
+        console.log("Token found in cookie on page load:", token);
+        // Handle existing token scenario (e.g., redirect to a protected route)
+      }
       const result = decode(location.search.split("=")[1]);
       setHistory({ ...history, result });
       hasDecoded.current = true;

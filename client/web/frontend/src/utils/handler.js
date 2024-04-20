@@ -95,7 +95,9 @@ export const handleValidation = async (
     }
   };
   if (props.btn === "LOGIN") {
-    const message = await postData("user/login", obj);
+    const message = await postData("user/login", obj, {
+      withCredentials: true,
+    });
     if (!message.success) {
       toastMsg(message);
     } else {
@@ -103,7 +105,7 @@ export const handleValidation = async (
       if (!hasRun.current) {
         try {
           // Set token in cookie
-          const token = Cookies.get("token");
+          const token = Cookies.get('token');
            if (token) {
              console.log("Token found in cookie:", token);
              // Store token in state or local storage for further use (optional)

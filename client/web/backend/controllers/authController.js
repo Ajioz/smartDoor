@@ -86,10 +86,11 @@ export const login = async (req, res) => {
 
     // Send a successful response with a secure cookie
     res.cookie("token", token, {
-      httpOnly: true,
       expires: new Date(Date.now() + oneDay),
-      // secure: true, // Set for HTTPS connections only (consider for production)
+      httpOnly: true,
+      secure: false, // Set for HTTPS connections only (consider for production)
       signed: true,
+      SameSite: "lax",
     });
     // Respond with success status and additional data if needed
     return res

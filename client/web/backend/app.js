@@ -4,8 +4,9 @@ import express from "express";
 import ConnectDb from "./dbConnect/connectDB.js";
 import authRouter from "./routes/authRoute.js";
 import thingRouter from "./routes/thingRoute.js";
-
 import cookieParser from "cookie-parser";
+
+import { createProxyMiddleware } from"http-proxy-middleware";
 
 //Extra security
 import helmet from "helmet";
@@ -17,6 +18,11 @@ import rateLimiter from "express-rate-limit";
 import NotFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import authenticateUser from "./middlewares/authentication.js";
+
+const proxy = createProxyMiddleware({
+  target: "http://127.0.0.1:5002", // Replace with your backend API URL
+  changeOrigin: true, // Change origin to match backend for cookie access
+});
 
 const app = express();
 
@@ -46,6 +52,7 @@ app.use(
 // Add cookieParser middleware with a secret string
 app.use(cookieParser(process.env.JWT_SECRET));
 
+// app.use("/api/user", authRouter, proxy);
 app.use("/api/user", authRouter);
 app.use("/api/thing", authenticateUser, thingRouter);
 
