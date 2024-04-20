@@ -10,15 +10,18 @@ import {
   ClaimBtn,
   Backbtn,
 } from "../theme/theme";
-
+import Cookies from 'js-cookie'; // Import js-cookie
 import { loginSchema, resetSchema, resetPasswordSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
+import { useCookie } from "../utils/useCookie";
 
 const initialValues = { email: "", password: "" };
 const resetEmail = { email: "" };
 const resetPassword = { password: "", confirmPassword: "" };
 
 const Login = () => {
+  
+const [username, setUsername, deleteUsername] = useCookie("token");
   const location = useLocation();
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -30,6 +33,11 @@ const Login = () => {
   });
 
   useEffect(() => {
+     const token = Cookies.get("token");
+     if (token) {
+       console.log("Token found in cookie on page load:", token);
+       // Handle existing token scenario (e.g., redirect to a protected route)
+     }
     if (!hasDecoded.current) {
       const result = decode(location.search.split("=")[1]);
       setHistory({ ...history, result });

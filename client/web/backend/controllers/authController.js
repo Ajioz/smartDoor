@@ -9,7 +9,7 @@ import UnauthenticatedError from "../errors/unAuthenticated.js";
 import DuplicateError from "../errors/duplicateError.js";
 import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
-import { sendResponseWithCookie } from "../util/permission.js";
+// import { sendResponseWithCookie } from "../util/permission.js";
 import NotFoundError from "../errors/notFound.js";
 import Reset from "../models/resetModel.js";
 
@@ -53,6 +53,7 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    // console.log(req.body)
     if (!email.trim() || !password.trim()) {
       throw new BadRequestError("Please provide email and password");
     }
@@ -72,13 +73,28 @@ export const login = async (req, res) => {
       throw new UnauthenticatedError("Your account has not been verified!");
 
     const token = await user.createJWT(); // createJWT() generates a token
-    console.log(token);
+    // console.log(token);
 
+    // Respond with success status and additional data if needed
+    // return res
+    //   .status(StatusCodes.OK)
+    //   .json({ success: true, message: "Login successful"});
 
-  // Respond with success status and additional data if needed
-  return res
-    .status(StatusCodes.OK)
-    .json({ success: true, message: "Login successful"});
+    // sendResponseWithCookie(res, token);
+
+    const oneDay = 1 * 24 * 60 * 60 * 1000;
+
+    // Send a successful response with a secure cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + oneDay),
+      // secure: true, // Set for HTTPS connections only (consider for production)
+      signed: true,
+    });
+    // Respond with success status and additional data if needed
+    return res
+      .status(StatusCodes.OK)
+      .json({ success: true, message: "Login successful" });
   } catch (error) {
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }

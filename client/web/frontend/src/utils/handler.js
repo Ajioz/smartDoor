@@ -103,7 +103,7 @@ export const handleValidation = async (
       if (!hasRun.current) {
         try {
           // Set token in cookie
-           const token = Cookies.get("token");
+          const token = Cookies.get("token");
            if (token) {
              console.log("Token found in cookie:", token);
              // Store token in state or local storage for further use (optional)
@@ -113,7 +113,7 @@ export const handleValidation = async (
            }
           toast.success(message.message, toastParam);
           hasRun.current = true;
-          // delay(1000);
+          // delay(1000);x
           // return navigate("/dashboard", { state: { logout, userToken } });
         } catch (error) {
           console.log(error);
