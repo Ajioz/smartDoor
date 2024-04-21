@@ -6,7 +6,7 @@ import { errorHandler } from "../util/errorHandler.js";
 
 export const getUserThings = async (req, res) => {
   try {
-    // console.log({user:req.user.userId})
+    console.log({user:req.user.userId})
     const thing = await Thing.find({ user: req.user.userId }).sort({ _id: -1 });
     res.status(StatusCodes.OK).json({ thing, count: thing.length });
   } catch (error) {
