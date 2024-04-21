@@ -12,16 +12,16 @@ import {
 } from "../theme/theme";
 import { loginSchema, resetSchema, resetPasswordSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
-// import { useCookie } from "../utils/useCookie";
+import { useGlobalContext } from "../context/context";
+
 
 const initialValues = { email: "", password: "" };
 const resetEmail = { email: "" };
 const resetPassword = { password: "", confirmPassword: "" };
 
 const Login = () => {
-  
-  // const [username, setUsername, deleteUsername] = useCookie("token");
-  
+  const { isToken } = useGlobalContext();
+
   const location = useLocation();
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -42,6 +42,11 @@ const Login = () => {
     }
     state && setReset({ ...reset, passwordReset: !state });
   }, [location.search, history, setHistory, reset, navigate, state]);
+
+  useEffect(() => {
+    const { status, token } = isToken();
+    if (status || token !== "expired") return navigate("/dashboard");
+  }, [isToken, navigate]);
 
   const decode = (str) => {
     const decodedStr = decodeURIComponent(str);

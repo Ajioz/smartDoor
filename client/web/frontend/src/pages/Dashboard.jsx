@@ -41,7 +41,7 @@ const Dashboard = () => {
   useEffect(() => {
     const { status, token } = isToken();
     console.log(control.item);
-    if (!status || token[0] === "expired") return navigate("/");
+    if (!status || token === "expired") return navigate("/");
   }, [isToken, navigate, control]);
 
   return (
@@ -62,28 +62,41 @@ const Dashboard = () => {
           {control.item && <AlertNotify status={control.status} />}
         </UpperSection>
 
-        {control.item.map((item, index) => (
-          <>
-            <LowerSection key={index}>
-              <LowerContainer>
-                <DoorSecurityKeypad
-                  item={control.item}
-                  id={"doorLock"}
-                  handleItem={handleItem}
-                />
-                <VideoPlayer
-                  item={control.item}
-                  id={"spyCam"}
-                  handleItem={handleItem}
-                />
-              </LowerContainer>
-              <Tag>
-                <p>Front Door</p>
-              </Tag>
-            </LowerSection>
-            <Line />
-          </>
-        ))}
+        {control.item.length > 0 ? (
+          control.item.map((item, index) => (
+            <>
+              <LowerSection key={index}>
+                <LowerContainer>
+                  <DoorSecurityKeypad
+                    item={item}
+                    id={"doorLock"}
+                    handleItem={handleItem}
+                  />
+                  <VideoPlayer
+                    item={item}
+                    id={"spyCam"}
+                    handleItem={handleItem}
+                  />
+                </LowerContainer>
+                <Tag>
+                  <p>{item?.name}</p>
+                </Tag>
+              </LowerSection>
+              <Line />
+            </>
+          ))
+        ) : (
+          <LowerSection>
+            <LowerContainer>
+              <DoorSecurityKeypad
+                item={false}
+                id={"doorLock"}
+                handleItem={handleItem}
+              />
+              <VideoPlayer item={false} id={"spyCam"} handleItem={handleItem} />
+            </LowerContainer>
+          </LowerSection>
+        )}
       </DashboardMain>
       <AddItemForm category={category} />
     </Container>

@@ -17,7 +17,7 @@ export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [control, setControl] = useState({
-    status: true,
+    status: false,
     item: [],
     loading: false,
   });
@@ -55,8 +55,13 @@ export const AppProvider = ({ children }) => {
       setControl({ ...control, loading: true });
       try {
         const response = await axios.post(`${base_url}/thing`, data, config);
-        // console.log(response.data);
-        setControl({ ...control, loading: false, item: response.data.thing });
+        if (response?.data?.thing.length > 0)
+          setControl({
+            ...control,
+            loading: false,
+            item: response.data.thing,
+            status: true,
+          });
       } catch (error) {
         console.log(error);
         setControl({ ...control, loading: false, item: [] });
