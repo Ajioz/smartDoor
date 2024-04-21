@@ -5,8 +5,10 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
+import Cookies from "js-cookie";
 import axios from "axios";
 export const AppContext = createContext();
+
 
 const base_url = "http://127.0.1:5002/api";
 
@@ -36,7 +38,7 @@ export const AppProvider = ({ children }) => {
   const postData = async (route, body) => {
     try {
       const response = await axios.post(`${base_url}/${route}`, body);
-      console.log(response)
+      // console.log(response)
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -82,3 +84,29 @@ export const AppProvider = ({ children }) => {
 export const useGlobalContext = () => {
   return useContext(AppContext);
 };
+
+
+
+export const TokenManager = () => {
+  useEffect(() => {
+    // Check if token exists in local storage
+    const token = Cookies.get("token");
+    if (token) {
+      // Get expiration date from token if available
+      const tokenExpires = Cookies.get("token_expires");
+      if (tokenExpires) {
+        const expirationDate = new Date(tokenExpires);
+        // Check if token has expired
+        if (expirationDate <= new Date()) {
+          // Token has expired, remove it from local storage
+          Cookies.remove("token");
+          Cookies.remove("token_expires");
+          // You can also perform additional actions here if needed
+          console.log("Expired token has been removed");
+        }
+      }
+    }
+  }, []); // Only run this effect once when the component mounts
+
+  return null; // This component doesn't render anything
+};  

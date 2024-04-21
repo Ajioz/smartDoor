@@ -73,29 +73,8 @@ export const login = async (req, res) => {
       throw new UnauthenticatedError("Your account has not been verified!");
 
     const token = await user.createJWT(); // createJWT() generates a token
-    // console.log(token);
 
-    // Respond with success status and additional data if needed
-    // return res
-    //   .status(StatusCodes.OK)
-    //   .json({ success: true, message: "Login successful"});
-
-    // sendResponseWithCookie(res, token);
-
-    const oneDay = 1 * 24 * 60 * 60 * 1000;
-
-    // Send a successful response with a secure cookie
-    res.cookie("token", token, {
-      expires: new Date(Date.now() + oneDay),
-      httpOnly: true,
-      secure: false, // Set for HTTPS connections only (consider for production)
-      signed: true,
-      SameSite: "lax",
-    });
-    // Respond with success status and additional data if needed
-    return res
-      .status(StatusCodes.OK)
-      .json({ success: true, message: "Login successful" });
+    sendResponseWithCookie(res, token);
   } catch (error) {
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }

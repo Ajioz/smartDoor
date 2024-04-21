@@ -95,28 +95,29 @@ export const handleValidation = async (
     }
   };
   if (props.btn === "LOGIN") {
-    const message = await postData("user/login", obj, {
+    const data = await postData("user/login", obj, {
       withCredentials: true,
     });
-    if (!message.success) {
-      toastMsg(message);
+    const { message, success, token } =  data;
+    if (!success) {
+      toastMsg(data);
     } else {
-      console.log(message);
       if (!hasRun.current) {
         try {
           // Set token in cookie
-          const token = Cookies.get('token');
-           if (token) {
-             console.log("Token found in cookie:", token);
+          const cookieToken = Cookies.get('token');
+           if (cookieToken) {
+             console.log("Token found in cookie:", cookieToken);
              // Store token in state or local storage for further use (optional)
              // Navigate to a protected route or handle successful authentication
+             storeToken(token, navigate);
            } else {
-             console.log("Cookie not found (unexpected)");
+             console.log("Cookie not found");
            }
-          toast.success(message.message, toastParam);
+          toast.success(message, toastParam);
           hasRun.current = true;
-          // delay(1000);x
-          // return navigate("/dashboard", { state: { logout, userToken } });
+          delay(1000);
+          storeToken(token, navigate);
         } catch (error) {
           console.log(error);
         }
@@ -169,9 +170,14 @@ export const handleValidation = async (
 };
 
 // Get a cookie
-const userToken = Cookies.get("token");
+export const userToken = Cookies.get("token");
 
 // Delete a cookie
-const logout = () => {
+export const logout = () => {
   Cookies.remove("token");
 };
+
+const storeToken = (token, navigate) => {
+  localStorage.setItem("token", JSON.stringify(token));
+  return navigate("/dashboard", { state: { token } });
+}

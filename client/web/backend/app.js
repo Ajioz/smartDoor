@@ -20,7 +20,7 @@ import errorHandler from "./middlewares/errorHandler.js";
 import authenticateUser from "./middlewares/authentication.js";
 
 const proxy = createProxyMiddleware({
-  target: "http://127.0.0.1:5002", // Replace with your backend API URL
+  target: "http://127.0.0.1:5002/api/", // Replace with your backend API URL
   changeOrigin: true, // Change origin to match backend for cookie access
 });
 
@@ -35,6 +35,8 @@ app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+    credentials: true,
+    sameSite: "none",
   })
 );
 
@@ -52,8 +54,8 @@ app.use(
 // Add cookieParser middleware with a secret string
 app.use(cookieParser(process.env.JWT_SECRET));
 
-// app.use("/api/user", authRouter, proxy);
-app.use("/api/user", authRouter);
+app.use("/api/user", authRouter, proxy);
+// app.use("/api/user", authRouter);
 app.use("/api/thing", authenticateUser, thingRouter);
 
 app.use(NotFound);
