@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-
 import {
   Button,
   Container,
@@ -23,10 +22,15 @@ import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
 
 const Dashboard = () => {
-  const { showModal, showSidebar, status, item, setShowModal, setShowSidebar } =
-    useGlobalContext();
-    const { state } = useLocation();
-
+  const {
+    showModal,
+    showSidebar,
+    control,
+    isToken,
+    setShowModal,
+    setShowSidebar,
+  } = useGlobalContext();
+  const navigate = useNavigate();
   const [category, setCategory] = useState("");
 
   const handleItem = (id) => {
@@ -34,49 +38,52 @@ const Dashboard = () => {
     setCategory((prev) => (prev = id));
   };
 
-    useEffect(() => {
-      console.log(state);
-    }, [state]);
+  useEffect(() => {
+    const { status, token } = isToken();
+    console.log(control.item);
+    if (!status || token[0] === "expired") return navigate("/");
+  }, [isToken, navigate, control]);
 
   return (
     <Container imageurl={dashboard} background={"#212121"}>
       <VerticalSide />
-      <Button onClick={() => { console.log("Clicked");  setShowSidebar(!showSidebar)}}>
+      <Button
+        onClick={() => {
+          console.log("Clicked");
+          setShowSidebar(!showSidebar);
+        }}
+      >
         <FaArrowRight />
       </Button>
       <Sidebar />
       <DashboardMain>
         <UpperSection>
           <Boardchip />
-          {item && <AlertNotify status={status} />}
+          {control.item && <AlertNotify status={control.status} />}
         </UpperSection>
-        <LowerSection>
-          <LowerContainer>
-            <DoorSecurityKeypad
-              item={item}
-              id={"doorLock"}
-              handleItem={handleItem}
-            />
-            <VideoPlayer item={item} id={"spyCam"} handleItem={handleItem} />
-          </LowerContainer>
-          <Tag>
-            <p>Front Door</p>
-          </Tag>
-        </LowerSection>
-        <Line />
-        <LowerSection>
-          <LowerContainer>
-            <DoorSecurityKeypad
-              item={item}
-              id={"doorLock"}
-              handleItem={handleItem}
-            />
-            <VideoPlayer item={item} id={"spyCam"} handleItem={handleItem} />
-          </LowerContainer>
-          <Tag>
-            <p>Back Door</p>
-          </Tag>
-        </LowerSection>
+
+        {control.item.map((item, index) => (
+          <>
+            <LowerSection key={index}>
+              <LowerContainer>
+                <DoorSecurityKeypad
+                  item={control.item}
+                  id={"doorLock"}
+                  handleItem={handleItem}
+                />
+                <VideoPlayer
+                  item={control.item}
+                  id={"spyCam"}
+                  handleItem={handleItem}
+                />
+              </LowerContainer>
+              <Tag>
+                <p>Front Door</p>
+              </Tag>
+            </LowerSection>
+            <Line />
+          </>
+        ))}
       </DashboardMain>
       <AddItemForm category={category} />
     </Container>

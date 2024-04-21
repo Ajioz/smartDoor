@@ -9,7 +9,7 @@ import UnauthenticatedError from "../errors/unAuthenticated.js";
 import DuplicateError from "../errors/duplicateError.js";
 import { sendSingleEmail } from "../util/emailSender.js";
 import { errorHandler } from "../util/errorHandler.js";
-// import { sendResponseWithCookie } from "../util/permission.js";
+import { sendResponseWithCookie } from "../util/permission.js";
 import NotFoundError from "../errors/notFound.js";
 import Reset from "../models/resetModel.js";
 
@@ -76,6 +76,7 @@ export const login = async (req, res) => {
 
     sendResponseWithCookie(res, token);
   } catch (error) {
+    console.log(error);
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
 };

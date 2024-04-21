@@ -4,16 +4,17 @@ import BadRequestError from "../errors/badRequest.js";
 import NotFoundError from "../errors/notFound.js";
 import { errorHandler } from "../util/errorHandler.js";
 
+
 export const getUserThings = async (req, res) => {
+  // console.log(req.body);
   try {
-    console.log({user:req.user.userId})
+    console.log({ user: req.user.userId });
     const thing = await Thing.find({ user: req.user.userId }).sort({ _id: -1 });
-    res.status(StatusCodes.OK).json({ thing, count: thing.length });
+    return res.status(StatusCodes.OK).json({ thing, count: thing.length });
   } catch (error) {
-    console.log({error})
+    console.log({ msg: "error" });
   }
 };
-
 
 export async function getThing(req, res) {
   // const { userId } = req.user;
@@ -37,7 +38,7 @@ export async function getThing(req, res) {
 export async function createThing(req, res) {
   // req.body = req.user.userId;
   req.body.user = req.user.userId;
-  console.log({thing:req.body})
+  console.log({ thing: req.body });
   const thing = await Thing.create(req.body);
   res.status(StatusCodes.CREATED).json({ thing });
 }

@@ -95,29 +95,28 @@ export const handleValidation = async (
     }
   };
   if (props.btn === "LOGIN") {
-    const data = await postData("user/login", obj, {
+    const res = await postData("user/login", obj, {
       withCredentials: true,
     });
-    const { message, success, token } =  data;
-    if (!success) {
-      toastMsg(data);
+    if (!res.success) {
+      toastMsg(res);
     } else {
       if (!hasRun.current) {
         try {
           // Set token in cookie
           const cookieToken = Cookies.get('token');
-           if (cookieToken) {
+           if (cookieToken) {     //this goes active on priduction
              console.log("Token found in cookie:", cookieToken);
              // Store token in state or local storage for further use (optional)
              // Navigate to a protected route or handle successful authentication
-             storeToken(token, navigate);
+             storeToken(res.token, navigate);
            } else {
              console.log("Cookie not found");
            }
-          toast.success(message, toastParam);
+          toast.success(res.message, toastParam);
           hasRun.current = true;
           delay(1000);
-          storeToken(token, navigate);
+          storeToken(res.token, navigate);
         } catch (error) {
           console.log(error);
         }
@@ -179,5 +178,5 @@ export const logout = () => {
 
 const storeToken = (token, navigate) => {
   localStorage.setItem("token", JSON.stringify(token));
-  return navigate("/dashboard", { state: { token } });
+  return navigate("/dashboard");
 }

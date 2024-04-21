@@ -4,6 +4,7 @@ import React, {
   createContext,
   useCallback,
   useEffect,
+  useRef
 } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -13,52 +14,64 @@ export const AppContext = createContext();
 const base_url = "http://127.0.1:5002/api";
 
 export const AppProvider = ({ children }) => {
-
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState(true);
-  const [item, setItem] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  const doors = (obj) => {
-    console.log(obj);
-  };
+  const [control, setControl] = useState({
+    status: true,
+    item: [],
+    loading: false,
+  });
+  const hasRan = useRef(false);
 
   const isToken = () => {
-    const token = JSON.parse(localStorage.getItem("token")); // Assuming you're using js-cookie
-    if (!token) return false;
+    const token = JSON.parse(localStorage.getItem("token")) || "";
+    // console.log(token);
+    if (token === "") return { status: false, token };
     try {
       const decodedToken = jwtDecode(token);
       const expirationTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
       const now = Date.now();
       if (now > expirationTime) {
         console.log("Token likely expired (client-side check).");
-        return false;
+        return { status: false, token: "expired" };
       } else {
-        return true;
+        return { status: true, token };
       }
     } catch (error) {
       console.error("Error decoding token:", error);
+      return { status: false, error };
     }
   };
 
-  const fetchData = useCallback(async (token) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer: ${token}`,
-      },
-    };
-    setLoading(true);
-    try {
-      const { data } = await axios.get(`${base_url}/thing`, config);
-      console.log(data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
+  const fetchData = useCallback(
+    async (token) => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer: ${token}`,
+        },
+      };
+      const data = { thing: "getThing" };
+      setControl({ ...control, loading: true });
+      try {
+        const response = await axios.post(`${base_url}/thing`, data, config);
+        // console.log(response.data);
+        setControl({ ...control, loading: false, item: response.data.thing });
+      } catch (error) {
+        console.log(error);
+        setControl({ ...control, loading: false, item: [] });
+      }
+    },
+    [control]
+  );
+
+  useEffect(() => {
+    const { status, token } = isToken();
+    if (!hasRan.current) {
+      if (status) fetchData(token);
+      hasRan.current = true;
     }
-  }, []);
+  }, [fetchData]);
 
   const postData = async (route, body) => {
     try {
@@ -80,25 +93,16 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
   return (
     <AppContext.Provider
       value={{
         showSidebar,
-        status,
-        item,
         showModal,
-        doors,
         setShowModal,
         setShowSidebar,
-        setStatus,
-        setItem,
-        loading,
         postData,
         isToken,
+        control
       }}
     >
       {children}
