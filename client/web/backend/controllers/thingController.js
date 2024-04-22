@@ -6,9 +6,8 @@ import { errorHandler } from "../util/errorHandler.js";
 
 
 export const getUserThings = async (req, res) => {
-  // console.log(req.body);
   try {
-    console.log({ user: req.user.userId });
+    // console.log({ user: req.user.userId });
     const thing = await Thing.find({ user: req.user.userId }).sort({ _id: -1 });
     return res.status(StatusCodes.OK).json({ thing, count: thing.length });
   } catch (error) {

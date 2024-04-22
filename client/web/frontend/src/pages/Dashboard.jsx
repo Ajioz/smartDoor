@@ -21,6 +21,19 @@ import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
 
+const item = [
+  {
+    category: "doorLock",
+    name: "front Door",
+    dbName: "frontDoor123445323",
+  },
+  {
+    category: "spyCam",
+    name: "front Cam",
+    dbName: "frontcam123445323",
+  },
+];
+
 const Dashboard = () => {
   const {
     showModal,
@@ -49,7 +62,6 @@ const Dashboard = () => {
       <VerticalSide />
       <Button
         onClick={() => {
-          console.log("Clicked");
           setShowSidebar(!showSidebar);
         }}
       >
@@ -59,11 +71,11 @@ const Dashboard = () => {
       <DashboardMain>
         <UpperSection>
           <Boardchip />
-          {control.item && <AlertNotify status={control.status} />}
+          {item > 0 && <AlertNotify status={control.status} />}
         </UpperSection>
 
-        {control.item.length > 0 ? (
-          control.item.map((item, index) => (
+        {item.length > 0 ? (
+          item.map((item, index) => (
             <>
               <LowerSection key={index}>
                 <LowerContainer>
@@ -91,8 +103,7 @@ const Dashboard = () => {
               <DoorSecurityKeypad
                 item={false}
                 id={"doorLock"}
-                handleItem={handleItem}
-              />
+                handleItem={handleItem} />
               <VideoPlayer item={false} id={"spyCam"} handleItem={handleItem} />
             </LowerContainer>
           </LowerSection>

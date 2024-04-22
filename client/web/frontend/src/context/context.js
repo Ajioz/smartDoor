@@ -33,6 +33,7 @@ export const AppProvider = ({ children }) => {
       const now = Date.now();
       if (now > expirationTime) {
         console.log("Token likely expired (client-side check).");
+        localStorage.removeItem("token");
         return { status: false, token: "expired" };
       } else {
         return { status: true, token };

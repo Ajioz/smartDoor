@@ -9,6 +9,13 @@ import {
   FaHome,
 } from "react-icons/fa";
 
+const logOut = () => {
+  console.log("destroyed token");
+   window.location.href = "/";
+  // localStorage.removeItem("token");
+};
+
+
 export const links = [
   {
     id: 1,
@@ -56,8 +63,11 @@ export const social = [
   {
     id: 6,
     color: "#eee",
-    url: "/",
+    // url: "/",
+    click: logOut,
     icon: <FaSignOutAlt />,
     target: "",
   },
 ];
+
+

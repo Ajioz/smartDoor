@@ -26,6 +26,7 @@ export const Container = styled.div`
     overflow-y: scroll;
     margin: 20 auto;
     background-size: cover;
+    min-height: 30vh;
   }
 `;
 
@@ -35,6 +36,10 @@ export const DashboardMain = styled.section`
   justify-content: space-between;
   width: 100%;
   height: 100%;
+  @media only screen and (max-width: 560px) {
+    /* background-color: yellow;
+    height: 750px; */
+  }
 `;
 
 export const UpperSection = styled.section`
@@ -49,6 +54,7 @@ export const UpperSection = styled.section`
   padding: 20px 0px;
   @media only screen and (max-width: 560px) {
     justify-content: flex-end;
+    height: 50px;
   }
 `;
 
@@ -128,7 +134,8 @@ export const LowerSection = styled.section`
   background-color: inherit;
   @media only screen and (max-width: 560px) {
     position: relative;
-    height: 620px;
+    min-height: 50px;
+    padding: 15px 0;
   }
 `;
 
@@ -550,7 +557,7 @@ export const Line = styled.section`
 export const LowerContainer = styled.section`
   width: 75%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   @media only screen and (max-width: 560px) {
@@ -617,6 +624,10 @@ export const ModalContainer = styled.div`
   display: grid;
   place-items: center;
   position: relative;
+  @media only screen and (max-width: 560px){
+    width: 90%;
+    
+  }
 `;
 
 export const CloseModalBtn = styled.button`

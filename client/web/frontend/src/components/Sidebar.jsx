@@ -44,10 +44,15 @@ const Sidebar = () => {
       </section>
       <SocialIcon>
         {social.map((social) => {
-          const { id, color, icon, url, target } = social;
+          const { id, color, icon, url, target, click } = social;
           return (
             <LinkContainer key={id}>
-              <SocialIconTag href={url} target={target} color={color}>
+              <SocialIconTag
+                href={url}
+                onClick={click}
+                target={target}
+                color={color}
+              >
                 {icon}
               </SocialIconTag>
             </LinkContainer>
