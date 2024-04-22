@@ -590,7 +590,7 @@ export const Tag = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 15px 15px 0 0;
+  border-radius: 25px 25px 0 0;
 
   p {
     font-size: 19px;
@@ -622,6 +622,7 @@ export const ItemContainer = styled.div`
   width: 200px;
   height: 220px;
   margin: 15px;
+  
   cursor: pointer;
   h3 {
     margin-bottom: 10px;

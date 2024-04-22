@@ -21,42 +21,54 @@ import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
 
-const control = {
-  status: false,
-  item: [
-    {
-      _id: 1,
-      category: "doorLock",
-      name: "Front Door",
-      dbName: "frontDoor123445323",
-    },
-    {
-      _id: 2,
-      category: "spyCam",
-      name: "Front Cam",
-      dbName: "frontCam123445323",
-    },
-    {
-      _id: 3,
-      category: "doorLock",
-      name: "Mid Door",
-      dbName: "frontDoor123445323",
-    },
-    {
-      _id: 4,
-      category: "spyCam",
-      name: "Mid Cam",
-      dbName: "frontCam123445323",
-    },
-  ],
-  loading: false,
-};
+// const control = {
+//   status: false,
+//   item: [
+//     {
+//       _id: 1,
+//       category: "doorLock",
+//       name: "Front Door",
+//       dbName: "frontDoor123445323",
+//     },
+//     {
+//       _id: 2,
+//       category: "spyCam",
+//       name: "Front Cam",
+//       dbName: "frontCam123445323",
+//     },
+//     {
+//       _id: 3,
+//       category: "doorLock",
+//       name: "Mid Door",
+//       dbName: "frontDoor123445323",
+//     },
+//     {
+//       _id: 4,
+//       category: "spyCam",
+//       name: "Mid Cam",
+//       dbName: "frontCam123445323",
+//     },
+//     {
+//       _id: 5,
+//       category: "doorLock",
+//       name: "Back Door",
+//       dbName: "frontDoor123445323",
+//     },
+//     {
+//       _id: 6,
+//       category: "spyCam",
+//       name: "Back Cam",
+//       dbName: "frontCam123445323",
+//     },
+//   ],
+//   loading: false,
+// };
 
 const Dashboard = () => {
   const {
     showModal,
     showSidebar,
-    // control,
+    control,
     isToken,
     setShowModal,
     setShowSidebar,
@@ -71,14 +83,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     const { status, token } = isToken();
-    console.log(control.item);
     if (!status || token === "expired") return navigate("/");
   }, [isToken, navigate]);
 
   const isEven = (values) => {
-    if ((values+1) % 2 === 0) return true;
-    return false
-  }
+    if (values % 2 === 0) return true;
+    return false;
+  };
 
   return (
     <Container imageurl={dashboard} background={"#212121"}>
@@ -94,7 +105,10 @@ const Dashboard = () => {
       <DashboardMain>
         <UpperSection>
           <Boardchip />
-          {control.item.length > 0 && <AlertNotify status={control.status} />}
+          {control.item.length > 0 &&
+            control.item[0].category === "doorLock" && (
+              <AlertNotify status={control.status} />
+            )}
         </UpperSection>
         <>
           <LowerSection>
@@ -107,7 +121,7 @@ const Dashboard = () => {
                   return (
                     <>
                       <Item item={true} id={category} key={_id} />
-                      {isEven(index) && (
+                      {isEven(index + 1) && (
                         <>
                           <Tag>
                             <p>{control.item[index].name}</p>
@@ -120,19 +134,48 @@ const Dashboard = () => {
                 })}
             </LowerContainer>
           </LowerSection>
-          {/* <Line />; */}
         </>
-        {control.item.length === 0 && (
-          <LowerSection>
-            <LowerContainer>
-              <DoorSecurityKeypad
-                item={false}
-                id={"doorLock"}
-                handleItem={handleItem}
-              />
-              <VideoPlayer item={false} id={"spyCam"} handleItem={handleItem} />
-            </LowerContainer>
-          </LowerSection>
+        {control.item.length !== 2 && (
+          <>
+            {control.item.length === 1
+              ? control.item.map((item, _i) => {
+                  let Item =
+                    item.category === "doorLock"
+                      ? VideoPlayer
+                      : DoorSecurityKeypad;
+                  let category =
+                    item.category === "doorLock" ? "spyCam" : "doorLock";
+                  return (
+                    <LowerSection>
+                      <LowerContainer>
+                        <Item
+                          item={false}
+                          id={category}
+                          handleItem={handleItem}
+                        />
+                      </LowerContainer>
+                    </LowerSection>
+                  );
+                })
+              : control.item.length === 0 && (
+                  <>
+                    <LowerSection>
+                      <LowerContainer>
+                        <DoorSecurityKeypad
+                          item={false}
+                          id={"doorLock"}
+                          handleItem={handleItem}
+                        />
+                        <VideoPlayer
+                          item={false}
+                          id={"spyCam"}
+                          handleItem={handleItem}
+                        />
+                      </LowerContainer>
+                    </LowerSection>
+                  </>
+                )}
+          </>
         )}
       </DashboardMain>
       <AddItemForm category={category} />
@@ -141,9 +184,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-// <VideoPlayer
-//    item={item}
-//    id={item.category}
-//    key={item.id}
-// />
