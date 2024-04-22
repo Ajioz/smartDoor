@@ -21,7 +21,7 @@ function App() {
           <Route path="/email" element={<Login />} relative="path" />
           <Route path="/register" element={<Register relative="path" />} />
           <Route path="/dashboard" element={<Dashboard />} relative="path" />
-          <Route path="/instruct" element={<Instruction />} relative="path" />
+          <Route path="/info" element={<Instruction />} relative="path" />
           <Route path="/Add_doors" element={<AddDoors />} relative="path" />
           <Route path="/confirmed" element={<ConfirmPage />} relative="path" />
           <Route path="/status" element={<Status />} relative="path" />

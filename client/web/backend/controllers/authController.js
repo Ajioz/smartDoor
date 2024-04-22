@@ -76,7 +76,7 @@ export const login = async (req, res) => {
 
     sendResponseWithCookie(res, token);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
 };

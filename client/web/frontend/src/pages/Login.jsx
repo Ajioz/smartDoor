@@ -44,8 +44,8 @@ const Login = () => {
   }, [location.search, history, setHistory, reset, navigate, state]);
 
   useEffect(() => {
-    const { status, token } = isToken();
-    if (status || token !== "expired") return navigate("/dashboard");
+    const { status } = isToken();
+    if (status) return navigate("/dashboard");
   }, [isToken, navigate]);
 
   const decode = (str) => {

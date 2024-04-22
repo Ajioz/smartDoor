@@ -73,6 +73,7 @@ const Dashboard = () => {
     setShowModal,
     setShowSidebar,
   } = useGlobalContext();
+
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
 
@@ -164,13 +165,11 @@ const Dashboard = () => {
                         <DoorSecurityKeypad
                           item={false}
                           id={"doorLock"}
-                          handleItem={handleItem}
-                        />
+                          handleItem={handleItem} />
                         <VideoPlayer
                           item={false}
                           id={"spyCam"}
-                          handleItem={handleItem}
-                        />
+                          handleItem={handleItem} />
                       </LowerContainer>
                     </LowerSection>
                   </>

@@ -11,7 +11,7 @@ export const getUserThings = async (req, res) => {
     const thing = await Thing.find({ user: req.user.userId }).sort({ _id: -1 });
     return res.status(StatusCodes.OK).json({ thing, count: thing.length });
   } catch (error) {
-    console.log({ msg: "error" });
+    console.log({ message: "Invalid or expired token" });
   }
 };
 

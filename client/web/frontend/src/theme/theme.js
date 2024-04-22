@@ -130,12 +130,12 @@ export const LowerSection = styled.section`
   align-items: center;
   width: 100%;
   height: 100%;
-  margin: 30px auto;
+  margin: 0px auto;
   background-color: inherit;
   @media only screen and (max-width: 560px) {
     position: relative;
     min-height: 50px;
-    padding: 15px 0;
+    padding: 8px 0;
   }
 `;
 
@@ -537,7 +537,7 @@ export const KeypadContainer = styled.div`
   height: fit-content;
   width: 13%;
   margin-bottom: 10px;
-    @media only screen and (max-width: 560px) {
+  @media only screen and (max-width: 560px) {
     margin-top: 10px;
     width: 45%;
     text-align: center;
@@ -571,7 +571,7 @@ export const Line = styled.section`
 export const LowerContainer = styled.section`
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   background-color: inherit;
@@ -622,7 +622,7 @@ export const ItemContainer = styled.div`
   width: 200px;
   height: 220px;
   margin: 15px;
-  
+
   cursor: pointer;
   h3 {
     margin-bottom: 10px;
@@ -639,9 +639,8 @@ export const ModalContainer = styled.div`
   display: grid;
   place-items: center;
   position: relative;
-  @media only screen and (max-width: 560px){
+  @media only screen and (max-width: 560px) {
     width: 90%;
-    
   }
 `;
 
@@ -795,8 +794,14 @@ export const InstructionInfo = styled.div`
 
 export const AddContainer = styled.section`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  width:100%;
+  @media only screen and (max-width: 560px){
+    min-height: 100vh;
+  }
 `;
 
 export const ContainerEmail = styled.main`
