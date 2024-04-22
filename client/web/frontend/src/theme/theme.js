@@ -493,13 +493,21 @@ export const Text = styled.p`
 // Video Styled Components
 export const VideoPlayerContainer = styled.div`
   width: 100%;
-  max-width: 400px;
+  width: 37%;
   margin: 0 20px;
+  /* MOBILE */
+  @media only screen and (max-width: 560px) {
+    margin-top: 10px;
+    width: 80%;
+    text-align: center;
+    line-height: 15px;
+  }
 `;
 
 export const Video = styled.video`
   width: 100%;
   display: block;
+  margin: 10px auto;
 `;
 
 export const Controls = styled.div`
@@ -527,8 +535,14 @@ export const KeypadContainer = styled.div`
   border-radius: 50px;
   padding: 10px;
   height: fit-content;
-  width: 180px;
+  width: 13%;
   margin-bottom: 10px;
+    @media only screen and (max-width: 560px) {
+    margin-top: 10px;
+    width: 45%;
+    text-align: center;
+    line-height: 15px;
+  }
 `;
 
 export const KeypadBtn = styled.button`
@@ -555,12 +569,15 @@ export const Line = styled.section`
   background-color: #333;
 `;
 export const LowerContainer = styled.section`
-  width: 75%;
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
+  background-color: inherit;
   @media only screen and (max-width: 560px) {
+    position: relative;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }
@@ -573,7 +590,7 @@ export const Tag = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 10px 0 0 10px;
+  border-radius: 15px 15px 0 0;
 
   p {
     font-size: 19px;
@@ -583,10 +600,7 @@ export const Tag = styled.section`
   @media only screen and (max-width: 560px) {
     width: 50%;
     height: 30px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-bottom: 10px;
+    /* margin-right: -230px; */
   }
 `;
 

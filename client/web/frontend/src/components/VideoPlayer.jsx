@@ -29,11 +29,11 @@ const VideoPlayer = ({ src, item, id, handleItem }) => {
             <source src={src} type="video/mp4" />
             Your browser does not support the video tag.
           </Video>
-          <Controls>
+          {/* <Controls>
             <PlayButton onClick={togglePlay}>
               {isPlaying ? "Pause" : "Play"}
             </PlayButton>
-          </Controls>
+          </Controls> */}
         </VideoPlayerContainer>
       ) : (
         <>

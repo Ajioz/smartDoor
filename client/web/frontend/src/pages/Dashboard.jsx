@@ -21,24 +21,42 @@ import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
 
-const item = [
-  {
-    category: "doorLock",
-    name: "front Door",
-    dbName: "frontDoor123445323",
-  },
-  {
-    category: "spyCam",
-    name: "front Cam",
-    dbName: "frontcam123445323",
-  },
-];
+const control = {
+  status: false,
+  item: [
+    {
+      _id: 1,
+      category: "doorLock",
+      name: "Front Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 2,
+      category: "spyCam",
+      name: "Front Cam",
+      dbName: "frontCam123445323",
+    },
+    {
+      _id: 3,
+      category: "doorLock",
+      name: "Mid Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 4,
+      category: "spyCam",
+      name: "Mid Cam",
+      dbName: "frontCam123445323",
+    },
+  ],
+  loading: false,
+};
 
 const Dashboard = () => {
   const {
     showModal,
     showSidebar,
-    control,
+    // control,
     isToken,
     setShowModal,
     setShowSidebar,
@@ -55,7 +73,12 @@ const Dashboard = () => {
     const { status, token } = isToken();
     console.log(control.item);
     if (!status || token === "expired") return navigate("/");
-  }, [isToken, navigate, control]);
+  }, [isToken, navigate]);
+
+  const isEven = (values) => {
+    if ((values+1) % 2 === 0) return true;
+    return false
+  }
 
   return (
     <Container imageurl={dashboard} background={"#212121"}>
@@ -71,39 +94,42 @@ const Dashboard = () => {
       <DashboardMain>
         <UpperSection>
           <Boardchip />
-          {item > 0 && <AlertNotify status={control.status} />}
+          {control.item.length > 0 && <AlertNotify status={control.status} />}
         </UpperSection>
-
-        {item.length > 0 ? (
-          item.map((item, index) => (
-            <>
-              <LowerSection key={index}>
-                <LowerContainer>
-                  <DoorSecurityKeypad
-                    item={item}
-                    id={"doorLock"}
-                    handleItem={handleItem}
-                  />
-                  <VideoPlayer
-                    item={item}
-                    id={"spyCam"}
-                    handleItem={handleItem}
-                  />
-                </LowerContainer>
-                <Tag>
-                  <p>{item?.name}</p>
-                </Tag>
-              </LowerSection>
-              <Line />
-            </>
-          ))
-        ) : (
+        <>
+          <LowerSection>
+            <LowerContainer>
+              {control.item.length > 0 &&
+                control.item.map((item, index) => {
+                  const { _id, category } = item;
+                  let Item =
+                    category === "doorLock" ? DoorSecurityKeypad : VideoPlayer;
+                  return (
+                    <>
+                      <Item item={true} id={category} key={_id} />
+                      {isEven(index) && (
+                        <>
+                          <Tag>
+                            <p>{control.item[index].name}</p>
+                          </Tag>
+                          <Line />;
+                        </>
+                      )}
+                    </>
+                  );
+                })}
+            </LowerContainer>
+          </LowerSection>
+          {/* <Line />; */}
+        </>
+        {control.item.length === 0 && (
           <LowerSection>
             <LowerContainer>
               <DoorSecurityKeypad
                 item={false}
                 id={"doorLock"}
-                handleItem={handleItem} />
+                handleItem={handleItem}
+              />
               <VideoPlayer item={false} id={"spyCam"} handleItem={handleItem} />
             </LowerContainer>
           </LowerSection>
@@ -115,3 +141,9 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// <VideoPlayer
+//    item={item}
+//    id={item.category}
+//    key={item.id}
+// />
