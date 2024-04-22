@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useGlobalContext } from "../context/context";
+import { useNavigate } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import {
   ModalContainer,
@@ -10,22 +11,45 @@ import {
   FormField,
   BtnCenter,
 } from "../theme/theme";
+import { handleItemSubmit } from "../utils/handler";
 
 const AddItemForm = (props) => {
+  const navigate = useNavigate();
+  const hasRun = useRef(false);
   const { ajiozItem, showModal, setShowModal } = useGlobalContext();
   const [name, setName] = useState("");
 
+  
+  // const delay = async (time) => {
+  //   await new Promise((resolve) => setTimeout(resolve, time));
+  // };
+
+
   const submitForm = (e) => {
     e.preventDefault();
+
     let random = Math.floor(Math.random() * 1000);
+
     let randomDate = Date.now();
-    let dbName = `${props.category}/${name.split(" ").join("")}${randomDate}${random}`;
+
+    let dbName = `${props.category}/${name
+      .split(" ")
+      .join("")}${randomDate}${random}`;
+
     const formData = {
       category: props.category,
       name,
       dbName,
     };
-    ajiozItem(formData);
+
+    handleItemSubmit(
+      formData,
+      ajiozItem,
+      hasRun,
+      showModal,
+      setShowModal,
+      navigate
+    );
     setName("");
   };
 

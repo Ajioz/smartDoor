@@ -9,7 +9,7 @@ import {
 
 const thingRouter = express.Router();
 
-thingRouter.route("/").post(getUserThings).post(createThing);
+thingRouter.route("/").get(getUserThings).post(createThing);
 thingRouter.route("/:id").get(getThing).patch(updateThing).delete(deleteThing);
 
 export default thingRouter;

@@ -4,7 +4,7 @@ import React, {
   createContext,
   useCallback,
   useEffect,
-  useRef
+  useRef,
 } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -23,17 +23,30 @@ export const AppProvider = ({ children }) => {
     loading: false,
   });
 
-
   const ajiozItem = async (obj) => {
     const { token } = isToken();
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer: ${token}`
+        Authorization: `Bearer: ${token}`,
+      },
+    };
+    try {
+      const response = await axios.post(`${base_url}/thing`, obj, config);
+      console.log(response);
+      // setControl({...control, item: [...response.data.thing], status: false})
+      return response;
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        console.error("Error creating data", error.response);
+        return error.response;
+      }
+      if (error.response && error.response.status === 401) {
+        return error.response;
+      } else {
+        console.error("Unexpected error:", error.response);
       }
     }
-    const response = await axios.post(`${base_url}/thing`, obj, config);
-    console.log(response);
   };
 
   const isToken = () => {
@@ -65,16 +78,15 @@ export const AppProvider = ({ children }) => {
           Authorization: `Bearer: ${token}`,
         },
       };
-      const data = { thing: "getThing" };
       setControl({ ...control, loading: true });
       try {
-        const response = await axios.post(`${base_url}/thing`, data, config);
+        const response = await axios.get(`${base_url}/thing`, config);
         if (response?.data?.thing.length > 0)
           setControl({
             ...control,
             loading: false,
-            item: response.data.thing,
-            status: true,
+            item: [...response.data.thing],
+            status: false,
           });
       } catch (error) {
         console.log(error);

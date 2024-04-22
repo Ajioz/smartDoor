@@ -20,8 +20,8 @@ const resetEmail = { email: "" };
 const resetPassword = { password: "", confirmPassword: "" };
 
 const Login = () => {
-  const { isToken } = useGlobalContext();
 
+  const { isToken } = useGlobalContext();
   const location = useLocation();
   const { state } = useLocation();
   const navigate = useNavigate();

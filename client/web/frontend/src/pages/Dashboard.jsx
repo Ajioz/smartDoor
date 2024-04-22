@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import {
   Button,
@@ -75,6 +75,7 @@ const Dashboard = () => {
   } = useGlobalContext();
 
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [category, setCategory] = useState("");
 
   const handleItem = (id) => {
@@ -85,7 +86,8 @@ const Dashboard = () => {
   useEffect(() => {
     const { status, token } = isToken();
     if (!status || token === "expired") return navigate("/");
-  }, [isToken, navigate]);
+    console.log(control)
+  }, [isToken, navigate, state, control]);
 
   const isEven = (values) => {
     if (values % 2 === 0) return true;

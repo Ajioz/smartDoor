@@ -6,7 +6,7 @@ import { errorHandler } from "../util/errorHandler.js";
 
 export const getUserThings = async (req, res) => {
   try {
-    // console.log({ user: req.user.userId });
+    console.log({ user: req.user.userId });
     const thing = await Thing.find({ user: req.user.userId }).sort({ _id: -1 });
     return res.status(StatusCodes.OK).json({ thing, count: thing.length });
   } catch (error) {
@@ -14,7 +14,7 @@ export const getUserThings = async (req, res) => {
   }
 };
 
-export async function getThing(req, res) {
+export const getThing = async (req, res) => {
   // const { userId } = req.user;
   // const { id: thingId } = req.params;
   try {
@@ -31,19 +31,22 @@ export async function getThing(req, res) {
     console.log(error);
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
-}
+};
 
-export async function createThing(req, res) {
-  // req.body = req.user.userId;
+export const createThing = async (req, res) => {
   try {
     req.body.user = req.user.userId;
-    console.log({ thing: req.body });
     const thing = await Thing.create(req.body);
-    res.status(StatusCodes.CREATED).json({ thingsunny,  });
-  } catch (error) { console.log(error)}
-}
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ message: `${thing.name} successfully created`, thing });
+  } catch (error) {
+    console.log(error);
+    errorHandler(error, res, NotFoundError, BadRequestError);
+  }
+};
 
-export async function updateThing(req, res) {
+export const updateThing = async (req, res) => {
   try {
     const {
       body: { company, position },
@@ -65,9 +68,9 @@ export async function updateThing(req, res) {
     console.log(error);
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
-}
+};
 
-export async function deleteThing(req, res) {
+export const deleteThing = async (req, res) => {
   try {
     const {
       user: { userId },
@@ -86,4 +89,4 @@ export async function deleteThing(req, res) {
     console.log(error);
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
-}
+};

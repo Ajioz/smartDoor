@@ -104,15 +104,16 @@ export const handleValidation = async (
       if (!hasRun.current) {
         try {
           // Set token in cookie
-          const cookieToken = Cookies.get('token');
-           if (cookieToken) {     //this goes active on priduction
-             console.log("Token found in cookie:", cookieToken);
-             // Store token in state or local storage for further use (optional)
-             // Navigate to a protected route or handle successful authentication
-             storeToken(res.token, navigate);
-           } else {
-             console.log("Cookie not found");
-           }
+          const cookieToken = Cookies.get("token");
+          if (cookieToken) {
+            //this goes active on priduction
+            console.log("Token found in cookie:", cookieToken);
+            // Store token in state or local storage for further use (optional)
+            // Navigate to a protected route or handle successful authentication
+            storeToken(res.token, navigate);
+          } else {
+            console.log("Cookie not found");
+          }
           toast.success(res.message, toastParam);
           hasRun.current = true;
           delay(1000);
@@ -168,6 +169,30 @@ export const handleValidation = async (
   }
 };
 
+export const handleItemSubmit = async (
+  formData,
+  ajiozItem,
+  hasRun,
+  showModal,
+  setShowModal,
+  navigate
+) => {
+  const res = await ajiozItem(formData);
+  if (res?.status === 201) {
+    if (!hasRun.current) {
+      toast.success(res.data.message, toastParam);
+      hasRun.current = true;
+      navigate("/dashboard");
+      setShowModal(!showModal);
+    } else {
+      if (!hasRun.current) {
+        toast.error(res.message, toastParam);
+        hasRun.current = true;
+      }
+    }
+  }
+};
+
 // Get a cookie
 export const userToken = Cookies.get("token");
 
@@ -179,4 +204,4 @@ export const logout = () => {
 const storeToken = (token, navigate) => {
   localStorage.setItem("token", JSON.stringify(token));
   return navigate("/dashboard");
-}
+};
