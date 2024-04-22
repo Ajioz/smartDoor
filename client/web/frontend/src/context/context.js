@@ -16,12 +16,25 @@ const base_url = "http://127.0.1:5002/api";
 export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const hasRan = useRef(false);
   const [control, setControl] = useState({
     status: false,
     item: [],
     loading: false,
   });
-  const hasRan = useRef(false);
+
+
+  const ajiozItem = async (obj) => {
+    const { token } = isToken();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer: ${token}`
+      }
+    }
+    const response = await axios.post(`${base_url}/thing`, obj, config);
+    console.log(response);
+  };
 
   const isToken = () => {
     const token = JSON.parse(localStorage.getItem("token")) || "";
@@ -108,7 +121,8 @@ export const AppProvider = ({ children }) => {
         setShowSidebar,
         postData,
         isToken,
-        control
+        control,
+        ajiozItem,
       }}
     >
       {children}

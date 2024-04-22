@@ -4,7 +4,6 @@ import BadRequestError from "../errors/badRequest.js";
 import NotFoundError from "../errors/notFound.js";
 import { errorHandler } from "../util/errorHandler.js";
 
-
 export const getUserThings = async (req, res) => {
   try {
     // console.log({ user: req.user.userId });
@@ -36,10 +35,12 @@ export async function getThing(req, res) {
 
 export async function createThing(req, res) {
   // req.body = req.user.userId;
-  req.body.user = req.user.userId;
-  console.log({ thing: req.body });
-  const thing = await Thing.create(req.body);
-  res.status(StatusCodes.CREATED).json({ thing });
+  try {
+    req.body.user = req.user.userId;
+    console.log({ thing: req.body });
+    const thing = await Thing.create(req.body);
+    res.status(StatusCodes.CREATED).json({ thingsunny,  });
+  } catch (error) { console.log(error)}
 }
 
 export async function updateThing(req, res) {

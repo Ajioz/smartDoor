@@ -19,7 +19,7 @@ const AddItemForm = (props) => {
     e.preventDefault();
     let random = Math.floor(Math.random() * 1000);
     let randomDate = Date.now();
-    let dbName = `${props.category}/${name}${randomDate}${random}`;
+    let dbName = `${props.category}/${name.split(" ").join("")}${randomDate}${random}`;
     const formData = {
       category: props.category,
       name,
@@ -37,8 +37,7 @@ const AddItemForm = (props) => {
           <FormGroup>
             <FormField
               type="text"
-              placeholder="name"
-              name="device"
+              name="category"
               value={props.category}
               onChange={(e) => setName(e.target.value)}
               required
