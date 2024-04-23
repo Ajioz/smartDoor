@@ -14,7 +14,7 @@ import {
   Tag,
   Line,
 } from "../theme/theme";
-import dashboard from "../images/dashboard2.jpg";
+import dashboard from "../images/dashboard.jpg";
 import { AlertNotify, Boardchip } from "../components/Chips";
 import DoorSecurityKeypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
@@ -94,9 +94,7 @@ const Dashboard = () => {
     if (!hasRan.current) {
       if (status) fetchData(token);
       hasRan.current = true;
-      console.log("state");
     }
-    console.log({ again: "state" });
   }, [fetchData, isToken,]);
 
 
@@ -105,10 +103,6 @@ const Dashboard = () => {
     return false;
   };
 
-const delay = async (time, hasRan) => {
-  await new Promise((resolve) => setTimeout(resolve, time));
-  hasRan.current = false; // Update hasRan after the delay
-};
   
   return (
     <Container imageurl={dashboard} background={"#212121"}>
@@ -131,7 +125,11 @@ const delay = async (time, hasRan) => {
         </UpperSection>
         <>
           <LowerSection>
-            <LowerContainer jcc={"flex-end"}>
+            <LowerContainer
+              jcc={() =>
+                isEven(control.item.length) ? "flex-end" : "center"
+              }
+            >
               {control.item.length > 0 &&
                 control.item.map((item, index) => {
                   const { _id, category } = item;
@@ -178,7 +176,7 @@ const delay = async (time, hasRan) => {
                 })
               : control.item.length === 0 && (
                   <>
-                    <LowerSection>
+                    <LowerSection jcc={"center"}>
                       <LowerContainer jcc={"center"}>
                         <DoorSecurityKeypad
                           item={false}

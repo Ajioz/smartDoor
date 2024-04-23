@@ -16,14 +16,13 @@ import { handleItemSubmit } from "../utils/handler";
 const AddItemForm = (props) => {
   const navigate = useNavigate();
   const hasRun = useRef(false);
-  const { ajiozItem, showModal, setShowModal } = useGlobalContext();
+  const { ajiozItem, fetchData, isToken, showModal, setShowModal } =
+    useGlobalContext();
   const [name, setName] = useState("");
 
-  
   const delay = async (time) => {
     await new Promise((resolve) => setTimeout(resolve, time));
   };
-
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -42,15 +41,12 @@ const AddItemForm = (props) => {
       dbName,
     };
 
-    handleItemSubmit(
-      formData,
-      ajiozItem,
-      hasRun,
-      navigate
-    );
+    handleItemSubmit(formData, ajiozItem, hasRun, navigate);
     setName("");
     delay(1000);
     setShowModal(!showModal);
+    const { status, token } = isToken();
+    if (status) fetchData(token);
   };
 
   return (

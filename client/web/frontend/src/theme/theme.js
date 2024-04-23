@@ -122,22 +122,7 @@ export const Rectangle = styled.section`
   }
 `;
 
-export const LowerSection = styled.section`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: ${(prop) => prop.jcc || "space-evenly"};
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  margin: 0px auto;
-  background-color: inherit;
-  @media only screen and (max-width: 560px) {
-    position: relative;
-    min-height: 50px;
-    padding: 8px 0;
-  }
-`;
+
 
 export const QuickInfo = styled.div`
   width: 100%;
@@ -535,7 +520,7 @@ export const KeypadContainer = styled.div`
   border-radius: 50px;
   padding: 10px;
   height: fit-content;
-  width: 13%;
+  width: 180px;
   margin-bottom: 10px;
   @media only screen and (max-width: 560px) {
     margin-top: 10px;
@@ -568,6 +553,24 @@ export const Line = styled.section`
   width: 100%;
   background-color: #333;
 `;
+
+export const LowerSection = styled.section`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: ${(prop) => prop.jcc || "center"};
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0px auto;
+  background-color: inherit;
+  @media only screen and (max-width: 560px) {
+    position: relative;
+    min-height: 50px;
+    padding: 8px 0;
+  }
+`;
+
 export const LowerContainer = styled.section`
   width: 100%;
   display: flex;
@@ -583,6 +586,14 @@ export const LowerContainer = styled.section`
   }
 `;
 
+
+export const PartContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content:center;
+  width:100%;
+  background-color: skyblue;
+`
 export const Tag = styled.section`
   background-color: #333;
   width: 25%;
