@@ -3,8 +3,6 @@ import React, {
   useContext,
   createContext,
   useCallback,
-  useEffect,
-  useRef,
 } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -16,7 +14,7 @@ const base_url = "http://127.0.1:5002/api";
 export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const hasRan = useRef(false);
+
   const [control, setControl] = useState({
     status: false,
     item: [],
@@ -33,8 +31,6 @@ export const AppProvider = ({ children }) => {
     };
     try {
       const response = await axios.post(`${base_url}/thing`, obj, config);
-      console.log(response);
-      // setControl({...control, item: [...response.data.thing], status: false})
       return response;
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -82,12 +78,12 @@ export const AppProvider = ({ children }) => {
       try {
         const response = await axios.get(`${base_url}/thing`, config);
         if (response?.data?.thing.length > 0)
-          setControl({
-            ...control,
-            loading: false,
-            item: [...response.data.thing],
-            status: false,
-          });
+        setControl({
+          ...control,
+          loading: false,
+          item: [...response.data.thing],
+          status: false,
+        });
       } catch (error) {
         console.log(error);
         setControl({ ...control, loading: false, item: [] });
@@ -96,13 +92,6 @@ export const AppProvider = ({ children }) => {
     [control]
   );
 
-  useEffect(() => {
-    const { status, token } = isToken();
-    if (!hasRan.current) {
-      if (status) fetchData(token);
-      hasRan.current = true;
-    }
-  }, [fetchData]);
 
   const postData = async (route, body) => {
     try {
@@ -135,6 +124,7 @@ export const AppProvider = ({ children }) => {
         isToken,
         control,
         ajiozItem,
+        fetchData,
       }}
     >
       {children}

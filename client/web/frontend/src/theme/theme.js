@@ -126,7 +126,7 @@ export const LowerSection = styled.section`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: ${(prop) => prop.jcc || "space-evenly"};
   align-items: center;
   width: 100%;
   height: 100%;
@@ -571,7 +571,7 @@ export const Line = styled.section`
 export const LowerContainer = styled.section`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: ${(prop) => prop.jcc || "center"};
   align-items: center;
   flex-wrap: wrap;
   background-color: inherit;
@@ -590,8 +590,8 @@ export const Tag = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 25px 25px 0 0;
-
+  border-radius: 25px 0  0 25px;
+  
   p {
     font-size: 19px;
     font-family: monospace;
@@ -600,7 +600,7 @@ export const Tag = styled.section`
   @media only screen and (max-width: 560px) {
     width: 50%;
     height: 30px;
-    /* margin-right: -230px; */
+    border-radius: 25px 25px 0 0;
   }
 `;
 

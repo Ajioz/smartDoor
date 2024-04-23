@@ -173,8 +173,6 @@ export const handleItemSubmit = async (
   formData,
   ajiozItem,
   hasRun,
-  showModal,
-  setShowModal,
   navigate
 ) => {
   const res = await ajiozItem(formData);
@@ -183,7 +181,6 @@ export const handleItemSubmit = async (
       toast.success(res.data.message, toastParam);
       hasRun.current = true;
       navigate("/dashboard");
-      setShowModal(!showModal);
     } else {
       if (!hasRun.current) {
         toast.error(res.message, toastParam);

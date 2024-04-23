@@ -20,9 +20,9 @@ const AddItemForm = (props) => {
   const [name, setName] = useState("");
 
   
-  // const delay = async (time) => {
-  //   await new Promise((resolve) => setTimeout(resolve, time));
-  // };
+  const delay = async (time) => {
+    await new Promise((resolve) => setTimeout(resolve, time));
+  };
 
 
   const submitForm = (e) => {
@@ -46,11 +46,11 @@ const AddItemForm = (props) => {
       formData,
       ajiozItem,
       hasRun,
-      showModal,
-      setShowModal,
       navigate
     );
     setName("");
+    delay(1000);
+    setShowModal(!showModal);
   };
 
   return (

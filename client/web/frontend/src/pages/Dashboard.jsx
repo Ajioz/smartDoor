@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import {
   Button,
@@ -72,11 +72,12 @@ const Dashboard = () => {
     isToken,
     setShowModal,
     setShowSidebar,
+    fetchData,
   } = useGlobalContext();
 
   const navigate = useNavigate();
-  const { state } = useLocation();
   const [category, setCategory] = useState("");
+  const hasRan = useRef(false);
 
   const handleItem = (id) => {
     setShowModal(!showModal);
@@ -86,14 +87,29 @@ const Dashboard = () => {
   useEffect(() => {
     const { status, token } = isToken();
     if (!status || token === "expired") return navigate("/");
-    console.log(control)
-  }, [isToken, navigate, state, control]);
+  }, [isToken, navigate, control]);
+
+  useEffect(() => {
+    const { status, token } = isToken();
+    if (!hasRan.current) {
+      if (status) fetchData(token);
+      hasRan.current = true;
+      console.log("state");
+    }
+    console.log({ again: "state" });
+  }, [fetchData, isToken,]);
+
 
   const isEven = (values) => {
     if (values % 2 === 0) return true;
     return false;
   };
 
+const delay = async (time, hasRan) => {
+  await new Promise((resolve) => setTimeout(resolve, time));
+  hasRan.current = false; // Update hasRan after the delay
+};
+  
   return (
     <Container imageurl={dashboard} background={"#212121"}>
       <VerticalSide />
@@ -115,7 +131,7 @@ const Dashboard = () => {
         </UpperSection>
         <>
           <LowerSection>
-            <LowerContainer>
+            <LowerContainer jcc={"flex-end"}>
               {control.item.length > 0 &&
                 control.item.map((item, index) => {
                   const { _id, category } = item;
@@ -126,10 +142,10 @@ const Dashboard = () => {
                       <Item item={true} id={category} key={_id} />
                       {isEven(index + 1) && (
                         <>
-                          <Tag>
+                          <Tag key={_id}>
                             <p>{control.item[index].name}</p>
                           </Tag>
-                          <Line />;
+                          <Line key={_id} />;
                         </>
                       )}
                     </>
@@ -163,15 +179,17 @@ const Dashboard = () => {
               : control.item.length === 0 && (
                   <>
                     <LowerSection>
-                      <LowerContainer>
+                      <LowerContainer jcc={"center"}>
                         <DoorSecurityKeypad
                           item={false}
                           id={"doorLock"}
-                          handleItem={handleItem} />
+                          handleItem={handleItem}
+                        />
                         <VideoPlayer
                           item={false}
                           id={"spyCam"}
-                          handleItem={handleItem} />
+                          handleItem={handleItem}
+                        />
                       </LowerContainer>
                     </LowerSection>
                   </>
