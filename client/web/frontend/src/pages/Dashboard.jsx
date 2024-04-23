@@ -21,54 +21,54 @@ import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
 
-// const control = {
-//   status: false,
-//   item: [
-//     {
-//       _id: 1,
-//       category: "doorLock",
-//       name: "Front Door",
-//       dbName: "frontDoor123445323",
-//     },
-//     {
-//       _id: 2,
-//       category: "spyCam",
-//       name: "Front Cam",
-//       dbName: "frontCam123445323",
-//     },
-//     {
-//       _id: 3,
-//       category: "doorLock",
-//       name: "Mid Door",
-//       dbName: "frontDoor123445323",
-//     },
-//     {
-//       _id: 4,
-//       category: "spyCam",
-//       name: "Mid Cam",
-//       dbName: "frontCam123445323",
-//     },
-//     {
-//       _id: 5,
-//       category: "doorLock",
-//       name: "Back Door",
-//       dbName: "frontDoor123445323",
-//     },
-//     {
-//       _id: 6,
-//       category: "spyCam",
-//       name: "Back Cam",
-//       dbName: "frontCam123445323",
-//     },
-//   ],
-//   loading: false,
-// };
+const control = {
+  status: false,
+  item: [
+    {
+      _id: 1,
+      category: "doorLock",
+      name: "Front Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 2,
+      category: "spyCam",
+      name: "Front Cam",
+      dbName: "frontCam123445323",
+    },
+    {
+      _id: 3,
+      category: "doorLock",
+      name: "Mid Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 4,
+      category: "spyCam",
+      name: "Mid Cam",
+      dbName: "frontCam123445323",
+    },
+    {
+      _id: 5,
+      category: "doorLock",
+      name: "Back Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 6,
+      category: "spyCam",
+      name: "Back Cam",
+      dbName: "frontCam123445323",
+    },
+  ],
+  loading: false,
+};
 
 const Dashboard = () => {
   const {
     showModal,
     showSidebar,
-    control,
+    // control,
     isToken,
     setShowModal,
     setShowSidebar,
@@ -87,7 +87,7 @@ const Dashboard = () => {
   useEffect(() => {
     const { status, token } = isToken();
     if (!status || token === "expired") return navigate("/");
-  }, [isToken, navigate, control]);
+  }, [isToken, navigate, /*control*/]);
 
   useEffect(() => {
     const { status, token } = isToken();
@@ -137,13 +137,13 @@ const Dashboard = () => {
                     category === "doorLock" ? DoorSecurityKeypad : VideoPlayer;
                   return (
                     <>
-                      <Item item={true} id={category} key={_id} />
+                      <Item item={true} cat={category} id={_id } key={index} />
                       {isEven(index + 1) && (
                         <>
-                          <Tag key={_id}>
+                          <Tag key={index}>
                             <p>{control.item[index].name}</p>
                           </Tag>
-                          <Line key={_id} />;
+                          <Line key={index} />;
                         </>
                       )}
                     </>
@@ -167,8 +167,9 @@ const Dashboard = () => {
                       <LowerContainer>
                         <Item
                           item={false}
-                          id={category}
+                          cat={category}
                           handleItem={handleItem}
+                          id={item._id }
                         />
                       </LowerContainer>
                     </LowerSection>
@@ -180,12 +181,12 @@ const Dashboard = () => {
                       <LowerContainer jcc={"center"}>
                         <DoorSecurityKeypad
                           item={false}
-                          id={"doorLock"}
+                          cat={"doorLock"}
                           handleItem={handleItem}
                         />
                         <VideoPlayer
                           item={false}
-                          id={"spyCam"}
+                          cat={"spyCam"}
                           handleItem={handleItem}
                         />
                       </LowerContainer>

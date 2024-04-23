@@ -1,15 +1,28 @@
 import React, { useRef } from "react";
 // import React, { useRef, useState } from "react";
 import {
+  ActionBtnContainer,
+  ExtendContainer,
   // Controls,
   // PlayButton,
   Video,
   VideoPlayerContainer,
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
-const VideoPlayer = ({ src, item, id, handleItem }) => {
+const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
   const videoRef = useRef(null);
+
+    const handleEdit = (id) => {
+      console.log(`item ${id} clicked for edit`);
+    };
+
+    const handleDelete = (id) => {
+      console.log(`item ${id} clicked for delete`);
+    };
+
+  
   // const [isPlaying, setIsPlaying] = useState(false);
 
   // const togglePlay = () => {
@@ -24,23 +37,29 @@ const VideoPlayer = ({ src, item, id, handleItem }) => {
 
   return (
     <>
-      {item ? (
-        <VideoPlayerContainer>
-          <Video ref={videoRef} controls>
-            <source src={src} type="video/mp4" />
-            Your browser does not support the video tag.
-          </Video>
-          {/* <Controls>
+      <ExtendContainer width={"37%"}>
+        <ActionBtnContainer>
+          <FaEdit color={"#333"} onClick={() => handleEdit(id)} />{" "}
+          <FaTrash color={"darkred"} onClick={() => handleDelete(id)} />
+        </ActionBtnContainer>
+        {item ? (
+          <VideoPlayerContainer>
+            <Video ref={videoRef} controls>
+              <source src={src} type="video/mp4" />
+              Your browser does not support the video tag.
+            </Video>
+            {/* <Controls>
             <PlayButton onClick={togglePlay}>
               {isPlaying ? "Pause" : "Play"}
             </PlayButton>
           </Controls> */}
-        </VideoPlayerContainer>
-      ) : (
-        <>
-          <AddItemBtn id={id} handleItem={handleItem} />
-        </>
-      )}
+          </VideoPlayerContainer>
+        ) : (
+          <>
+            <AddItemBtn cat={cat} handleItem={handleItem} />
+          </>
+        )}
+      </ExtendContainer>
     </>
   );
 };

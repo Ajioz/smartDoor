@@ -3,13 +3,14 @@ import img from "../images/add_item2.svg";
 import instructionImg from "../images/bg-intro-desktop.png";
 
 export const Container = styled.div`
-  width: 100%;
+  width: ${(prop) => prop.width || "100%"};
   min-height: 100vh;
   background-image: url(${(prop) => prop.imageurl});
   background-size: 100% 100%;
   background-repeat: repeat;
   background-color: ${(prop) => prop.background || "#212121"};
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-content: center;
   justify-content: center;
@@ -62,7 +63,7 @@ export const Notify = styled.section`
   width: 30%;
   height: 90px;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   background-color: #9e9e9e;
 
@@ -121,8 +122,6 @@ export const Rectangle = styled.section`
     color: #424242;
   }
 `;
-
-
 
 export const QuickInfo = styled.div`
   width: 100%;
@@ -432,7 +431,7 @@ export const SocialIconTag = styled.a`
 export const Linka = styled.a`
   display: flex;
   align-items: center;
-  font-size: 1.25rem;
+  font-size: ${(props => props.size || "1.25rem")};
   text-transform: capitalize;
   padding: 1rem 0.1rem;
   margin: 1rem 0.5rem;
@@ -478,7 +477,6 @@ export const Text = styled.p`
 // Video Styled Components
 export const VideoPlayerContainer = styled.div`
   width: 100%;
-  width: 37%;
   margin: 0 20px;
   /* MOBILE */
   @media only screen and (max-width: 560px) {
@@ -586,27 +584,26 @@ export const LowerContainer = styled.section`
   }
 `;
 
-
 export const PartContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-content:center;
-  width:100%;
+  align-content: center;
+  width: 100%;
   background-color: skyblue;
-`
+`;
 export const Tag = styled.section`
-  background-color: #333;
+  background-color: #fff;
   width: 25%;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 25px 0  0 25px;
-  
+  border-radius: 25px 0 0 25px;
+
   p {
     font-size: 19px;
     font-family: monospace;
-    color: #fff;
+    color: #333;
   }
   @media only screen and (max-width: 560px) {
     width: 50%;
@@ -809,8 +806,8 @@ export const AddContainer = styled.section`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  width:100%;
-  @media only screen and (max-width: 560px){
+  width: 100%;
+  @media only screen and (max-width: 560px) {
     min-height: 100vh;
   }
 `;
@@ -1027,4 +1024,45 @@ export const Error = styled.p`
   font-size: 10px;
   margin: 0;
   padding: 0;
+`;
+
+export const ExtendContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: ${(props) => props.width };
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;
+  @media only screen and (max-width: 660px){
+    width: 90%;
+    
+  }
+`;
+
+export const ActionBtnContainer = styled.section`
+  display: flex;
+  height: 30px;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  color: ${(props => props.color)};
+  @media only screen and (max-width: 560px) {
+    width: 50%;
+    align-items: flex-end;
+    
+  }
+`;
+
+export const MyDiv = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: #000;
+  font-size: 19px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
 `;
