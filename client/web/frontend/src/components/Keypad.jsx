@@ -13,8 +13,11 @@ import {
   ActionBtnContainer,
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
+import { control } from "../data";
 
 const DoorSecurityKeypad = (props) => {
+
+
   const [code, setCode] = useState("");
 
   const handleButtonClick = (value) => {
@@ -31,9 +34,15 @@ const DoorSecurityKeypad = (props) => {
     setCode("");
   };
 
-  const handleEdit = (id) => {
-    console.log(`item ${id} clicked for edit`)
-  }
+    const searchName = (array, id) => {
+      return array.find((name) => name._id === id).name;
+    };
+  
+
+  const handleEdit = (id, disable, label1, label2) => {
+    const name = searchName(control.item, id);
+    props.handleItem(props.cat, disable, label1, label2, name);
+  };
 
   const handleDelete = (id) => {
     console.log(`item ${id} clicked for delete`)
@@ -43,7 +52,12 @@ const DoorSecurityKeypad = (props) => {
     <>
       <ExtendContainer width={"220px"}>
         <ActionBtnContainer>
-          <FaEdit color={"#333"} onClick={() => handleEdit(props.id)} />{" "}
+          <FaEdit
+            color={"#333"}
+            onClick={() =>
+              handleEdit(props.id, false, "Current Name", "Enter New Name")
+            }
+          />{" "}
           <FaTrash color={"darkred"} onClick={() => handleDelete(props.id)} />
         </ActionBtnContainer>
         {props.item ? (

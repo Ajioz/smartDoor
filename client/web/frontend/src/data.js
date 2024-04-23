@@ -66,3 +66,47 @@ export const social = [
     target: "",
   },
 ];
+
+
+export const control = {
+  status: false,
+  item: [
+    {
+      _id: 1,
+      category: "doorLock",
+      name: "Front Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 2,
+      category: "spyCam",
+      name: "Front Cam",
+      dbName: "frontCam123445323",
+    },
+    {
+      _id: 3,
+      category: "doorLock",
+      name: "Mid Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 4,
+      category: "spyCam",
+      name: "Mid Cam",
+      dbName: "frontCam123445323",
+    },
+    {
+      _id: 5,
+      category: "doorLock",
+      name: "Back Door",
+      dbName: "frontDoor123445323",
+    },
+    {
+      _id: 6,
+      category: "spyCam",
+      name: "Back Cam",
+      dbName: "frontCam123445323",
+    },
+  ],
+  loading: false,
+};

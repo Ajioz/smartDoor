@@ -20,49 +20,8 @@ import DoorSecurityKeypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
+import { control } from "../data";
 
-const control = {
-  status: false,
-  item: [
-    {
-      _id: 1,
-      category: "doorLock",
-      name: "Front Door",
-      dbName: "frontDoor123445323",
-    },
-    {
-      _id: 2,
-      category: "spyCam",
-      name: "Front Cam",
-      dbName: "frontCam123445323",
-    },
-    {
-      _id: 3,
-      category: "doorLock",
-      name: "Mid Door",
-      dbName: "frontDoor123445323",
-    },
-    {
-      _id: 4,
-      category: "spyCam",
-      name: "Mid Cam",
-      dbName: "frontCam123445323",
-    },
-    {
-      _id: 5,
-      category: "doorLock",
-      name: "Back Door",
-      dbName: "frontDoor123445323",
-    },
-    {
-      _id: 6,
-      category: "spyCam",
-      name: "Back Cam",
-      dbName: "frontCam123445323",
-    },
-  ],
-  loading: false,
-};
 
 const Dashboard = () => {
   const {
@@ -80,14 +39,15 @@ const Dashboard = () => {
     catID: "",
     label1: "Device Category",
     label2: "Name Your Device",
+    name: ""
   });
   const [isDisable, setIsDisable] = useState(true);
   const hasRan = useRef(false);
 
-  const handleItem = (id, disable, label1, label2) => {
+  const handleItem = (id, disable, label1, label2, name) => {
     setShowModal(!showModal);
     setIsDisable(disable);
-    setCategory({ ...category, catID: id, label1, label2 });
+    setCategory({ ...category, catID: id, label1, label2, name });
   };
 
   useEffect(() => {
@@ -208,6 +168,7 @@ const Dashboard = () => {
       </DashboardMain>
       <AddItemForm
         status={isDisable}
+        value={category.name}
         category={category.catID}
         label1={category.label1}
         label2={category.label2}

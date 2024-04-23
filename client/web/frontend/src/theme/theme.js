@@ -10,7 +10,7 @@ export const Container = styled.div`
   background-repeat: repeat;
   background-color: ${(prop) => prop.background || "#212121"};
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   flex-direction: row;
   align-content: center;
   justify-content: center;

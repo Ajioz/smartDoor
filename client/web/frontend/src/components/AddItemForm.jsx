@@ -54,7 +54,7 @@ const AddItemForm = (props) => {
             <FormField
               type="text"
               name="category"
-              value={props.category}
+              value={props.value ? props.value : props.category}
               onChange={(e) => setName(e.target.value)}
               required
               disabled={props.status}
@@ -75,7 +75,7 @@ const AddItemForm = (props) => {
           </FormGroup>
           <BtnCenter>
             <ClaimBtn type="submit" disabled={props.status}>
-              Register
+              Submit
             </ClaimBtn>
           </BtnCenter>
         </Form>

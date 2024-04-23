@@ -10,11 +10,16 @@ import bgImg from "../images/bg-intro-desktop.png";
 const AddDoors = () => {
   const { showModal, showSidebar, setShowModal, setShowSidebar } =
     useGlobalContext();
-  const [category, setCategory] = useState("");
+
+  const [category, setCategory] = useState({
+    catID: "",
+    label1: "Device Category",
+    label2: "Name Your Device",
+  });
 
   const handleItem = (id) => {
     setShowModal(!showModal);
-    setCategory((prev) => (prev = id));
+    setCategory({ ...category, catID: id });
   };
 
   return (
@@ -25,9 +30,14 @@ const AddDoors = () => {
       </Button>
       <Sidebar />
       <AddContainer>
-        <AddItemBtn id={"doorLock"} handleItem={handleItem} />
-        <AddItemBtn id={"spyCam"} handleItem={handleItem} />
-        <AddItemForm category={category} />
+        <AddItemBtn cat={"doorLock"} handleItem={handleItem} />
+        <AddItemBtn cat={"spyCam"} handleItem={handleItem} />
+        <AddItemForm
+          status={true}
+          category={category.catID}
+          label1={category.label1}
+          label2={category.label2}
+        />
       </AddContainer>
     </Container>
   );
