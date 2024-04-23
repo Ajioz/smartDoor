@@ -14,12 +14,14 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
   const videoRef = useRef(null);
 
-    const handleEdit = (id) => {
+    const handleEdit = (id, disable) => {
       console.log(`item ${id} clicked for edit`);
+      handleItem(cat, disable);
     };
-
+    
     const handleDelete = (id) => {
       console.log(`item ${id} clicked for delete`);
+      handleItem(cat);
     };
 
   
@@ -39,7 +41,7 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
     <>
       <ExtendContainer width={"37%"}>
         <ActionBtnContainer>
-          <FaEdit color={"#333"} onClick={() => handleEdit(id)} />{" "}
+          <FaEdit color={"#333"} onClick={() => handleEdit(id, false)} />{" "}
           <FaTrash color={"darkred"} onClick={() => handleDelete(id)} />
         </ActionBtnContainer>
         {item ? (

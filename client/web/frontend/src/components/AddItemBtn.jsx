@@ -3,8 +3,8 @@ import { ItemContainer } from "../theme/theme";
 
 const AddItem = (props) => {
   return (
-    <ItemContainer onClick={() => props.handleItem(props.id)}>
-      <h3>{props.id}</h3>
+    <ItemContainer onClick={() => props.handleItem(props.cat)}>
+      <h3>{props.cat}</h3>
     </ItemContainer>
   );
 };

@@ -76,18 +76,24 @@ const Dashboard = () => {
   } = useGlobalContext();
 
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState({
+    catID: "",
+    label1: "Device Category",
+    label2: "Name Your Device",
+  });
+  const [isDisable, setIsDisable] = useState(true);
   const hasRan = useRef(false);
 
-  const handleItem = (id) => {
+  const handleItem = (id, disable, label1, label2) => {
     setShowModal(!showModal);
-    setCategory((prev) => (prev = id));
+    setIsDisable(disable);
+    setCategory({ ...category, catID: id, label1, label2 });
   };
 
   useEffect(() => {
     const { status, token } = isToken();
     if (!status || token === "expired") return navigate("/");
-  }, [isToken, navigate, /*control*/]);
+  }, [isToken, navigate /*control*/]);
 
   useEffect(() => {
     const { status, token } = isToken();
@@ -95,15 +101,13 @@ const Dashboard = () => {
       if (status) fetchData(token);
       hasRan.current = true;
     }
-  }, [fetchData, isToken,]);
-
+  }, [fetchData, isToken]);
 
   const isEven = (values) => {
     if (values % 2 === 0) return true;
     return false;
   };
 
-  
   return (
     <Container imageurl={dashboard} background={"#212121"}>
       <VerticalSide />
@@ -126,7 +130,7 @@ const Dashboard = () => {
         <>
           <LowerSection>
             <LowerContainer
-              jcc={() =>
+              justifyContent={() =>
                 isEven(control.item.length) ? "flex-end" : "center"
               }
             >
@@ -137,13 +141,19 @@ const Dashboard = () => {
                     category === "doorLock" ? DoorSecurityKeypad : VideoPlayer;
                   return (
                     <>
-                      <Item item={true} cat={category} id={_id } key={index} />
+                      <Item
+                        item={true}
+                        cat={category}
+                        id={_id}
+                        key={index}
+                        handleItem={handleItem}
+                      />
                       {isEven(index + 1) && (
                         <>
-                          <Tag key={index}>
+                          <Tag key={index + 10}>
                             <p>{control.item[index].name}</p>
                           </Tag>
-                          <Line key={index} />;
+                          <Line key={index + 20} />;
                         </>
                       )}
                     </>
@@ -169,7 +179,7 @@ const Dashboard = () => {
                           item={false}
                           cat={category}
                           handleItem={handleItem}
-                          id={item._id }
+                          id={item._id}
                         />
                       </LowerContainer>
                     </LowerSection>
@@ -196,7 +206,12 @@ const Dashboard = () => {
           </>
         )}
       </DashboardMain>
-      <AddItemForm category={category} />
+      <AddItemForm
+        status={isDisable}
+        category={category.catID}
+        label1={category.label1}
+        label2={category.label2}
+      />
     </Container>
   );
 };

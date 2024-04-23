@@ -22,11 +22,11 @@ export const Container = styled.div`
   }
 
   /* Mobile */
-  @media only screen and (max-width: 568px) {
+  @media only screen and (max-width: 600px) {
     flex-direction: column;
     overflow-y: scroll;
     margin: 20 auto;
-    background-size: cover;
+    background-size: contain;
     min-height: 30vh;
   }
 `;
@@ -77,11 +77,16 @@ export const Notify = styled.section`
     color: #fff;
     font-size: 20px;
   }
+
   @media only screen and (max-width: 560px) {
     width: 60%;
-    justify-content: flex-start;
+    justify-content: space-around;
     height: 50px;
     border-radius: 30px 0 0 30px;
+    h3 {
+      color: #fff;
+      font-size: 16px;
+    }
   }
 `;
 
@@ -431,7 +436,7 @@ export const SocialIconTag = styled.a`
 export const Linka = styled.a`
   display: flex;
   align-items: center;
-  font-size: ${(props => props.size || "1.25rem")};
+  font-size: ${(props) => props.size || "1.25rem"};
   text-transform: capitalize;
   padding: 1rem 0.1rem;
   margin: 1rem 0.5rem;
@@ -439,6 +444,9 @@ export const Linka = styled.a`
   letter-spacing: 0.1rem;
   &:hover {
     color: #fff;
+  }
+  @media only screen and (max-width: 600px) {
+    font-size: 20px;
   }
 `;
 
@@ -572,7 +580,7 @@ export const LowerSection = styled.section`
 export const LowerContainer = styled.section`
   width: 100%;
   display: flex;
-  justify-content: ${(prop) => prop.jcc || "center"};
+  justify-content: ${(prop) => prop.justifyContent || "center"};
   align-items: center;
   flex-wrap: wrap;
   background-color: inherit;
@@ -605,10 +613,14 @@ export const Tag = styled.section`
     font-family: monospace;
     color: #333;
   }
-  @media only screen and (max-width: 560px) {
+  @media only screen and (max-width: 600px) {
     width: 50%;
     height: 30px;
     border-radius: 25px 25px 0 0;
+    background-color: #333;
+    p {
+      color: #fff;
+    }
   }
 `;
 
@@ -1030,13 +1042,14 @@ export const ExtendContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: ${(props) => props.width };
+  width: ${(props) => props.width};
   justify-content: center;
   align-items: center;
   background-color: inherit;
-  @media only screen and (max-width: 660px){
+  margin: 0 20px;
+  @media only screen and (max-width: 660px) {
     width: 90%;
-    
+    margin: 0 auto;
   }
 `;
 
@@ -1046,11 +1059,10 @@ export const ActionBtnContainer = styled.section`
   width: 100%;
   justify-content: space-around;
   align-items: center;
-  color: ${(props => props.color)};
+  color: ${(props) => props.color};
   @media only screen and (max-width: 560px) {
     width: 50%;
     align-items: flex-end;
-    
   }
 `;
 
@@ -1065,4 +1077,10 @@ export const MyDiv = styled.div`
   margin: 20px auto;
   padding: 20px;
   background: #fff;
+`;
+
+export const PureDiv = styled.div`
+  display: block;
+  width: 100%;
+  height: 100%;
 `;

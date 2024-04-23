@@ -16,9 +16,10 @@ import { handleItemSubmit } from "../utils/handler";
 const AddItemForm = (props) => {
   const navigate = useNavigate();
   const hasRun = useRef(false);
+  const [name, setName] = useState("");
+
   const { ajiozItem, fetchData, isToken, showModal, setShowModal } =
     useGlobalContext();
-  const [name, setName] = useState("");
 
   const delay = async (time) => {
     await new Promise((resolve) => setTimeout(resolve, time));
@@ -26,21 +27,16 @@ const AddItemForm = (props) => {
 
   const submitForm = (e) => {
     e.preventDefault();
-
     let random = Math.floor(Math.random() * 1000);
-
     let randomDate = Date.now();
-
     let dbName = `${props.category}/${name
       .split(" ")
       .join("")}${randomDate}${random}`;
-
     const formData = {
       category: props.category,
       name,
       dbName,
     };
-
     handleItemSubmit(formData, ajiozItem, hasRun, navigate);
     setName("");
     delay(1000);
@@ -53,7 +49,7 @@ const AddItemForm = (props) => {
     <div className={`modal-overlay ${showModal && "show-modal"}`}>
       <ModalContainer>
         <Form onSubmit={submitForm}>
-          <label htmlFor="type">Device Category</label>
+          <label htmlFor="type">{props.label1}</label>
           <FormGroup>
             <FormField
               type="text"
@@ -61,11 +57,11 @@ const AddItemForm = (props) => {
               value={props.category}
               onChange={(e) => setName(e.target.value)}
               required
-              disabled={true}
+              disabled={props.status}
             />
             <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
           </FormGroup>
-          <label htmlFor="input">Name Your Device</label>
+          <label htmlFor="input">{props.label2}</label>
           <FormGroup>
             <FormField
               type="text"
@@ -74,7 +70,6 @@ const AddItemForm = (props) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              disabled={props.status}
             />
             <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
           </FormGroup>

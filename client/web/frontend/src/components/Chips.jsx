@@ -15,8 +15,8 @@ export const AlertNotify = (props) => {
       {props.status ? (
         <img src={human} alt="Human Crossing" />
       ) : (
-        <Linka>
-            <FaHome size={"50px" } />
+        <Linka size={"50px"}>
+          <FaHome />
         </Linka>
       )}
       <h3>{props.status ? "Human Detected" : "Human far away"}</h3>
