@@ -151,7 +151,7 @@ const Dashboard = () => {
               : control.item.length === 0 && (
                   <>
                     <LowerSection jcc={"center"}>
-                    <LowerContainer justifyContent={"center"} width={"50%" }>
+                      <LowerContainer justifyContent={"center"} width={"50%"}>
                         <DoorSecurityKeypad
                           item={false}
                           cat={"doorLock"}

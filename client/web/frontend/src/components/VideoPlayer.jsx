@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-// import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   ActionBtnContainer,
   ExtendContainer,
@@ -11,22 +10,10 @@ import {
 import AddItemBtn from "./AddItemBtn";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
-import AddItemForm from "./AddItemForm";
 
 const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
   const videoRef = useRef(null);
-  const { control, showModal, setShowModal } = useGlobalContext();
-
-  const [category, setCategory] = useState({
-    id: "",
-    label1: "Device Category",
-    label2: "Name Your Device",
-  });
-
-  const createThing = (catID) => {
-    setShowModal(!showModal);
-    setCategory({ ...category, id: catID });
-  };
+  const { control } = useGlobalContext();
 
   const handleEdit = (id, disable, label1, label2) => {
     const name = control.item.find((name) => name._id === id).name;
@@ -61,18 +48,13 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
             </Video>
           </VideoPlayerContainer>
         ) : (
-          <>
-            <AddItemBtn cat={"spyCam"} handleItem={createThing} />
-            <AddItemForm
-              status={true}
-              del={true}
-              id={category.id}
-              label1={category.label1}
-              label2={category.label2}
-              name={"spyCam"}
-              category={"spyCam"}
-            />
-          </>
+          <AddItemBtn
+            new={true}
+            cat={"spyCam"}
+            label1={"Device Category"}
+            label2={"Name Your Device"}
+            handleItem={handleItem}
+          />
         )}
       </ExtendContainer>
     </>

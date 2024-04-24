@@ -16,7 +16,7 @@ import {
 import { handleItemSubmit } from "../utils/handler";
 
 const AddItemForm = (props) => {
-
+  
   const navigate = useNavigate();
   const hasRun = useRef(false);
   const [name, setName] = useState("");
@@ -72,8 +72,6 @@ const AddItemForm = (props) => {
       ) : (
         <ModalContainer>
           <Form onSubmit={submitForm}>
-            <p>{props.name}</p>
-            <p>{props.name}</p>
             <label htmlFor="type">{props.label1}</label>
             <FormGroup>
               <FormField

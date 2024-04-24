@@ -9,16 +9,10 @@ import {
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
 import { useGlobalContext } from "../context/context";
-import AddItemForm from "./AddItemForm";
 
 const DoorSecurityKeypad = (props) => {
-  const { control, showModal, setShowModal } = useGlobalContext();
+  const { control } = useGlobalContext();
 
-  const [category, setCategory] = useState({
-    id: "",
-    label1: "Device Category",
-    label2: "Name Your Device",
-  });
   const [code, setCode] = useState("");
 
   const handleButtonClick = (value) => {
@@ -33,11 +27,6 @@ const DoorSecurityKeypad = (props) => {
   const handleUnlock = () => {
     alert("Door unlocked!");
     setCode("");
-  };
-
-  const createThing = (catID) => {
-    setShowModal(!showModal);
-    setCategory({ ...category, id: catID });
   };
 
   const handleEdit = (id, disable, label1, label2) => {
@@ -106,18 +95,13 @@ const DoorSecurityKeypad = (props) => {
             </div>
           </KeypadContainer>
         ) : (
-          <>
-            <AddItemBtn cat={"doorLock"} handleItem={createThing} />
-            <AddItemForm
-              status={true}
-              del={true}
-              id={category.id}
-              label1={category.label1}
-              label2={category.label2}
-              name={"doorLock"}
-              category={"doorLock"}
-            />
-          </>
+          <AddItemBtn
+            new={true}
+            cat={"doorLock"}
+            label1={"Device Category"}
+            label2={"Name Your Device"}
+            handleItem={props.handleItem}
+          />
         )}
       </ExtendContainer>
     </>
