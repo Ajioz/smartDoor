@@ -1080,7 +1080,30 @@ export const MyDiv = styled.div`
 `;
 
 export const PureDiv = styled.div`
-  display: block;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: #000;
+  font-size: 18px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
 `;
+
+export const PureDivBtn = styled.section`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0 -20px 0;
+
+  button{
+    border: none;
+    padding: 5px 20px;
+    color: #fff;
+    background-color: #fd3f3d;
+    border-radius: 20px;
+  }
+`;
+
+

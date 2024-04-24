@@ -32,22 +32,20 @@ const DoorSecurityKeypad = (props) => {
   const handleUnlock = () => {
     alert("Door unlocked!");
     setCode("");
-  };
-
-    const searchName = (array, id) => {
-      return array.find((name) => name._id === id).name;
-    };
-  
+  }; 
 
   const handleEdit = (id, disable, label1, label2) => {
-    const name = searchName(control.item, id);
-    props.handleItem(props.cat, disable, label1, label2, name);
+    const name = control.item.find((name) => name._id === id).name;
+    props.handleItem(false, id, disable, label1, label2, props.cat, name);
+    //handleItem(delete, id, disable, label1, label2, category, name);
   };
 
   const handleDelete = (id) => {
-    console.log(`item ${id} clicked for delete`)
-  }
-
+    const itemSpec = control.item.find((name) => name._id === id);
+    console.log(itemSpec.name);
+    props.handleItem(true, id, false, " ", " ", itemSpec.category, itemSpec.name);
+    //handleItem(delete, id, disable, label1, label2, category, name);
+  };
   return (
     <>
       <ExtendContainer width={"220px"}>

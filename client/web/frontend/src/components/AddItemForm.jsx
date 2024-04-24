@@ -10,6 +10,8 @@ import {
   FormGroup,
   FormField,
   BtnCenter,
+  PureDiv,
+  PureDivBtn,
 } from "../theme/theme";
 import { handleItemSubmit } from "../utils/handler";
 
@@ -45,44 +47,63 @@ const AddItemForm = (props) => {
     if (status) fetchData(token);
   };
 
+  const handleDelete = () => {
+    console.log("Sending delete action");
+    setShowModal(!showModal);
+  };
   return (
     <div className={`modal-overlay ${showModal && "show-modal"}`}>
-      <ModalContainer>
-        <Form onSubmit={submitForm}>
-          <label htmlFor="type">{props.label1}</label>
-          <FormGroup>
-            <FormField
-              type="text"
-              name="category"
-              value={props.value ? props.value : props.category}
-              onChange={(e) => setName(e.target.value)}
-              required
-              disabled={props.status}
-            />
-            <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
-          </FormGroup>
-          <label htmlFor="input">{props.label2}</label>
-          <FormGroup>
-            <FormField
-              type="text"
-              placeholder="name"
-              name="device"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
-          </FormGroup>
-          <BtnCenter>
-            <ClaimBtn type="submit" disabled={props.status}>
-              Submit
-            </ClaimBtn>
-          </BtnCenter>
-        </Form>
-        <CloseModalBtn onClick={() => setShowModal(!showModal)}>
-          <FaTimes />
-        </CloseModalBtn>
-      </ModalContainer>
+      {props.del ? (
+        <ModalContainer>
+          <PureDiv>
+            <p>
+              Do you wish to delete <strong>{props.name}</strong>{" "}
+              <cite>{props.category}</cite> from your home ?
+            </p>
+            <PureDivBtn>
+              <button onClick={handleDelete}>Yes</button>
+              <button onClick={() => setShowModal(!showModal)}>Cancel</button>
+            </PureDivBtn>
+          </PureDiv>
+        </ModalContainer>
+      ) : (
+        <ModalContainer>
+          <Form onSubmit={submitForm}>
+            <label htmlFor="type">{props.label1}</label>
+            <FormGroup>
+              <FormField
+                type="text"
+                name="category"
+                value={props.name ? props.name : props.category}
+                onChange={(e) => setName(e.target.value)}
+                required
+                disabled={props.status}
+              />
+              <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
+            </FormGroup>
+            <label htmlFor="input">{props.label2}</label>
+            <FormGroup>
+              <FormField
+                type="text"
+                placeholder="name"
+                name="device"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
+            </FormGroup>
+            <BtnCenter>
+              <ClaimBtn type="submit" disabled={props.status}>
+                Submit
+              </ClaimBtn>
+            </BtnCenter>
+          </Form>
+          <CloseModalBtn onClick={() => setShowModal(!showModal)}>
+            <FaTimes />
+          </CloseModalBtn>
+        </ModalContainer>
+      )}
     </div>
   );
 };

@@ -12,25 +12,21 @@ import AddItemBtn from "./AddItemBtn";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { control } from "../data";
 
-
-
 const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
-
-  const searchName = (array, id) => {
-    return array.find((name) => name._id === id).name;
-  }
-  
   const videoRef = useRef(null);
 
   const handleEdit = (id, disable, label1, label2) => {
-    const name = searchName(control.item, id)
-    handleItem(cat, disable, label1, label2, name);
-  };
+    const name = control.item.find((name) => name._id === id).name;
+    handleItem(false, id, disable, label1, label2, cat, name);
+    //handleItem(delete, id, disable, label1, label2, category, name);
+};
 
-  const handleDelete = (id) => {
-    console.log(`item ${id} clicked for delete`);
-    handleItem(cat);
-  };
+const handleDelete = (id) => {
+  const itemSpec = control.item.find((name) => name._id === id);
+  console.log(itemSpec.name);
+  handleItem(true, id, false, " ", " ", itemSpec.category, itemSpec.name);
+  //handleItem(delete, id, disable, label1, label2, category, name);
+};
 
   // const [isPlaying, setIsPlaying] = useState(false);
 

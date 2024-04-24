@@ -22,7 +22,6 @@ import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
 import { control } from "../data";
 
-
 const Dashboard = () => {
   const {
     showModal,
@@ -36,18 +35,22 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
   const [category, setCategory] = useState({
-    catID: "",
+    del: false,
+    id: "",
+    disable: false,
     label1: "Device Category",
     label2: "Name Your Device",
-    name: ""
+    cat: "",
+    name: "",
   });
   const [isDisable, setIsDisable] = useState(true);
   const hasRan = useRef(false);
 
-  const handleItem = (id, disable, label1, label2, name) => {
+  const handleItem = (del, id, disable, label1, label2, cat, name) => {
     setShowModal(!showModal);
     setIsDisable(disable);
-    setCategory({ ...category, catID: id, label1, label2, name });
+    setCategory({ ...category, del, id, disable, label1, label2, cat, name });
+    //handleItem(delete, id, disable, label1, label2, category, name);
   };
 
   useEffect(() => {
@@ -167,9 +170,11 @@ const Dashboard = () => {
         )}
       </DashboardMain>
       <AddItemForm
+        del={category.del}
+        id={category.id}
         status={isDisable}
-        value={category.name}
-        category={category.catID}
+        name={category.name}
+        category={category.cat}
         label1={category.label1}
         label2={category.label2}
       />
