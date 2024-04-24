@@ -20,13 +20,13 @@ import DoorSecurityKeypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
-import { control } from "../data";
+// import { control } from "../data";
 
 const Dashboard = () => {
   const {
     showModal,
     showSidebar,
-    // control,
+    control,
     isToken,
     setShowModal,
     setShowSidebar,
@@ -151,7 +151,7 @@ const Dashboard = () => {
               : control.item.length === 0 && (
                   <>
                     <LowerSection jcc={"center"}>
-                      <LowerContainer jcc={"center"}>
+                    <LowerContainer justifyContent={"center"} width={"50%" }>
                         <DoorSecurityKeypad
                           item={false}
                           cat={"doorLock"}

@@ -560,6 +560,7 @@ export const Line = styled.section`
   background-color: #333;
 `;
 
+
 export const LowerSection = styled.section`
   display: flex;
   flex-direction: row;
@@ -577,8 +578,9 @@ export const LowerSection = styled.section`
   }
 `;
 
+
 export const LowerContainer = styled.section`
-  width: 100%;
+  width: ${(props) => props.width || "100%"};
   display: flex;
   justify-content: ${(prop) => prop.justifyContent || "center"};
   align-items: center;
@@ -1081,13 +1083,21 @@ export const MyDiv = styled.div`
 
 export const PureDiv = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
   color: #000;
   font-size: 18px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 20px;
-  background: #fff;
+  width:90%;
+  height: 60%;
+  
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
 `;
 
 export const PureDivBtn = styled.section`

@@ -16,6 +16,7 @@ import {
 import { handleItemSubmit } from "../utils/handler";
 
 const AddItemForm = (props) => {
+
   const navigate = useNavigate();
   const hasRun = useRef(false);
   const [name, setName] = useState("");
@@ -56,10 +57,12 @@ const AddItemForm = (props) => {
       {props.del ? (
         <ModalContainer>
           <PureDiv>
-            <p>
-              Do you wish to delete <strong>{props.name}</strong>{" "}
-              <cite>{props.category}</cite> from your home ?
-            </p>
+            <div>
+              <p>
+                Do you wish to delete <strong>{props.name}</strong>{" "}
+                <cite>{props.category}</cite> from your home?
+              </p>
+            </div>
             <PureDivBtn>
               <button onClick={handleDelete}>Yes</button>
               <button onClick={() => setShowModal(!showModal)}>Cancel</button>
@@ -69,11 +72,14 @@ const AddItemForm = (props) => {
       ) : (
         <ModalContainer>
           <Form onSubmit={submitForm}>
+            <p>{props.name}</p>
+            <p>{props.name}</p>
             <label htmlFor="type">{props.label1}</label>
             <FormGroup>
               <FormField
                 type="text"
                 name="category"
+                placeholder={props.name}
                 value={props.name ? props.name : props.category}
                 onChange={(e) => setName(e.target.value)}
                 required

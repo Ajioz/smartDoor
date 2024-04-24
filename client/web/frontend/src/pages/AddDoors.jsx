@@ -12,14 +12,14 @@ const AddDoors = () => {
     useGlobalContext();
 
   const [category, setCategory] = useState({
-    catID: "",
+    id: "",
     label1: "Device Category",
     label2: "Name Your Device",
   });
 
   const handleItem = (id) => {
     setShowModal(!showModal);
-    setCategory({ ...category, catID: id });
+    setCategory({ ...category, id });
   };
 
   return (
@@ -34,7 +34,7 @@ const AddDoors = () => {
         <AddItemBtn cat={"spyCam"} handleItem={handleItem} />
         <AddItemForm
           status={true}
-          category={category.catID}
+          category={category.id}
           label1={category.label1}
           label2={category.label2}
         />

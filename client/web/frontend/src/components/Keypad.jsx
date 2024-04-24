@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  FaArrowLeft,
-  FaEdit,
-  FaTrash,
-  FaUnlock,
-} from "react-icons/fa";
+import { FaArrowLeft, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import {
   Display,
   KeypadBtn,
@@ -13,11 +8,17 @@ import {
   ActionBtnContainer,
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
-import { control } from "../data";
+import { useGlobalContext } from "../context/context";
+import AddItemForm from "./AddItemForm";
 
 const DoorSecurityKeypad = (props) => {
+  const { control, showModal, setShowModal } = useGlobalContext();
 
-
+  const [category, setCategory] = useState({
+    id: "",
+    label1: "Device Category",
+    label2: "Name Your Device",
+  });
   const [code, setCode] = useState("");
 
   const handleButtonClick = (value) => {
@@ -32,7 +33,12 @@ const DoorSecurityKeypad = (props) => {
   const handleUnlock = () => {
     alert("Door unlocked!");
     setCode("");
-  }; 
+  };
+
+  const createThing = (catID) => {
+    setShowModal(!showModal);
+    setCategory({ ...category, id: catID });
+  };
 
   const handleEdit = (id, disable, label1, label2) => {
     const name = control.item.find((name) => name._id === id).name;
@@ -43,23 +49,34 @@ const DoorSecurityKeypad = (props) => {
   const handleDelete = (id) => {
     const itemSpec = control.item.find((name) => name._id === id);
     console.log(itemSpec.name);
-    props.handleItem(true, id, false, " ", " ", itemSpec.category, itemSpec.name);
+    props.handleItem(
+      true,
+      id,
+      false,
+      " ",
+      " ",
+      itemSpec.category,
+      itemSpec.name
+    );
     //handleItem(delete, id, disable, label1, label2, category, name);
   };
   return (
     <>
       <ExtendContainer width={"220px"}>
-        <ActionBtnContainer>
-          <FaEdit
-            color={"#333"}
-            onClick={() =>
-              handleEdit(props.id, false, "Current Name", "Enter New Name")
-            }
-          />{" "}
-          <FaTrash color={"darkred"} onClick={() => handleDelete(props.id)} />
-        </ActionBtnContainer>
         {props.item ? (
           <KeypadContainer>
+            <ActionBtnContainer>
+              <FaEdit
+                color={"#333"}
+                onClick={() =>
+                  handleEdit(props.id, false, "Current Name", "Enter New Name")
+                }
+              />{" "}
+              <FaTrash
+                color={"darkred"}
+                onClick={() => handleDelete(props.id)}
+              />
+            </ActionBtnContainer>
             <Display>{code}</Display>
             <div>
               <KeypadBtn onClick={() => handleButtonClick("1")}>1</KeypadBtn>
@@ -89,7 +106,18 @@ const DoorSecurityKeypad = (props) => {
             </div>
           </KeypadContainer>
         ) : (
-          <AddItemBtn cat={props.cat} handleItem={props.handleItem} />
+          <>
+            <AddItemBtn cat={"doorLock"} handleItem={createThing} />
+            <AddItemForm
+              status={true}
+              del={true}
+              id={category.id}
+              label1={category.label1}
+              label2={category.label2}
+              name={"doorLock"}
+              category={"doorLock"}
+            />
+          </>
         )}
       </ExtendContainer>
     </>
