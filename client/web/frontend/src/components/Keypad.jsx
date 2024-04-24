@@ -9,6 +9,7 @@ import {
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
 import { useGlobalContext } from "../context/context";
+// import { control } from "../data";
 
 const DoorSecurityKeypad = (props) => {
   const { control } = useGlobalContext();
@@ -56,13 +57,13 @@ const DoorSecurityKeypad = (props) => {
           <KeypadContainer>
             <ActionBtnContainer>
               <FaEdit
-                color={"#333"}
+                color={"#ddd"}
                 onClick={() =>
                   handleEdit(props.id, false, "Current Name", "Enter New Name")
                 }
               />{" "}
               <FaTrash
-                color={"darkred"}
+                color={"#ddd"}
                 onClick={() => handleDelete(props.id)}
               />
             </ActionBtnContainer>

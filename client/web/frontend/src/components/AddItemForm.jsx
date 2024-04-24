@@ -16,19 +16,18 @@ import {
 import { handleItemSubmit } from "../utils/handler";
 
 const AddItemForm = (props) => {
-  
   const navigate = useNavigate();
   const hasRun = useRef(false);
   const [name, setName] = useState("");
 
-  const { ajiozItem, fetchData, isToken, showModal, setShowModal } =
+  const { ajiozItem, fetchData, loading, isToken, showModal, setShowModal } =
     useGlobalContext();
 
   const delay = async (time) => {
     await new Promise((resolve) => setTimeout(resolve, time));
   };
 
-  const submitForm = (e) => {
+  const submitForm = async(e) => {
     e.preventDefault();
     let random = Math.floor(Math.random() * 1000);
     let randomDate = Date.now();
@@ -45,7 +44,10 @@ const AddItemForm = (props) => {
     delay(1000);
     setShowModal(!showModal);
     const { status, token } = isToken();
-    if (status) fetchData(token);
+    if (status) {
+      const data = await fetchData(token);
+      console.log("fetched: ", data);
+    }
   };
 
   const handleDelete = () => {
@@ -98,7 +100,7 @@ const AddItemForm = (props) => {
               <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
             </FormGroup>
             <BtnCenter>
-              <ClaimBtn type="submit" disabled={props.status}>
+              <ClaimBtn type="submit" disabled={loading} onClick={submitForm}>
                 Submit
               </ClaimBtn>
             </BtnCenter>

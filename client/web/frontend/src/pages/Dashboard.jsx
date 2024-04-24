@@ -37,13 +37,13 @@ const Dashboard = () => {
   const [category, setCategory] = useState({
     del: false,
     id: "",
-    disable: false,
+    disable: true,
     label1: "Device Category",
     label2: "Name Your Device",
     cat: "",
     name: "",
   });
-  const [isDisable, setIsDisable] = useState(true);
+  const [isDisable, setIsDisable] = useState(false);
   const hasRan = useRef(false);
 
   const handleItem = (del, id, disable, label1, label2, cat, name) => {
@@ -56,7 +56,8 @@ const Dashboard = () => {
   useEffect(() => {
     const { status, token } = isToken();
     if (!status || token === "expired") return navigate("/");
-  }, [isToken, navigate /*control*/]);
+    isEven(control?.item?.length)
+  }, [isToken, navigate, control]);
 
   useEffect(() => {
     const { status, token } = isToken();
@@ -92,11 +93,7 @@ const Dashboard = () => {
         </UpperSection>
         <>
           <LowerSection>
-            <LowerContainer
-              justifyContent={() =>
-                isEven(control.item.length) ? "flex-end" : "center"
-              }
-            >
+            <LowerContainer jjcontent={isEven(control.item.length) ? "flex-end" : "center"}>
               {control.item.length > 0 &&
                 control.item.map((item, index) => {
                   const { _id, category } = item;
@@ -108,15 +105,15 @@ const Dashboard = () => {
                         item={true}
                         cat={category}
                         id={_id}
-                        key={index}
+                        key={_id}
                         handleItem={handleItem}
                       />
                       {isEven(index + 1) && (
                         <>
-                          <Tag key={index + 10}>
+                          <Tag key={index + 1}>
                             <p>{control.item[index].name}</p>
                           </Tag>
-                          <Line key={index + 20} />;
+                          <Line key={index + 2} />;
                         </>
                       )}
                     </>
@@ -151,7 +148,7 @@ const Dashboard = () => {
               : control.item.length === 0 && (
                   <>
                     <LowerSection jcc={"center"}>
-                      <LowerContainer justifyContent={"center"} width={"50%"}>
+                      <LowerContainer jjcontent={"center"} width={"50%"}>
                         <DoorSecurityKeypad
                           item={false}
                           cat={"doorLock"}

@@ -582,7 +582,7 @@ export const LowerSection = styled.section`
 export const LowerContainer = styled.section`
   width: ${(props) => props.width || "100%"};
   display: flex;
-  justify-content: ${(prop) => prop.justifyContent || "center"};
+  justify-content: ${(prop) => prop.jjcontent || "center"};
   align-items: center;
   flex-wrap: wrap;
   background-color: inherit;
@@ -1063,8 +1063,8 @@ export const ActionBtnContainer = styled.section`
   align-items: center;
   color: ${(props) => props.color};
   @media only screen and (max-width: 560px) {
-    width: 50%;
-    align-items: flex-end;
+    width: 100%;
+    align-items: center;
   }
 `;
 

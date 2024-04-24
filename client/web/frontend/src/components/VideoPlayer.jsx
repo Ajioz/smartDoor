@@ -10,6 +10,7 @@ import {
 import AddItemBtn from "./AddItemBtn";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
+// import { control } from "../data";
 
 const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
   const videoRef = useRef(null);
