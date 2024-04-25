@@ -18,15 +18,24 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
 
   const handleEdit = (id, disable, label1, label2) => {
     const name = control.item.find((name) => name._id === id).name;
-    handleItem(false, id, disable, label1, label2, cat, name);
-    //handleItem(delete, id, disable, label1, label2, category, name);
+    handleItem(false, id, disable, label1, label2, cat, name, "EDIT");
+    //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
   const handleDelete = (id) => {
     const itemSpec = control.item.find((name) => name._id === id);
     console.log(itemSpec.name);
-    handleItem(true, id, false, " ", " ", itemSpec.category, itemSpec.name);
-    //handleItem(delete, id, disable, label1, label2, category, name);
+    handleItem(
+      true,
+      id,
+      false,
+      " ",
+      " ",
+      itemSpec.category,
+      itemSpec.name,
+      "DELETE"
+    );
+    //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
   return (
@@ -55,6 +64,7 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
             label1={"Device Category"}
             label2={"Name Your Device"}
             handleItem={handleItem}
+            action={"CREATE"}
           />
         )}
       </ExtendContainer>

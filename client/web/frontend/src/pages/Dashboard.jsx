@@ -13,6 +13,7 @@ import {
   LowerContainer,
   Tag,
   Line,
+  HOC,
 } from "../theme/theme";
 import dashboard from "../images/dashboard.jpg";
 import { AlertNotify, Boardchip } from "../components/Chips";
@@ -42,21 +43,32 @@ const Dashboard = () => {
     label2: "Name Your Device",
     cat: "",
     name: "",
+    action: "",
   });
   const [isDisable, setIsDisable] = useState(false);
   const hasRan = useRef(false);
 
-  const handleItem = (del, id, disable, label1, label2, cat, name) => {
+  const handleItem = (del, id, disable, label1, label2, cat, name, action) => {
     setShowModal(!showModal);
     setIsDisable(disable);
-    setCategory({ ...category, del, id, disable, label1, label2, cat, name });
+    setCategory({
+      ...category,
+      del,
+      id,
+      disable,
+      label1,
+      label2,
+      cat,
+      name,
+      action,
+    });
     //handleItem(delete, id, disable, label1, label2, category, name);
   };
 
   useEffect(() => {
     const { status, token } = isToken();
     if (!status || token === "expired") return navigate("/");
-    isEven(control?.item?.length)
+    isEven(control?.item?.length);
   }, [isToken, navigate, control]);
 
   useEffect(() => {
@@ -93,30 +105,31 @@ const Dashboard = () => {
         </UpperSection>
         <>
           <LowerSection>
-            <LowerContainer jjcontent={isEven(control.item.length) ? "flex-end" : "center"}>
+            <LowerContainer
+              jjcontent={isEven(control.item.length) ? "flex-end" : "center"}
+            >
               {control.item.length > 0 &&
                 control.item.map((item, index) => {
                   const { _id, category } = item;
                   let Item =
                     category === "doorLock" ? DoorSecurityKeypad : VideoPlayer;
                   return (
-                    <>
+                    <HOC key={_id}>
                       <Item
                         item={true}
                         cat={category}
                         id={_id}
-                        key={_id}
                         handleItem={handleItem}
                       />
                       {isEven(index + 1) && (
                         <>
-                          <Tag key={index + 1}>
+                          <Tag>
                             <p>{control.item[index].name}</p>
                           </Tag>
-                          <Line key={index + 2} />;
+                          <Line />;
                         </>
                       )}
-                    </>
+                    </HOC>
                   );
                 })}
             </LowerContainer>
@@ -174,6 +187,7 @@ const Dashboard = () => {
         category={category.cat}
         label1={category.label1}
         label2={category.label2}
+        action={category.action}
       />
     </Container>
   );

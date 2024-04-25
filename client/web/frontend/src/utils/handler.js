@@ -170,12 +170,15 @@ export const handleValidation = async (
 };
 
 export const handleItemSubmit = async (
+  action,
+  id,
   formData,
   ajiozItem,
   hasRun,
   navigate
 ) => {
-  const res = await ajiozItem(formData);
+  const res = await ajiozItem(action, id, formData);
+  console.log(res)
   if (res?.status === 201) {
     if (!hasRun.current) {
       toast.success(res.data.message, toastParam);

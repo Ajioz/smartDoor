@@ -21,7 +21,7 @@ export const AppProvider = ({ children }) => {
     loading: false,
   });
 
-  const ajiozItem = async (obj) => {
+  const ajiozItem = async (action, id, obj) => {
     const { token } = isToken();
     const config = {
       headers: {
@@ -30,7 +30,14 @@ export const AppProvider = ({ children }) => {
       },
     };
     try {
-      const response = await axios.post(`${base_url}/thing`, obj, config);
+      let response;
+      if (action === "CREATE") {
+        response = await axios.post(`${base_url}/thing`, obj, config);
+      } else if (action === "EDIT") {
+        response = await axios.patch(`${base_url}/thing/${id}`, obj, config);
+      } else if (action === "DELETE") {
+        response = await axios.delete(`${base_url}/thing${id}`, obj, config);
+      }
       return response;
     } catch (error) {
       if (error.response && error.response.status === 400) {

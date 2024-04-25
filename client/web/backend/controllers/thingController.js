@@ -6,7 +6,7 @@ import { errorHandler } from "../util/errorHandler.js";
 
 export const getUserThings = async (req, res) => {
   try {
-    console.log({ user: req.user.userId });
+    // console.log({ user: req.user.userId });
     const thing = await Thing.find({ user: req.user.userId });
     return res.status(StatusCodes.OK).json({ thing, count: thing.length });
   } catch (error) {
@@ -22,7 +22,7 @@ export const getThing = async (req, res) => {
       user: { userId },
       params: { id: thingId },
     } = req;
-    const thing = await Thing.findOne({ _id: thingId, user: req.user.userId });
+    const thing = await Thing.findOne({ _id: thingId, user: userId });
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
 
@@ -49,23 +49,24 @@ export const createThing = async (req, res) => {
 export const updateThing = async (req, res) => {
   try {
     const {
-      body: { company, position },
+      body: { thingName, thingId },
       user: { userId },
-      params: { id: thingId },
     } = req;
-    if (company === "" || position === "")
-      throw new BadRequestError("Company or Position fields cannot be empty");
-    const thing = await Thing.findByIdAndUpdate(
-      { _id: thingId, user: req.user.userId },
-      req.body,
-      { new: true, runValidators: true }
+
+    if (!thingName)
+      throw new BadRequestError("Thing name fields cannot be empty");
+
+    // Validate user ownership or permission for updating the thing
+    const thing = await Thing.findOneAndUpdate(
+      { _id: thingId, user: req.user.userId }, // Check for user ownership
+      { name: thingName },
+      { new: true, runValidators: true } // Update options with explanation (comment)
     );
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
 
-    res.status(StatusCodes.OK).json(thing);
+    return res.status(StatusCodes.CREATED).json(thing);
   } catch (error) {
-    console.log(error);
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
 };

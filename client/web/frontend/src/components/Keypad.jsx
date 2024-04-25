@@ -32,8 +32,17 @@ const DoorSecurityKeypad = (props) => {
 
   const handleEdit = (id, disable, label1, label2) => {
     const name = control.item.find((name) => name._id === id).name;
-    props.handleItem(false, id, disable, label1, label2, props.cat, name);
-    //handleItem(delete, id, disable, label1, label2, category, name);
+    props.handleItem(
+      false,
+      id,
+      disable,
+      label1,
+      label2,
+      props.cat,
+      name,
+      "EDIT"
+    );
+    //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
   const handleDelete = (id) => {
@@ -46,10 +55,12 @@ const DoorSecurityKeypad = (props) => {
       " ",
       " ",
       itemSpec.category,
-      itemSpec.name
+      itemSpec.name,
+      "DELETE"
     );
-    //handleItem(delete, id, disable, label1, label2, category, name);
+    //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
+
   return (
     <>
       <ExtendContainer width={"220px"}>
@@ -62,10 +73,7 @@ const DoorSecurityKeypad = (props) => {
                   handleEdit(props.id, false, "Current Name", "Enter New Name")
                 }
               />{" "}
-              <FaTrash
-                color={"#ddd"}
-                onClick={() => handleDelete(props.id)}
-              />
+              <FaTrash color={"#ddd"} onClick={() => handleDelete(props.id)} />
             </ActionBtnContainer>
             <Display>{code}</Display>
             <div>
@@ -102,6 +110,7 @@ const DoorSecurityKeypad = (props) => {
             label1={"Device Category"}
             label2={"Name Your Device"}
             handleItem={props.handleItem}
+            action={"CREATE"}
           />
         )}
       </ExtendContainer>

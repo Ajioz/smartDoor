@@ -27,19 +27,46 @@ const AddItemForm = (props) => {
     await new Promise((resolve) => setTimeout(resolve, time));
   };
 
-  const submitForm = async(e) => {
+  const submitForm = async (e, action) => {
     e.preventDefault();
-    let random = Math.floor(Math.random() * 1000);
-    let randomDate = Date.now();
-    let dbName = `${props.category}/${name
-      .split(" ")
-      .join("")}${randomDate}${random}`;
-    const formData = {
-      category: props.category,
-      name,
-      dbName,
-    };
-    const response = handleItemSubmit(formData, ajiozItem, hasRun, navigate);
+    let formData = {};
+
+    // First part of the equation setting the precedence
+
+    /* For creating thing  */
+    if (action === "CREATE") {
+      let random = Math.floor(Math.random() * 1000);
+      let randomDate = Date.now();
+      let dbName = `${props.category}/${name
+        .split(" ")
+        .join("")}${randomDate}${random}`;
+      formData = {
+        category: props.category,
+        name,
+        dbName,
+      };
+    } else if (action === "EDIT") {
+      /* For editing a thing */
+      formData = {
+        thingName: name,
+        thingId: props.id,
+      };
+    } else if (action === "DELETE") {
+      /* For deleting a thing */
+      formData = {
+        thingId: props.id,
+      };
+    }
+
+    /* second part of the equation that is available for Create, Edit and Delete helpers */
+    const response = handleItemSubmit(
+      action,
+      props.id,
+      formData,
+      ajiozItem,
+      hasRun,
+      navigate
+    );
     setName("");
     delay(1000);
     setShowModal(!showModal);
@@ -51,6 +78,7 @@ const AddItemForm = (props) => {
     console.log("Sending delete action");
     setShowModal(!showModal);
   };
+
   return (
     <div className={`modal-overlay ${showModal && "show-modal"}`}>
       {props.del ? (
@@ -70,7 +98,7 @@ const AddItemForm = (props) => {
         </ModalContainer>
       ) : (
         <ModalContainer>
-          <Form onSubmit={submitForm}>
+          <Form onSubmit={(e) => submitForm(e, props.action)}>
             <label htmlFor="type">{props.label1}</label>
             <FormGroup>
               <FormField
@@ -97,7 +125,7 @@ const AddItemForm = (props) => {
               <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
             </FormGroup>
             <BtnCenter>
-              <ClaimBtn type="submit" disabled={loading} onClick={submitForm}>
+              <ClaimBtn type="submit" disabled={loading}>
                 Submit
               </ClaimBtn>
             </BtnCenter>

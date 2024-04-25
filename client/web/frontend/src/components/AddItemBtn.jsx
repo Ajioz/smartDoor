@@ -11,8 +11,9 @@ const AddItem = (props) => {
         props.label1,
         props.label2,
         props.cat,
-        ""
-        // handleItem(delete, id, disable, label1, label2, category, name)
+        "",
+        props.action
+        // handleItem(delete, id, disable, label1, label2, category, name, action)
       );
     else return props.handleItem(props.cat);
   };
