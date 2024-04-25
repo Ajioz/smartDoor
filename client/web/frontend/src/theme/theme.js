@@ -346,7 +346,7 @@ export const VerticalSide = styled.aside`
   top: 0;
   left: 0;
   width: 60px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #263238;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -433,17 +433,21 @@ export const SocialIconTag = styled.a`
   }
 `;
 
-export const Linka = styled.a`
+export const Linka = styled.section`
   display: flex;
   align-items: center;
   font-size: ${(props) => props.size || "1.25rem"};
   text-transform: capitalize;
   padding: 1rem 0.1rem;
   margin: 1rem 0.5rem;
-  color: #e0e0e0;
+  color: #fff;
   letter-spacing: 0.1rem;
-  &:hover {
-    color: #fff;
+  a {
+    text-decoration: none;
+    color: #e0e0e0;
+    &:hover {
+      color: #fff;
+    }
   }
   @media only screen and (max-width: 600px) {
     font-size: 20px;
@@ -560,7 +564,6 @@ export const Line = styled.section`
   background-color: #333;
 `;
 
-
 export const LowerSection = styled.section`
   display: flex;
   flex-direction: row;
@@ -577,7 +580,6 @@ export const LowerSection = styled.section`
     padding: 8px 0;
   }
 `;
-
 
 export const LowerContainer = styled.section`
   width: ${(props) => props.width || "100%"};
@@ -768,11 +770,12 @@ export const BtnCenter = styled.div`
 
 export const Header = styled.header`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: inherit;
   background-image: url(${instructionImg});
-  width: 100%;
+  width: 100px;
   h3 {
     color: #fff;
     font-family: monospace;
@@ -780,11 +783,51 @@ export const Header = styled.header`
   }
 `;
 
+export const Main = styled.main`
+  display: block;
+  background-color: #eee;
+  width: 100%;
+  min-height: 100vh;
+
+  .instruct {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+
+    .left {
+      width: 40%;
+      min-height: 100vh;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 2px 0 3px rgba(0, 0, 0, 0.3);
+      margin-left: 65px;
+    }
+    .right {
+      background-color: #333;
+      min-height: 100vh;
+      width: 50%;
+    }
+  }
+`;
+export const HOC = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;
+  width: 40%;
+  p {
+    color: #fff;
+    font-size: 20px;
+  }
+`;
+
 export const InstructionContainer = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
 `;
 export const InstructionInfo = styled.div`
   width: 100%;
@@ -1089,15 +1132,14 @@ export const PureDiv = styled.div`
   font-size: 18px;
   margin: 0 auto;
   padding: 20px;
-  width:90%;
+  width: 90%;
   height: 60%;
-  
-  div{
+
+  div {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-
 `;
 
 export const PureDivBtn = styled.section`
@@ -1107,7 +1149,7 @@ export const PureDivBtn = styled.section`
   width: 100%;
   margin: 20px 0 -20px 0;
 
-  button{
+  button {
     border: none;
     padding: 5px 20px;
     color: #fff;
@@ -1115,16 +1157,3 @@ export const PureDivBtn = styled.section`
     border-radius: 20px;
   }
 `;
-
-// export const HOC = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: inherit;
-//   width: 100%;
-//   height: 100%;
-// `
-
-

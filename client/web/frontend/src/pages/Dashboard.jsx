@@ -33,6 +33,7 @@ const Dashboard = () => {
     fetchData,
   } = useGlobalContext();
 
+  console.log(control)
   const navigate = useNavigate();
   const [category, setCategory] = useState({
     del: false,
@@ -115,6 +116,7 @@ const Dashboard = () => {
                   return (
                     <>
                       <Item
+                        key={_id}
                         item={true}
                         cat={category}
                         id={_id}
@@ -122,7 +124,7 @@ const Dashboard = () => {
                       />
                       {isEven(index + 1) && (
                         <>
-                          <Tag>
+                          <Tag key={index}>
                             <p>{control.item[index].name}</p>
                           </Tag>
                           <Line />;
