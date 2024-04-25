@@ -39,15 +39,12 @@ const AddItemForm = (props) => {
       name,
       dbName,
     };
-    handleItemSubmit(formData, ajiozItem, hasRun, navigate);
+    const response = handleItemSubmit(formData, ajiozItem, hasRun, navigate);
     setName("");
     delay(1000);
     setShowModal(!showModal);
     const { status, token } = isToken();
-    if (status) {
-      const data = await fetchData(token);
-      console.log("fetched: ", data);
-    }
+    if (status && response?.status === 201) await fetchData(token);
   };
 
   const handleDelete = () => {

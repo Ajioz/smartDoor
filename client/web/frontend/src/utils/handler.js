@@ -106,7 +106,7 @@ export const handleValidation = async (
           // Set token in cookie
           const cookieToken = Cookies.get("token");
           if (cookieToken) {
-            //this goes active on priduction
+            //this goes active on production
             console.log("Token found in cookie:", cookieToken);
             // Store token in state or local storage for further use (optional)
             // Navigate to a protected route or handle successful authentication
@@ -188,6 +188,7 @@ export const handleItemSubmit = async (
       }
     }
   }
+  return res;
 };
 
 // Get a cookie
