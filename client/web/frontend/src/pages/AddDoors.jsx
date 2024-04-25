@@ -37,6 +37,7 @@ const AddDoors = () => {
           category={category.id}
           label1={category.label1}
           label2={category.label2}
+          action={"CREATE"}
         />
       </AddContainer>
     </Container>

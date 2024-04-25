@@ -13,7 +13,6 @@ import {
   LowerContainer,
   Tag,
   Line,
-  HOC,
 } from "../theme/theme";
 import dashboard from "../images/dashboard.jpg";
 import { AlertNotify, Boardchip } from "../components/Chips";
@@ -114,7 +113,7 @@ const Dashboard = () => {
                   let Item =
                     category === "doorLock" ? DoorSecurityKeypad : VideoPlayer;
                   return (
-                    <HOC key={_id}>
+                    <>
                       <Item
                         item={true}
                         cat={category}
@@ -129,7 +128,7 @@ const Dashboard = () => {
                           <Line />;
                         </>
                       )}
-                    </HOC>
+                    </>
                   );
                 })}
             </LowerContainer>

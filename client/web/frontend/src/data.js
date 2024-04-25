@@ -30,7 +30,7 @@ export const links = [
   {
     id: 3,
     url: "/add_doors",
-    text: "More Door",
+    text: "Add Lock",
     icon: <FaPlus />,
   },
 ];
