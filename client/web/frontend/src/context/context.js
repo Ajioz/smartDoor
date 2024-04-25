@@ -36,7 +36,7 @@ export const AppProvider = ({ children }) => {
       } else if (action === "EDIT") {
         response = await axios.patch(`${base_url}/thing/${id}`, obj, config);
       } else if (action === "DELETE") {
-        response = await axios.delete(`${base_url}/thing${id}`, obj, config);
+        response = await axios.delete(`${base_url}/thing/${id}`, config);
       }
       return response;
     } catch (error) {

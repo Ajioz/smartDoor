@@ -178,7 +178,7 @@ export const handleItemSubmit = async (
   navigate
 ) => {
   const res = await ajiozItem(action, id, formData);
-  console.log(res)
+   hasRun.current = false;
   if (res?.status === 201) {
     if (!hasRun.current) {
       toast.success(res.data.message, toastParam);

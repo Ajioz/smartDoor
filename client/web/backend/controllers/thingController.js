@@ -58,14 +58,14 @@ export const updateThing = async (req, res) => {
 
     // Validate user ownership or permission for updating the thing
     const thing = await Thing.findOneAndUpdate(
-      { _id: thingId, user: req.user.userId }, // Check for user ownership
+      { _id: thingId, user: userId }, // Check for user ownership
       { name: thingName },
       { new: true, runValidators: true } // Update options with explanation (comment)
     );
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
 
-    return res.status(StatusCodes.CREATED).json(thing);
+    return res.status(StatusCodes.CREATED).json({message: `Successfully updated ${thingName}`, thing});
   } catch (error) {
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
@@ -80,12 +80,14 @@ export const deleteThing = async (req, res) => {
 
     const thing = await Thing.findByIdAndRemove({
       _id: thingId,
-      user: req.user.userId,
+      user: userId,
     });
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
 
-    res.status(StatusCodes.OK).send("Successfully Removed thing");
+     return res
+       .status(StatusCodes.CREATED)
+       .json({ message: "Successfully Removed item" });
   } catch (error) {
     console.log(error);
     errorHandler(error, res, NotFoundError, BadRequestError);

@@ -59,7 +59,7 @@ const AddItemForm = (props) => {
     }
 
     /* second part of the equation that is available for Create, Edit and Delete helpers */
-    const response = handleItemSubmit(
+    const response = await handleItemSubmit(
       action,
       props.id,
       formData,
@@ -74,11 +74,7 @@ const AddItemForm = (props) => {
     if (status && response?.status === 201) await fetchData(token);
   };
 
-  const handleDelete = () => {
-    console.log("Sending delete action");
-    setShowModal(!showModal);
-  };
-
+ 
   return (
     <div className={`modal-overlay ${showModal && "show-modal"}`}>
       {props.del ? (
@@ -91,7 +87,7 @@ const AddItemForm = (props) => {
               </p>
             </div>
             <PureDivBtn>
-              <button onClick={handleDelete}>Yes</button>
+              <button onClick={(e) => submitForm(e, props.action)}>Yes</button>
               <button onClick={() => setShowModal(!showModal)}>Cancel</button>
             </PureDivBtn>
           </PureDiv>

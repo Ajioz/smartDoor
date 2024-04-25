@@ -47,7 +47,6 @@ const DoorSecurityKeypad = (props) => {
 
   const handleDelete = (id) => {
     const itemSpec = control.item.find((name) => name._id === id);
-    console.log(itemSpec.name);
     props.handleItem(
       true,
       id,
