@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from "react";
 import {
   Button,
   Container,
-  HOC,
-  Header,
   InstructionContainer,
   InstructionInfo,
   Main,
@@ -12,8 +10,15 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
 import Sidebar from "../components/Sidebar";
+import bgImg from "../images/bg-intro-desktop.png";
+import ClickToCopy from "../components/Click2Copy";
+import door from "../images/sample.jpg";
+import spyCam from "../images/spyCam.jpg";
 
-const Instruction = () => {
+
+const doorImg = [door, spyCam];
+
+const Instruction = (props) => {
   const hasRan = useRef(false);
   const { control, showSidebar, fetchData, isToken, setShowSidebar } =
     useGlobalContext();
@@ -27,7 +32,7 @@ const Instruction = () => {
   }, [fetchData, isToken]);
 
   return (
-    <Container>
+    <Container background="#006064" imageurl={bgImg}>
       <VerticalSide />
       <Button onClick={() => setShowSidebar(!showSidebar)}>
         <FaArrowRight />
@@ -36,22 +41,18 @@ const Instruction = () => {
       <Main>
         <div className="instruct">
           <div className="left">
-            left
-            {control.item.map((item, index) => {
-              return (
-                <HOC key={index}>
-                  <p>copy: {item.dbName}</p>
-                </HOC>
-              );
-            })}
+            {props.single && (
+              <div className="img">
+                <img src={doorImg[0]} alt="doorImg" />
+              </div>
+            )}
+            <div className="connect-ids">
+              <ClickToCopy {...control} />
+            </div>
           </div>
           <div className="right">
-            right
             <InstructionContainer>
               <InstructionInfo>
-              <Header>
-                <h3>Instructions</h3>
-              </Header>
                 <div className="mode">
                   <p>Setting Up Mode</p>
                 </div>

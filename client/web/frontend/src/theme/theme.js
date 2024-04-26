@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import img from "../images/add_item2.svg";
-import instructionImg from "../images/bg-intro-desktop.png";
 
 export const Container = styled.div`
   width: ${(prop) => prop.width || "100%"};
@@ -768,24 +767,9 @@ export const BtnCenter = styled.div`
   align-items: center;
 `;
 
-export const Header = styled.header`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: inherit;
-  background-image: url(${instructionImg});
-  width: 100px;
-  h3 {
-    color: #fff;
-    font-family: monospace;
-    font-size: 1.6rem;
-  }
-`;
-
 export const Main = styled.main`
   display: block;
-  background-color: #eee;
+  background-color: transparent;
   width: 100%;
   min-height: 100vh;
 
@@ -796,31 +780,48 @@ export const Main = styled.main`
     width: 100%;
 
     .left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       width: 40%;
-      min-height: 100vh;
-      border-radius: 5px;
+      height: 90vh;
       background-color: #fff;
       box-shadow: 2px 0 3px rgba(0, 0, 0, 0.3);
-      margin-left: 65px;
+      margin-left: 80px;
+      margin-top: 40px;
+      padding: 0;
+      .img {
+        background-color: #ddd;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        img {
+          box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+          width: 350px;
+          height: 45vh;
+          margin: 10px;
+        }
+      }
+      .connect-ids {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 45vh;
+      }
     }
     .right {
+      width: 40%;
+      height: 90vh;
       background-color: #333;
-      min-height: 100vh;
-      width: 50%;
+      box-shadow: 2px 0 3px rgba(0, 0, 0, 0.3);
+      margin-right: 80px;
+      margin-top: 40px;
     }
-  }
-`;
-export const HOC = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  background-color: inherit;
-  width: 40%;
-  p {
-    color: #fff;
-    font-size: 20px;
   }
 `;
 
@@ -852,8 +853,11 @@ export const InstructionInfo = styled.div`
     justify-content: center;
     color: #fff;
     font-family: monospace;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: 10px;
+    li {
+      padding: 4px;
+    }
   }
 `;
 
