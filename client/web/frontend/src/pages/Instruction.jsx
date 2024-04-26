@@ -15,8 +15,7 @@ import ClickToCopy from "../components/Click2Copy";
 import door from "../images/sample.jpg";
 import spyCam from "../images/spyCam.jpg";
 
-
-const doorImg = [door, spyCam];
+const doorImg = { doorLock: door, spyCam: spyCam };
 
 const Instruction = (props) => {
   const hasRan = useRef(false);
@@ -43,7 +42,7 @@ const Instruction = (props) => {
           <div className="left">
             {props.single && (
               <div className="img">
-                <img src={doorImg[0]} alt="doorImg" />
+                <img src={doorImg.String(props.category)} alt="doorImg" />
               </div>
             )}
             <div className="connect-ids">

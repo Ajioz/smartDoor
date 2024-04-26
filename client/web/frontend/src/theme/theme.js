@@ -736,6 +736,9 @@ export const FormGroup = styled.div`
       border-color: #275efe;
     }
   }
+  @media only screen and (max-width: 560px) {
+    /* background-color: #275efe; */
+  }
 `;
 
 export const FormField = styled.input`
@@ -813,14 +816,25 @@ export const Main = styled.main`
         width: 100%;
         height: 45vh;
       }
+      @media only screen and (max-width: 560px) {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+        padding: 0;
+      }
     }
     .right {
       width: 40%;
-      height: 90vh;
+      min-height: 90vh;
       background-color: #333;
       box-shadow: 2px 0 3px rgba(0, 0, 0, 0.3);
       margin-right: 80px;
       margin-top: 40px;
+      @media only screen and (max-width: 560px) {
+        width: 90%;
+        margin: 10px auto;
+        padding: 0;
+      }
     }
   }
 `;
