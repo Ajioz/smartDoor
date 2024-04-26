@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaArrowLeft, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
+import { FaArrowLeft, FaEdit, FaEllipsisV, FaTrash, FaUnlock } from "react-icons/fa";
 import {
   Display,
   KeypadBtn,
@@ -9,11 +9,12 @@ import {
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
 import { useGlobalContext } from "../context/context";
+import { useNavigate } from "react-router-dom";
 // import { control } from "../data";
 
 const DoorSecurityKeypad = (props) => {
   const { control } = useGlobalContext();
-
+  const navigate = useNavigate();
   const [code, setCode] = useState("");
 
   const handleButtonClick = (value) => {
@@ -60,6 +61,12 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
+   const details = (id) => {
+     // window.location.href = "/";
+     navigate("/info", { state: id });
+   };
+
+
   return (
     <>
       <ExtendContainer width={"220px"}>
@@ -73,6 +80,7 @@ const DoorSecurityKeypad = (props) => {
                 }
               />{" "}
               <FaTrash color={"#ddd"} onClick={() => handleDelete(props.id)} />
+              <FaEllipsisV color={"#ddd"} onClick={() => details(props.id)} />
             </ActionBtnContainer>
             <Display>{code}</Display>
             <div>

@@ -32,9 +32,6 @@ const ClickToCopy = ({ item }) => {
 
   return (
     <Form>
-      <p style={{ fontSize: "10px", color: "darkred" }}>
-        Registered Device(s) ConnectID
-      </p>
       {vitals?.map((connectId, index) => {
         return (
           <FormGroup FormGroup key={index}>

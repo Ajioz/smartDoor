@@ -8,18 +8,25 @@ import {
   VideoPlayerContainer,
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
+import { useNavigate } from "react-router-dom";
 // import { control } from "../data";
 
 const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
   const videoRef = useRef(null);
   const { control } = useGlobalContext();
+  const navigate = useNavigate();
 
   const handleEdit = (id, disable, label1, label2) => {
     const name = control.item.find((name) => name._id === id).name;
     handleItem(false, id, disable, label1, label2, cat, name, "EDIT");
     //handleItem(delete, id, disable, label1, label2, category, name, action);
+  };
+
+  const details = (id) => {
+    // window.location.href = "/";
+    navigate("/info", { state: id });
   };
 
   const handleDelete = (id) => {
@@ -51,6 +58,7 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
                 }
               />{" "}
               <FaTrash color={"darkred"} onClick={() => handleDelete(id)} />
+              <FaEllipsisV color={"#333"} onClick={() => details(id)} />
             </ActionBtnContainer>
             <Video ref={videoRef} controls>
               <source src={src} type="video/mp4" />

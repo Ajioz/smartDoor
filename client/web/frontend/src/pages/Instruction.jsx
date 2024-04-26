@@ -14,6 +14,8 @@ import bgImg from "../images/bg-intro-desktop.png";
 import ClickToCopy from "../components/Click2Copy";
 import door from "../images/sample.jpg";
 import spyCam from "../images/spyCam.jpg";
+import { useLocation } from "react-router-dom";
+// import { control } from "../data";
 
 const doorImg = { doorLock: door, spyCam: spyCam };
 
@@ -21,6 +23,7 @@ const Instruction = (props) => {
   const hasRan = useRef(false);
   const { control, showSidebar, fetchData, isToken, setShowSidebar } =
     useGlobalContext();
+  const { state } = useLocation()
 
   useEffect(() => {
     const { status, token } = isToken();
@@ -29,6 +32,7 @@ const Instruction = (props) => {
       hasRan.current = true;
     }
   }, [fetchData, isToken]);
+  console.log(state);
 
   return (
     <Container background="#006064" imageurl={bgImg}>
@@ -40,7 +44,12 @@ const Instruction = (props) => {
       <Main>
         <div className="instruct">
           <div className="left">
-            {props.single && (
+            {!state && (
+              <p style={{ fontSize: "10px", color: "darkred" }}>
+                Registered Device(s) ConnectID
+              </p>
+            )}
+            {state && (
               <div className="img">
                 <img src={doorImg.String(props.category)} alt="doorImg" />
               </div>

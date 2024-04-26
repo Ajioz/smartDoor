@@ -814,7 +814,9 @@ export const Main = styled.main`
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 45vh;
+        padding-top: 60px;
+        max-height: calc(40px * 10); //display 5 items, each 40px high
+        overflow-y: auto;
       }
       @media only screen and (max-width: 560px) {
         width: 90%;
