@@ -13,17 +13,19 @@ import Sidebar from "../components/Sidebar";
 import bgImg from "../images/bg-intro-desktop.png";
 import ClickToCopy from "../components/Click2Copy";
 import door from "../images/sample.jpg";
-import spyCam from "../images/spyCam.jpg";
+import cam from "../images/spyCam.jpg";
 import { useLocation } from "react-router-dom";
 // import { control } from "../data";
 
-const doorImg = { doorLock: door, spyCam: spyCam };
+const doorImg = { doorLock: door, spyCam: cam };
 
 const Instruction = (props) => {
   const hasRan = useRef(false);
   const { control, showSidebar, fetchData, isToken, setShowSidebar } =
     useGlobalContext();
-  const { state } = useLocation()
+  const {
+    state: { flag, singleItem },
+  } = useLocation();
 
   useEffect(() => {
     const { status, token } = isToken();
@@ -32,7 +34,7 @@ const Instruction = (props) => {
       hasRan.current = true;
     }
   }, [fetchData, isToken]);
-  console.log(state);
+  console.log(singleItem[0].category);
 
   return (
     <Container background="#006064" imageurl={bgImg}>
@@ -42,21 +44,31 @@ const Instruction = (props) => {
       </Button>
       <Sidebar />
       <Main>
-        <div className="instruct">
+        <di v className="instruct">
           <div className="left">
-            {!state && (
+            {!flag && (
               <p style={{ fontSize: "10px", color: "darkred" }}>
                 Registered Device(s) ConnectID
               </p>
             )}
-            {state && (
-              <div className="img">
-                <img src={doorImg.String(props.category)} alt="doorImg" />
+            {flag ? (
+              <>
+                <div className="img">
+                  <img
+                    src={doorImg.singleItem[0].category}
+                    alt={singleItem[0].category}
+                  />
+                </div>
+                <p>{singleItem[0].name}</p>
+                <div className="connect-ids">
+                  <ClickToCopy item={singleItem} />
+                </div>
+              </>
+            ) : (
+              <div className="connect-ids">
+                <ClickToCopy {...control} />
               </div>
             )}
-            <div className="connect-ids">
-              <ClickToCopy {...control} />
-            </div>
           </div>
           <div className="right">
             <InstructionContainer>
@@ -113,7 +125,7 @@ const Instruction = (props) => {
               </InstructionInfo>
             </InstructionContainer>
           </div>
-        </div>
+        </di>
       </Main>
     </Container>
   );

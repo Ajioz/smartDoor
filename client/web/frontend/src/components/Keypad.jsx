@@ -61,10 +61,10 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
-   const details = (id) => {
-     // window.location.href = "/";
-     navigate("/info", { state: id });
-   };
+ const details = (id) => {
+   const singleItem = control.item.filter((item) => item._id === id);
+   navigate("/info", { state: { flag: true, singleItem } });
+ };
 
 
   return (

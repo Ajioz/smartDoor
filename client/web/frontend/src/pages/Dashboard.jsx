@@ -33,7 +33,6 @@ const Dashboard = () => {
     fetchData,
   } = useGlobalContext();
 
-  console.log(control)
   const navigate = useNavigate();
   const [category, setCategory] = useState({
     del: false,

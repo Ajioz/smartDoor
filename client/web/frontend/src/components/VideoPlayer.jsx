@@ -25,8 +25,8 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
   };
 
   const details = (id) => {
-    // window.location.href = "/";
-    navigate("/info", { state: id });
+    const singleItem = control.item.filter((item) => item._id === id);
+    navigate("/info", { state: { flag:true, singleItem } });
   };
 
   const handleDelete = (id) => {
