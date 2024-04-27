@@ -797,6 +797,7 @@ export const Main = styled.main`
       .img {
         background-color: #ddd;
         width: 100%;
+        height: 370px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -804,9 +805,29 @@ export const Main = styled.main`
         img {
           box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
           width: 350px;
-          height: 45vh;
+          height: 250px;
           margin: 10px;
         }
+        @media only screen and (max-width: 560px) {
+          width: 100%;
+          margin: 0 auto;
+          padding: 0;
+          background-color: #fff;
+          img {
+          }
+        }
+        @media only screen and (max-width: 390px) {
+          width: 100%;
+          margin: 0 auto;
+          padding: 0;
+          img {
+            width: 90%;
+          }
+        }
+      }
+      p {
+        font-size: 18px;
+        font-family: monospace;
       }
       .connect-ids {
         display: flex;
@@ -1114,6 +1135,10 @@ export const ExtendContainer = styled.div`
   margin: 0 20px;
   @media only screen and (max-width: 660px) {
     width: 90%;
+    margin: 0 auto;
+  }
+  @media only screen and (max-width: 400px) {
+    width: 100%;
     margin: 0 auto;
   }
 `;

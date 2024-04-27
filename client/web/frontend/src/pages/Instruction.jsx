@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Button,
   Container,
@@ -17,15 +17,16 @@ import cam from "../images/spyCam.jpg";
 import { useLocation } from "react-router-dom";
 // import { control } from "../data";
 
-const doorImg = { doorLock: door, spyCam: cam };
+// const doorImg = { doorLock: door, spyCam: cam };
+const doorImg = [door, cam];
 
 const Instruction = (props) => {
   const hasRan = useRef(false);
   const { control, showSidebar, fetchData, isToken, setShowSidebar } =
     useGlobalContext();
-  const {
-    state: { flag, singleItem },
-  } = useLocation();
+  const { state } = useLocation();
+
+  const [stateFlag, setStateFlag] = useState({ flag: false, singleItem: [] });
 
   useEffect(() => {
     const { status, token } = isToken();
@@ -34,7 +35,17 @@ const Instruction = (props) => {
       hasRan.current = true;
     }
   }, [fetchData, isToken]);
-  console.log(singleItem[0].category);
+
+  const loadState = useCallback(() => {
+    setStateFlag({
+      flag: state?.flag,
+      singleItem: state?.singleItem,
+    });
+  }, [state?.flag, state?.singleItem]);
+
+  useEffect(() => {
+    loadState();
+  }, [loadState]);
 
   return (
     <Container background="#006064" imageurl={bgImg}>
@@ -44,24 +55,28 @@ const Instruction = (props) => {
       </Button>
       <Sidebar />
       <Main>
-        <di v className="instruct">
+        <div className="instruct">
           <div className="left">
-            {!flag && (
+            {!stateFlag.flag && (
               <p style={{ fontSize: "10px", color: "darkred" }}>
                 Registered Device(s) ConnectID
               </p>
             )}
-            {flag ? (
+            {stateFlag.flag ? (
               <>
                 <div className="img">
                   <img
-                    src={doorImg.singleItem[0].category}
-                    alt={singleItem[0].category}
+                    src={
+                      stateFlag.singleItem[0].category === "doorLock"
+                        ? doorImg[0]
+                        : doorImg[1]
+                    }
+                    alt="itemDetail"
                   />
                 </div>
-                <p>{singleItem[0].name}</p>
+                <p>{stateFlag.singleItem[0].name}</p>
                 <div className="connect-ids">
-                  <ClickToCopy item={singleItem} />
+                  <ClickToCopy item={stateFlag.singleItem} />
                 </div>
               </>
             ) : (
@@ -125,7 +140,7 @@ const Instruction = (props) => {
               </InstructionInfo>
             </InstructionContainer>
           </div>
-        </di>
+        </div>
       </Main>
     </Container>
   );
