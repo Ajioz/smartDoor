@@ -103,7 +103,7 @@ export const AppProvider = ({ children }) => {
   const postData = async (route, body) => {
     try {
       const response = await axios.post(`${base_url}/${route}`, body);
-      console.log(response)
+      // console.log(response)
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 400) {
