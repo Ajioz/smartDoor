@@ -3,7 +3,7 @@ dotenv.config();
 import nodemailer from "nodemailer";
 import BadRequestError from "../errors/badRequest.js";
 import { StatusCodes } from "http-status-codes";
-import axios from "axios";
+import fs from "fs/promises";
 
 let config = {
   service: "gmail",
@@ -12,18 +12,26 @@ let config = {
     pass: process.env.APP_PASSWORD,
   },
 };
-
 const transporter = nodemailer.createTransport(config);
 
-/*
-    01  Send Single Mail method
-*/
+/*   Load image to the image-buffer */
+const logoBuffer = await fs.readFile(process.env.LOGO_PATH);
+
+/* Send Single Mail method */
 const sendEmail = (subject, email, message, cb) => {
   const mailOptions = {
     from: process.env.EMAIL || "no-reply@smartDoor.io",
     to: email,
     subject,
     html: message,
+    attachments: [
+      {
+        filename: "logo4.png",
+        content: logoBuffer,
+        cid: "logo4.png",
+        contentType: "image/png",
+      },
+    ],
   };
   transporter.sendMail(mailOptions, cb);
 };
@@ -38,10 +46,7 @@ export const sendSingleEmail = async (
   regToken = "",
   spam = ""
 ) => {
-  const { data } = await axios.get(
-    "https://asset.cloudinary.com/dn41vnrn0/1de1c8c202564cea4b86ff9e432405fc"
-  );
-  const { message, subject } = confirmEmail(spam, data.logo, token, host);
+  const { message, subject } = confirmEmail(spam, token, host);
   try {
     sendEmail(subject, email, message, (err, data) => {
       if (err) {
@@ -74,7 +79,7 @@ export const sendSingleEmail = async (
   }
 };
 
-let info = (logo, token, host) => {
+let getEmailTemplate = (token, host) => {
   return `<!DOCTYPE html>
       <html lang="en">
         <head>
@@ -221,7 +226,7 @@ let info = (logo, token, host) => {
         <body>
           <div class="container">
             <div class="logo">
-              <img src=${logo} alt="logo" />
+              <img src=cid:logo4.png alt="logo" />
             </div>
             <div class="multicolor-line"></div>
             <div class="header">
@@ -265,15 +270,15 @@ let info = (logo, token, host) => {
   `;
 };
 
-const confirmEmail = (spam, logo, token, host) => {
+const confirmEmail = (spam, token, host) => {
   if (!spam)
     return {
-      message: info(logo, token, host),
+      message: getEmailTemplate(token, host),
       subject: "Account Verification Token",
     };
   else
     return {
-      message: info(logo, token, token),
+      message: getEmailTemplate(token, token),
       subject: "Unusual Activity Detected!",
     };
 };

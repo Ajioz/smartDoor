@@ -43,6 +43,7 @@ export const signup = async (req, res) => {
       regToken
     );
   } catch (error) {
+    console.log(error)
     errorHandler(error, res, BadRequestError, UnauthenticatedError);
   }
 };
