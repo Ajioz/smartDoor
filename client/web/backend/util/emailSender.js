@@ -95,11 +95,11 @@ let getEmailTemplate = (token, host) => {
         }
       </style>
       </head>
-      <body>
+      <body style="font-family: sans-serif;margin: 0;padding: 0;display: block;background-color: #f1f8e9;">
         <div style="display: block;background-color: #f1f8e9; border-radius: 5px;  padding: 30px 90px; max-width: 600px;
           width: 100%; margin: 0 auto; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
           <div style=" text-align: center; margin: 10px 0; ">
-            <img src="../img/logo4.png" alt="" />
+            <img src="cid:logo4.webp" alt="" />
           </div>
           <div style=" height: 3px;
           background: rgb(20, 232, 101);
