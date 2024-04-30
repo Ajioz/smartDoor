@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "./aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
 import AWSConfiguration from "./aws-iot-configuration.js";
 Amplify.configure(awsmobile);
 
-
 const arrayRemove = (arr, value) => {
   return arr.filter((item) => item !== value);
-}
+};
 
 const CloudConnect = (props) => {
   // ALLOW USER TO SUBSCRIBE TO MQTT TOPICS
@@ -29,8 +28,8 @@ const CloudConnect = (props) => {
     connectToAwsIot();
   }, []); // the empty [] ensures only run once
 
- /** helper method to publish data */
-  const connectToAwsIot = async() => {
+  /** helper method to publish data */
+  const connectToAwsIot = async () => {
     // This connection/function is only for publishing messages;
     // Subscriptions each get their own child object with separate connections.
 
@@ -58,8 +57,8 @@ const CloudConnect = (props) => {
     console.log(
       "Publisher trying to connect to AWS IoT for clientId:",
       clientId
-      );
-      
+    );
+
     // On connect, update status
     newMqttClient.on("connect", function () {
       setIsConnected(true);
@@ -68,12 +67,12 @@ const CloudConnect = (props) => {
 
     // update state to track mqtt client
     setMqttClient(newMqttClient);
-  }
+  };
 
   const removeSubscription = (topic) => {
     // This function is passed to child components
     setSubscribedTopics(arrayRemove(subscribedTopics, topic));
-  }
+  };
 
   const handleSubscriptionRequest = (e) => {
     // stop submit button from refreshing entire page
@@ -90,14 +89,14 @@ const CloudConnect = (props) => {
       ]);
       console.log(`Subscribed to topic '${desiredSubscriptionTopic}'!`);
     }
-  }
+  };
 
   const handlePublishRequest = (e) => {
     // stop submit button from refreshing entire page
     e.preventDefault();
 
     mqttClient.publish(desiredPublishTopic, desiredPublishMessage);
-  }
+  };
 
   return (
     <div className="CloudConnect">
@@ -164,7 +163,7 @@ const CloudConnect = (props) => {
       </div>
     </div>
   );
-}
+};
 
 //######################################################################################
 const MQTTSubscription = (props) => {
@@ -172,17 +171,7 @@ const MQTTSubscription = (props) => {
   const [mqttClient, setMqttClient] = useState();
   const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
-    connectToAwsIot();
-
-    return () => {
-      // this gets called when component is destroyed...
-      //https://github.com/mqttjs/MQTT.js/blob/master/README.md#end
-      console.log(`Ended subscription to '${props.topic}'...`);
-    };
-  }, []); // the "[]" causes this to execute just once
-
-  async function connectToAwsIot() {
+  const connectToAwsIot = useCallback(async () => {
     // mqtt clients require a unique clientId; we generate one below
     let clientId = "mqtt-explorer-" + Math.floor(Math.random() * 100000 + 1);
 
@@ -226,8 +215,16 @@ const MQTTSubscription = (props) => {
 
     // update state to track mqtt client
     setMqttClient(newMqttClient);
-  }
+  }, [setMqttClient, props.topic]);
 
+  useEffect(() => {
+    connectToAwsIot();
+    // return () => {
+    //   console.log(`Ended subscription to '${props.topic}'...`); // this gets called when component is destroyed...
+    // };
+  }, [connectToAwsIot]); // the "[]" causes this to execute just once
+
+    
   const handleUnsubscribe = (e) => {
     // stop submit button from refreshing entire page
     e.preventDefault();
@@ -240,7 +237,7 @@ const MQTTSubscription = (props) => {
 
     // remove subscription from parent component, thus killing this component...
     props.removeSubscription(props.topic);
-  }
+  };
 
   return (
     <div className="MQTTSubscription">
@@ -260,6 +257,6 @@ const MQTTSubscription = (props) => {
       })}
     </div>
   );
-}
+};
 
 export default CloudConnect;

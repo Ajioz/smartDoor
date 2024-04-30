@@ -696,7 +696,7 @@ export const Form = styled.form`
   justify-content: space-between;
 `;
 
-export const FormGroup = styled.div`
+export const GroupForm = styled.div`
   position: relative;
   display: flex;
   width: 100%;

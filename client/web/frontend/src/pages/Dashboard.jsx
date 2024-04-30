@@ -20,6 +20,7 @@ import DoorSecurityKeypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
+// import CloudConnect from "../components/CloudConnect";
 // import { control } from "../data";
 
 const Dashboard = () => {
@@ -34,6 +35,7 @@ const Dashboard = () => {
   } = useGlobalContext();
 
   const navigate = useNavigate();
+
   const [category, setCategory] = useState({
     del: false,
     id: "",
@@ -46,6 +48,7 @@ const Dashboard = () => {
   });
   const [isDisable, setIsDisable] = useState(false);
   const hasRan = useRef(false);
+
 
   const handleItem = (del, id, disable, label1, label2, cat, name, action) => {
     setShowModal(!showModal);
@@ -126,7 +129,7 @@ const Dashboard = () => {
                           <Tag key={index}>
                             <p>{control.item[index].name}</p>
                           </Tag>
-                          <Line />;
+                          <Line key={category} />;
                         </>
                       )}
                     </>
@@ -189,6 +192,7 @@ const Dashboard = () => {
         label2={category.label2}
         action={category.action}
       />
+      {/* <CloudConnect {...control} /> */}
     </Container>
   );
 };

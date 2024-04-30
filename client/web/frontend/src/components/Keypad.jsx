@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FaArrowLeft, FaEdit, FaEllipsisV, FaTrash, FaUnlock } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEdit,
+  FaEllipsisV,
+  FaTrash,
+  FaUnlock,
+} from "react-icons/fa";
 import {
   Display,
   KeypadBtn,
@@ -17,6 +23,12 @@ const DoorSecurityKeypad = (props) => {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
 
+  const subscribeStack = (arrObj) => arrObj.map((item) => item.dbName);
+
+  const findItem = (array, id) => {
+    return array.item.find((name) => name._id === id);
+  };
+
   const handleButtonClick = (value) => {
     setCode((prevCode) => prevCode + value);
   };
@@ -26,13 +38,15 @@ const DoorSecurityKeypad = (props) => {
   };
 
   // Replace this function with your authentication logic
-  const handleUnlock = () => {
+  const handleUnlock = (id) => {
+    const { dbName } = findItem(control, id);
+    console.log(dbName);
     alert("Door unlocked!");
     setCode("");
   };
 
   const handleEdit = (id, disable, label1, label2) => {
-    const name = control.item.find((name) => name._id === id).name;
+    const { name } = findItem(control, id);
     props.handleItem(
       false,
       id,
@@ -44,10 +58,12 @@ const DoorSecurityKeypad = (props) => {
       "EDIT"
     );
     //handleItem(delete, id, disable, label1, label2, category, name, action);
+    const subscribers = subscribeStack(control.item);
+    console.log(subscribers);
   };
 
   const handleDelete = (id) => {
-    const itemSpec = control.item.find((name) => name._id === id);
+    const itemSpec = findItem(control, id);
     props.handleItem(
       true,
       id,
@@ -61,11 +77,10 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
- const details = (id) => {
-   const singleItem = control.item.filter((item) => item._id === id);
-   navigate("/info", { state: { flag: true, singleItem } });
- };
-
+  const details = (id) => {
+    const singleItem = control.item.filter((item) => item._id === id);
+    navigate("/info", { state: { flag: true, singleItem } });
+  };
 
   return (
     <>
@@ -105,7 +120,7 @@ const DoorSecurityKeypad = (props) => {
               </KeypadBtn>
             </div>
             <div>
-              <KeypadBtn onClick={handleUnlock}>
+              <KeypadBtn onClick={() => handleUnlock(props.id)}>
                 <FaUnlock />
               </KeypadBtn>
             </div>

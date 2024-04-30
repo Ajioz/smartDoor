@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Form, FormField, FormGroup } from "../theme/theme";
+import { Form, FormField, GroupForm } from "../theme/theme";
 
 const ClickToCopy = ({ item }) => {
   const [vitals, setVitals] = useState(item);
@@ -34,7 +34,7 @@ const ClickToCopy = ({ item }) => {
     <Form>
       {vitals?.map((connectId, index) => {
         return (
-          <FormGroup FormGroup key={index}>
+          <GroupForm FormGroup key={index}>
             <FormField
               type="text"
               value={connectId.dbName}
@@ -44,7 +44,7 @@ const ClickToCopy = ({ item }) => {
             <span onClick={(e) => copyGasToClipboard(e, connectId._id)}>
               {connectId.copy ? connectId.copy : "copy"}
             </span>
-          </FormGroup>
+          </GroupForm>
         );
       })}
     </Form>

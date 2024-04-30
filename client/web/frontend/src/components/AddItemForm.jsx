@@ -7,7 +7,7 @@ import {
   CloseModalBtn,
   Form,
   ClaimBtn,
-  FormGroup,
+  GroupForm,
   FormField,
   BtnCenter,
   PureDiv,
@@ -37,7 +37,7 @@ const AddItemForm = (props) => {
     if (action === "CREATE") {
       let random = Math.floor(Math.random() * 1000);
       let randomDate = Date.now();
-      let dbName = `${props.category}/${name
+      let dbName = `smartLock/${props.category}/${name
         .split(" ")
         .join("")}${randomDate}${random}`;
       formData = {
@@ -96,7 +96,7 @@ const AddItemForm = (props) => {
         <ModalContainer>
           <Form onSubmit={(e) => submitForm(e, props.action)}>
             <label htmlFor="type">{props.label1}</label>
-            <FormGroup>
+            <GroupForm>
               <FormField
                 type="text"
                 name="category"
@@ -107,9 +107,9 @@ const AddItemForm = (props) => {
                 disabled={props.status}
               />
               <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
-            </FormGroup>
+            </GroupForm>
             <label htmlFor="input">{props.label2}</label>
-            <FormGroup>
+            <GroupForm>
               <FormField
                 type="text"
                 placeholder="name"
@@ -119,7 +119,7 @@ const AddItemForm = (props) => {
                 required
               />
               <span>{`${new Date().getMinutes()}${new Date().getSeconds()}`}</span>
-            </FormGroup>
+            </GroupForm>
             <BtnCenter>
               <ClaimBtn type="submit" disabled={loading}>
                 Submit
