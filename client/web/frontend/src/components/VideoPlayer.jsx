@@ -2,8 +2,6 @@ import React, { useRef } from "react";
 import {
   ActionBtnContainer,
   ExtendContainer,
-  // Controls,
-  // PlayButton,
   Video,
   VideoPlayerContainer,
 } from "../theme/theme";
@@ -11,6 +9,7 @@ import AddItemBtn from "./AddItemBtn";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
 import { useNavigate } from "react-router-dom";
+import { details, findItem } from "../utils/handler";
 // import { control } from "../data";
 
 const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
@@ -19,18 +18,14 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
   const navigate = useNavigate();
 
   const handleEdit = (id, disable, label1, label2) => {
-    const name = control.item.find((name) => name._id === id).name;
+    const { name } = findItem(control, id);
     handleItem(false, id, disable, label1, label2, cat, name, "EDIT");
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
-  const details = (id) => {
-    const singleItem = control.item.filter((item) => item._id === id);
-    navigate("/info", { state: { flag:true, singleItem } });
-  };
 
   const handleDelete = (id) => {
-    const itemSpec = control.item.find((name) => name._id === id);
+    const itemSpec = findItem(control, id);
     console.log(itemSpec.name);
     handleItem(
       true,
@@ -58,7 +53,10 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
                 }
               />{" "}
               <FaTrash color={"darkred"} onClick={() => handleDelete(id)} />
-              <FaEllipsisV color={"#333"} onClick={() => details(id)} />
+              <FaEllipsisV
+                color={"#333"}
+                onClick={() => details(id, control, navigate)}
+              />
             </ActionBtnContainer>
             <Video ref={videoRef} controls>
               <source src={src} type="video/mp4" />

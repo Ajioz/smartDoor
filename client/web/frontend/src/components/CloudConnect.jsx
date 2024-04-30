@@ -9,9 +9,8 @@ const arrayRemove = (arr, value) => {
   return arr.filter((item) => item !== value);
 };
 
-const CloudConnect = (props) => {
+const CloudConnect = ({item}) => {
   // ALLOW USER TO SUBSCRIBE TO MQTT TOPICS
-
   const [desiredSubscriptionTopic, setDesiredSubscriptionTopic] = useState("#");
   const [desiredPublishTopic, setDesiredPublishTopic] = useState("0000");
   const [desiredPublishMessage, setDesiredPublishMessage] = useState(
@@ -27,6 +26,47 @@ const CloudConnect = (props) => {
   useEffect(() => {
     connectToAwsIot();
   }, []); // the empty [] ensures only run once
+
+  // The logic below create a new array of video and sensor connectID for parallel mqtt subscription
+
+  /**Mine */
+  // const subscribeStack = (arrObj) => {
+  //   return arrObj.map((subscriber) => {
+  //     if (subscriber.dbName.includes("spyCam")) return subscriber.dbName;
+  //     let sensor = subscriber.dbName.split("/")
+  //     sensor[1] = "/sensor/";
+  //     return sensor.join("");
+  //   });
+  // };
+
+  /**Gimini */
+  // const subscribeStack = (arrObj) => {
+  //   return arrObj.map((subscriber) => {
+  //     // Check for "spyCam" first for efficiency
+  //     if (subscriber.dbName.includes("spyCam")) return subscriber.dbName;
+  //     // Use map to modify the dbName for other subscribers
+  //     return subscriber.dbName.replace(/\/([^/]+)\//, "/sensor/");
+  //   });
+  // };
+
+  /**Meta AI */
+  // const subscribeStack = (arrObj) => {
+  //   return arrObj.map((subscriber) => {
+  //     const dbName = subscriber.dbName;
+  //     return dbName.includes("spyCam")
+  //       ? dbName
+  //       : dbName.replace(/\/[^\/]+/, "/sensor/"); //small error
+  //   });
+  // };
+
+  /**GPT 3.5 */
+  const subscribeStack = (arrObj) => {
+    return arrObj.map((subscriber) => {
+      return subscriber.dbName.includes("spyCam")
+        ? subscriber.dbName
+        : subscriber.dbName.replace("/", "/sensor/");
+    });
+  };
 
   /** helper method to publish data */
   const connectToAwsIot = async () => {
@@ -53,18 +93,18 @@ const CloudConnect = (props) => {
       secretKey: essentialCredentials.secretAccessKey,
       sessionToken: essentialCredentials.sessionToken,
     });
-
+      
     console.log(
       "Publisher trying to connect to AWS IoT for clientId:",
       clientId
-    );
-
+      );
+      
     // On connect, update status
     newMqttClient.on("connect", function () {
       setIsConnected(true);
       console.log("Publisher connected to AWS IoT for clientId:", clientId);
     });
-
+      
     // update state to track mqtt client
     setMqttClient(newMqttClient);
   };
@@ -77,24 +117,19 @@ const CloudConnect = (props) => {
   const handleSubscriptionRequest = (e) => {
     // stop submit button from refreshing entire page
     e.preventDefault();
-
     if (subscribedTopics.includes(desiredSubscriptionTopic)) {
       console.log(
         `You are already subscribed to topic '${desiredSubscriptionTopic}'!`
       );
     } else {
-      setSubscribedTopics((prevTopics) => [
-        ...prevTopics,
-        desiredSubscriptionTopic,
-      ]);
-      console.log(`Subscribed to topic '${desiredSubscriptionTopic}'!`);
+      setSubscribedTopics(subscribeStack(item));
+      console.log(`Subscribed to topics '${desiredSubscriptionTopic}'!`);
     }
   };
 
   const handlePublishRequest = (e) => {
     // stop submit button from refreshing entire page
     e.preventDefault();
-
     mqttClient.publish(desiredPublishTopic, desiredPublishMessage);
   };
 
@@ -224,7 +259,6 @@ const MQTTSubscription = (props) => {
     // };
   }, [connectToAwsIot]); // the "[]" causes this to execute just once
 
-    
   const handleUnsubscribe = (e) => {
     // stop submit button from refreshing entire page
     e.preventDefault();

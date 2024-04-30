@@ -178,7 +178,7 @@ export const handleItemSubmit = async (
   navigate
 ) => {
   const res = await ajiozItem(action, id, formData);
-   hasRun.current = false;
+  hasRun.current = false;
   if (res?.status === 201) {
     if (!hasRun.current) {
       toast.success(res.data.message, toastParam);
@@ -192,6 +192,15 @@ export const handleItemSubmit = async (
     }
   }
   return res;
+};
+
+export const findItem = (array, id) => {
+  return array.item.find((name) => name._id === id);
+};
+
+export const details = (id, array, navigate) => {
+  const singleItem = array.item.filter((item) => item._id === id);
+  navigate("/info", { state: { flag: true, singleItem } });
 };
 
 // Get a cookie

@@ -16,6 +16,7 @@ import {
 import AddItemBtn from "./AddItemBtn";
 import { useGlobalContext } from "../context/context";
 import { useNavigate } from "react-router-dom";
+import { details, findItem } from "../utils/handler";
 // import { control } from "../data";
 
 const DoorSecurityKeypad = (props) => {
@@ -24,50 +25,7 @@ const DoorSecurityKeypad = (props) => {
   const [code, setCode] = useState("");
 
 
-  // The logic below create a new array of video and sensor connectID for parallel mqtt subscription
-  /**Mine */
-  // const subscribeStack = (arrObj) => {
-  //   return arrObj.map((subscriber) => {
-  //     if (subscriber.dbName.includes("spyCam")) return subscriber.dbName;
-  //     let sensor = subscriber.dbName.split("/")
-  //     sensor[1] = "/sensor/";
-  //     return sensor.join("");
-  //   });
-  // };
-
-  /**Gimini */
-  // const subscribeStack = (arrObj) => {
-  //   return arrObj.map((subscriber) => {
-  //     // Check for "spyCam" first for efficiency
-  //     if (subscriber.dbName.includes("spyCam")) return subscriber.dbName;
-  //     // Use map to modify the dbName for other subscribers
-  //     return subscriber.dbName.replace(/\/([^/]+)\//, "/sensor/");
-  //   });
-  // };
-
-  /**Meta AI */
-  // const subscribeStack = (arrObj) => {
-  //   return arrObj.map((subscriber) => {
-  //     const dbName = subscriber.dbName;
-  //     return dbName.includes("spyCam")
-  //       ? dbName
-  //       : dbName.replace(/\/[^\/]+/, "/sensor/"); //small error
-  //   });
-  // };
-
-  /**GPT 3.5 */
-  const subscribeStack = (arrObj) => {
-    return arrObj.map((subscriber) => {
-      return subscriber.dbName.includes("spyCam")
-        ? subscriber.dbName
-        : subscriber.dbName.replace("/", "/sensor/");
-    });
-  };
-
-  const findItem = (array, id) => {
-    return array.item.find((name) => name._id === id);
-  };
-
+  
   const handleButtonClick = (value) => {
     setCode((prevCode) => prevCode + value);
   };
@@ -79,7 +37,7 @@ const DoorSecurityKeypad = (props) => {
   // Replace this function with your authentication logic
   const handleUnlock = (id) => {
     const { dbName } = findItem(control, id);
-    console.log(dbName);
+    console.log(dbName, code);
     alert("Door unlocked!");
     setCode("");
   };
@@ -97,8 +55,6 @@ const DoorSecurityKeypad = (props) => {
       "EDIT"
     );
     //handleItem(delete, id, disable, label1, label2, category, name, action);
-    const subscribers = subscribeStack(control.item);
-    console.log(subscribers);
   };
 
   const handleDelete = (id) => {
@@ -116,11 +72,7 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
-  const details = (id) => {
-    const singleItem = control.item.filter((item) => item._id === id);
-    navigate("/info", { state: { flag: true, singleItem } });
-  };
-
+ 
   return (
     <>
       <ExtendContainer width={"220px"}>
@@ -134,7 +86,10 @@ const DoorSecurityKeypad = (props) => {
                 }
               />{" "}
               <FaTrash color={"#ddd"} onClick={() => handleDelete(props.id)} />
-              <FaEllipsisV color={"#ddd"} onClick={() => details(props.id)} />
+              <FaEllipsisV
+                color={"#ddd"}
+                onClick={() => details(props.id, control, navigate)}
+              />
             </ActionBtnContainer>
             <Display>{code}</Display>
             <div>

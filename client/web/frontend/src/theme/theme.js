@@ -504,21 +504,6 @@ export const Video = styled.video`
   margin: 10px auto;
 `;
 
-export const Controls = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-`;
-
-export const PlayButton = styled.button`
-  margin: 0 10px;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-`;
-
 // Keypad Styled Components
 export const KeypadContainer = styled.div`
   display: flex;
