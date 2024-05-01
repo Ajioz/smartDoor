@@ -16,7 +16,7 @@ import {
 } from "../theme/theme";
 import dashboard from "../images/dashboard.jpg";
 import { AlertNotify, Boardchip } from "../components/Chips";
-import DoorSecurityKeypad from "../components/Keypad";
+import Keypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  const [code, setCode] = useState("");
+  const [keypad, setKeypad] = useState({ dbName: "", code: "" });
   const [category, setCategory] = useState({
     del: false,
     id: "",
@@ -51,21 +51,7 @@ const Dashboard = () => {
   const [isDisable, setIsDisable] = useState(false);
   const hasRan = useRef(false);
 
-  // const handleButtonClick = (value) => {
-  //   setCode((prevCode) => prevCode + value);
-  // };
-
-  // const handleClear = () => {
-  //   setCode("");
-  // };
-
-  // // Replace this function with your authentication logic
-  // const handleUnlock = (id) => {
-  //   const { dbName } = findItem(control, id);
-  //   console.log(dbName, code);
-  //   alert("Door unlocked!");
-  //   setCode("");
-  // };
+  console.log(keypad);
 
   const handleItem = (del, id, disable, label1, label2, cat, name, action) => {
     setShowModal(!showModal);
@@ -130,8 +116,7 @@ const Dashboard = () => {
               {control.item.length > 0 &&
                 control.item.map((item, index) => {
                   const { _id, category } = item;
-                  let Item =
-                    category === "doorLock" ? DoorSecurityKeypad : VideoPlayer;
+                  let Item = category === "doorLock" ? Keypad : VideoPlayer;
                   return (
                     <>
                       <Item
@@ -140,10 +125,7 @@ const Dashboard = () => {
                         cat={category}
                         id={_id}
                         handleItem={handleItem}
-                        // handleUnlock={handleUnlock}
-                        // handleButtonClick={handleButtonClick}
-                        // handleClear={handleClear}
-                        // code={code}
+                        setKeypad={setKeypad}
                       />
                       {isEven(index + 1) && (
                         <>
@@ -164,9 +146,7 @@ const Dashboard = () => {
             {control.item.length === 1
               ? control.item.map((item, _i) => {
                   let Item =
-                    item.category === "doorLock"
-                      ? VideoPlayer
-                      : DoorSecurityKeypad;
+                    item.category === "doorLock" ? VideoPlayer : Keypad;
                   let category =
                     item.category === "doorLock" ? "spyCam" : "doorLock";
                   return (
@@ -175,12 +155,9 @@ const Dashboard = () => {
                         <Item
                           item={false}
                           cat={category}
-                          handleItem={handleItem}
                           id={item._id}
-                          handleUnlock={handleUnlock}
-                          handleButtonClick={handleButtonClick}
-                          handleClear={handleClear}
-                          code={code}
+                          handleItem={handleItem}
+                          setKeypad={setKeypad}
                         />
                       </LowerContainer>
                     </LowerSection>
@@ -190,7 +167,7 @@ const Dashboard = () => {
                   <>
                     <LowerSection jcc={"center"}>
                       <LowerContainer jjcontent={"center"} width={"50%"}>
-                        <DoorSecurityKeypad
+                        <Keypad
                           item={false}
                           cat={"doorLock"}
                           handleItem={handleItem}
@@ -217,7 +194,7 @@ const Dashboard = () => {
         label2={category.label2}
         action={category.action}
       />
-      {/* <CloudConnect {...control} /> */}
+      {/* <CloudConnect {...control} keypad={keypad}/> */}
     </Container>
   );
 };

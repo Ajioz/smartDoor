@@ -26,7 +26,16 @@ const DoorSecurityKeypad = (props) => {
 
   const handleEdit = (id, disable, label1, label2) => {
     const { name } = findItem(control, id);
-    props.handleItem(false, id, disable, label1, label2, props.cat, name, "EDIT");
+    props.handleItem(
+      false,
+      id,
+      disable,
+      label1,
+      label2,
+      props.cat,
+      name,
+      "EDIT"
+    );
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
@@ -42,6 +51,7 @@ const DoorSecurityKeypad = (props) => {
   const handleUnlock = (id) => {
     const { dbName } = findItem(control, id);
     console.log(dbName, code);
+    props.setKeypad({ dbName, code });
     alert("Door unlocked!");
     setCode("");
   };
