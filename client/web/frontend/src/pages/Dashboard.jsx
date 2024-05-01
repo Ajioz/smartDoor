@@ -20,6 +20,7 @@ import DoorSecurityKeypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
+import { findItem } from "../utils/handler";
 // import CloudConnect from "../components/CloudConnect";
 // import { control } from "../data";
 
@@ -36,6 +37,7 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
+  const [code, setCode] = useState("");
   const [category, setCategory] = useState({
     del: false,
     id: "",
@@ -49,6 +51,21 @@ const Dashboard = () => {
   const [isDisable, setIsDisable] = useState(false);
   const hasRan = useRef(false);
 
+  // const handleButtonClick = (value) => {
+  //   setCode((prevCode) => prevCode + value);
+  // };
+
+  // const handleClear = () => {
+  //   setCode("");
+  // };
+
+  // // Replace this function with your authentication logic
+  // const handleUnlock = (id) => {
+  //   const { dbName } = findItem(control, id);
+  //   console.log(dbName, code);
+  //   alert("Door unlocked!");
+  //   setCode("");
+  // };
 
   const handleItem = (del, id, disable, label1, label2, cat, name, action) => {
     setShowModal(!showModal);
@@ -123,6 +140,10 @@ const Dashboard = () => {
                         cat={category}
                         id={_id}
                         handleItem={handleItem}
+                        // handleUnlock={handleUnlock}
+                        // handleButtonClick={handleButtonClick}
+                        // handleClear={handleClear}
+                        // code={code}
                       />
                       {isEven(index + 1) && (
                         <>
@@ -156,6 +177,10 @@ const Dashboard = () => {
                           cat={category}
                           handleItem={handleItem}
                           id={item._id}
+                          handleUnlock={handleUnlock}
+                          handleButtonClick={handleButtonClick}
+                          handleClear={handleClear}
+                          code={code}
                         />
                       </LowerContainer>
                     </LowerSection>

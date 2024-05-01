@@ -34,7 +34,7 @@ const ClickToCopy = ({ item }) => {
     <Form>
       {vitals?.map((connectId, index) => {
         return (
-          <GroupForm FormGroup key={index}>
+          <GroupForm key={index}>
             <FormField
               type="text"
               value={connectId.dbName}

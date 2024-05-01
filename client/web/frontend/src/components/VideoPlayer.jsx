@@ -23,7 +23,6 @@ const VideoPlayer = ({ src, item, cat, id, handleItem }) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
-
   const handleDelete = (id) => {
     const itemSpec = findItem(control, id);
     console.log(itemSpec.name);

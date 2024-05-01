@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Amplify, { Auth } from "aws-amplify";
+import Amplify,{Auth} from "aws-amplify";
 import awsmobile from "./aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
-import AWSConfiguration from "./aws-iot-configuration.js";
+import AWSConfiguration from "./aws-iotcore-configuration";
 Amplify.configure(awsmobile);
 
 const arrayRemove = (arr, value) => {
@@ -77,7 +77,7 @@ const CloudConnect = ({item}) => {
     let clientId = "smartlock-" + Math.floor(Math.random() * 100000 + 1);
 
     // get credentials and, from them, extract key, secret key, and session token
-    // Amplify's auth functionality makes this easy for us...
+    // Amplify's Auth functionality makes this easy for us...
     let currentCredentials = await Auth.currentCredentials();
     let essentialCredentials = Auth.essentialCredentials(currentCredentials);
 
@@ -211,7 +211,7 @@ const MQTTSubscription = (props) => {
     let clientId = "mqtt-explorer-" + Math.floor(Math.random() * 100000 + 1);
 
     // get credentials and, from them, extract key, secret key, and session token
-    // Amplify's auth functionality makes this easy for us...
+    // Amplify's Auth functionality makes this easy for us...
     let currentCredentials = await Auth.currentCredentials();
     let essentialCredentials = Auth.essentialCredentials(currentCredentials);
 

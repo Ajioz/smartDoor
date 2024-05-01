@@ -24,8 +24,12 @@ const DoorSecurityKeypad = (props) => {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
 
+  const handleEdit = (id, disable, label1, label2) => {
+    const { name } = findItem(control, id);
+    props.handleItem(false, id, disable, label1, label2, props.cat, name, "EDIT");
+    //handleItem(delete, id, disable, label1, label2, category, name, action);
+  };
 
-  
   const handleButtonClick = (value) => {
     setCode((prevCode) => prevCode + value);
   };
@@ -40,21 +44,6 @@ const DoorSecurityKeypad = (props) => {
     console.log(dbName, code);
     alert("Door unlocked!");
     setCode("");
-  };
-
-  const handleEdit = (id, disable, label1, label2) => {
-    const { name } = findItem(control, id);
-    props.handleItem(
-      false,
-      id,
-      disable,
-      label1,
-      label2,
-      props.cat,
-      name,
-      "EDIT"
-    );
-    //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
   const handleDelete = (id) => {
@@ -72,7 +61,6 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
- 
   return (
     <>
       <ExtendContainer width={"220px"}>
