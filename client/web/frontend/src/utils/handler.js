@@ -212,6 +212,6 @@ export const logout = () => {
 };
 
 const storeToken = (token, navigate) => {
-  localStorage.setItem("token", JSON.stringify(token));
+  localStorage.setItem("lockToken", JSON.stringify(token));
   return navigate("/dashboard");
 };

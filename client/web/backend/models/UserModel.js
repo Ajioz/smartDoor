@@ -38,7 +38,6 @@ const UserSchema = new Schema({
   isVerified: { type: Boolean, default: false },
 });
 
-
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -49,9 +48,13 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.methods.createJWT = function () {
-  return sign({ userId: this._id, name: this.name }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
-  });
+  return sign(
+    { userId: this._id, username: this.username },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
 };
 
 UserSchema.methods.comparePassword = async function (candidatePassword) {

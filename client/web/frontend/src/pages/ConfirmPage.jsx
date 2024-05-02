@@ -8,8 +8,8 @@ const ConfirmPage = () => {
       <ConfirmBox
         imgType={true}
         img={tick}
-        msg={"Email Successfully Confirmed!"}
-        action={"Login"}
+        msg={"Enter The Code You Received"}
+        action={"confirm"}
       />
     </>
   );

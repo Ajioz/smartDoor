@@ -20,7 +20,6 @@ import Keypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
-import { findItem } from "../utils/handler";
 // import CloudConnect from "../components/CloudConnect";
 // import { control } from "../data";
 

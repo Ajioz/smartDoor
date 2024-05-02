@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 
 const logOut = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("lockToken");
   window.location.href = "/";
 };
 

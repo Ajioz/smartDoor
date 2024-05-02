@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  createContext,
-  useCallback,
-} from "react";
+import React, { useState, useContext, createContext, useCallback } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
@@ -53,8 +48,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const isToken = () => {
-    const token = JSON.parse(localStorage.getItem("token")) || "";
-    // console.log(token);
+    const token = JSON.parse(localStorage.getItem("lockToken")) || "";
     if (token === "") return { status: false, token };
     try {
       const decodedToken = jwtDecode(token);
@@ -62,10 +56,10 @@ export const AppProvider = ({ children }) => {
       const now = Date.now();
       if (now > expirationTime) {
         console.log("Token likely expired (client-side check).");
-        localStorage.removeItem("token");
+        localStorage.removeItem("lockToken");
         return { status: false, token: "expired" };
       } else {
-        return { status: true, token };
+        return { status: true, token, username: token.username };
       }
     } catch (error) {
       console.error("Error decoding token:", error);
@@ -85,12 +79,12 @@ export const AppProvider = ({ children }) => {
       try {
         const response = await axios.get(`${base_url}/thing`, config);
         if (response?.data?.thing.length > 0)
-        setControl({
-          ...control,
-          loading: false,
-          item: [...response.data.thing],
-          status: false,
-        });
+          setControl({
+            ...control,
+            loading: false,
+            item: [...response.data.thing],
+            status: false,
+          });
       } catch (error) {
         console.log(error);
         setControl({ ...control, loading: false, item: [] });
@@ -98,7 +92,6 @@ export const AppProvider = ({ children }) => {
     },
     [control]
   );
-
 
   const postData = async (route, body) => {
     try {
