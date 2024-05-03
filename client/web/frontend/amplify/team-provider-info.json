@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-doorlock-dev-163244-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-doorlock-dev-163244-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-doorlock-dev-163244-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-doorlock-dev-163244-deployment",
+      "UnauthRoleName": "amplify-doorlock-dev-163244-unauthRole",
+      "StackName": "amplify-doorlock-dev-163244",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-doorlock-dev-163244/6513dbe0-0962-11ef-80f8-0a3698067935",
+      "AmplifyAppId": "d2l8h3u8bmg208"
+    }
+  }
+}
