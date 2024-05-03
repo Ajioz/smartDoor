@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Amplify,{Auth} from "aws-amplify";
-import awsmobile from "./aws-exports";
+import awsmobile from "../aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
-import AWSConfiguration from "./aws-iotcore-configuration";
+import AWSConfiguration from "../aws-iotcore-configuration";
 Amplify.configure(awsmobile);
 
 const arrayRemove = (arr, value) => {

@@ -20,7 +20,7 @@ import Keypad from "../components/Keypad";
 import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
-// import CloudConnect from "../components/CloudConnect";
+import CloudConnect from "../components/CloudConnect";
 // import { control } from "../data";
 
 const Dashboard = () => {
@@ -193,7 +193,7 @@ const Dashboard = () => {
         label2={category.label2}
         action={category.action}
       />
-      {/* <CloudConnect {...control} keypad={keypad}/> */}
+      <CloudConnect {...control} keypad={keypad}/>
     </Container>
   );
 };
