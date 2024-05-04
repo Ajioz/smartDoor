@@ -1,15 +1,77 @@
 {
-  "dev": {
+  "cpapp": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-doorlock-dev-163244-authRole",
-      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-doorlock-dev-163244-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-doorlock-dev-163244-authRole",
+      "AuthRoleName": "amplify-awsamplifyreacttempl-cpapp-132902-authRole",
+      "UnauthRoleArn": "arn:aws:iam::954075284382:role/amplify-awsamplifyreacttempl-cpapp-132902-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::954075284382:role/amplify-awsamplifyreacttempl-cpapp-132902-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-awsamplifyreacttempl-cpapp-132902-deployment",
+      "UnauthRoleName": "amplify-awsamplifyreacttempl-cpapp-132902-unauthRole",
+      "StackName": "amplify-awsamplifyreacttempl-cpapp-132902",
+      "StackId": "arn:aws:cloudformation:us-east-1:954075284382:stack/amplify-awsamplifyreacttempl-cpapp-132902/d6f39000-7000-11ec-bef8-0a3d0a4ac375",
+      "AmplifyAppId": "d150kh01nxvr10"
+    },
+    "categories": {
+      "auth": {
+        "cognito81d9f49f": {}
+      }
+    }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awsamplifyreacttempl-test-72722-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-test-72722-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-test-72722-authRole",
       "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-doorlock-dev-163244-deployment",
-      "UnauthRoleName": "amplify-doorlock-dev-163244-unauthRole",
-      "StackName": "amplify-doorlock-dev-163244",
-      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-doorlock-dev-163244/6513dbe0-0962-11ef-80f8-0a3698067935",
-      "AmplifyAppId": "d2l8h3u8bmg208"
+      "DeploymentBucketName": "amplify-awsamplifyreacttempl-test-72722-deployment",
+      "UnauthRoleName": "amplify-awsamplifyreacttempl-test-72722-unauthRole",
+      "StackName": "amplify-awsamplifyreacttempl-test-72722",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-awsamplifyreacttempl-test-72722/f71a8ef0-c581-11ee-8637-06590e209fe9",
+      "AmplifyAppId": "d202mnbxjsvpku"
+    },
+    "categories": {
+      "auth": {
+        "awsamplifyreacttempl7a78fa81": {}
+      }
+    }
+  },
+  "testing": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awsamplifyreacttempl-testing-73331-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-testing-73331-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-testing-73331-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-awsamplifyreacttempl-testing-73331-deployment",
+      "UnauthRoleName": "amplify-awsamplifyreacttempl-testing-73331-unauthRole",
+      "StackName": "amplify-awsamplifyreacttempl-testing-73331",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-awsamplifyreacttempl-testing-73331/d2559af0-c582-11ee-ab04-066993bb7f35",
+      "AmplifyAppId": "d202mnbxjsvpku"
+    },
+    "categories": {
+      "auth": {
+        "awsamplifyreacttempl7a78fa81": {}
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {}
+  },
+  "doorlock": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-doorlock-doorlock-172826-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-doorlock-doorlock-172826-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-doorlock-doorlock-172826-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-doorlock-doorlock-172826-deployment",
+      "UnauthRoleName": "amplify-doorlock-doorlock-172826-unauthRole",
+      "StackName": "amplify-doorlock-doorlock-172826",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-doorlock-doorlock-172826/330406e0-096a-11ef-a883-024dc7a3b1ed",
+      "AmplifyAppId": "d202mnbxjsvpku"
+    },
+    "categories": {
+      "auth": {
+        "awsamplifyreacttempl7a78fa81": {}
+      }
     }
   }
 }
