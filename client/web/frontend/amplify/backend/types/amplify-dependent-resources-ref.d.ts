@@ -1,12 +1,11 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "awsamplifyreacttempl7a78fa81": {
+    "cognito81d9f49f": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
-      "CreatedSNSRole": "string",
+      "AppClientSecret": "string",
       "IdentityPoolId": "string",
       "IdentityPoolName": "string",
-      "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
     }

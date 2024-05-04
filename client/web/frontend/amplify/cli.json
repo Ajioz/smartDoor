@@ -10,14 +10,6 @@
       "skipoverridemutationinputtypes": false,
       "transformerversion": 1,
       "suppressschemamigrationprompt": true,
-      "securityenhancementnotification": true,
-      "showfieldauthnotification": true,
-      "usesubusernamefordefaultidentityclaim": true,
-      "usefieldnameforprimarykeyconnectionfield": false,
-      "enableautoindexquerynames": false,
-      "respectprimarykeyattributesonconnectionfield": false,
-      "shoulddeepmergedirectiveconfigdefaults": false,
-      "populateownerfieldforstaticgroupauth": false,
       "securityEnhancementNotification": false,
       "showFieldAuthNotification": false
     },
@@ -41,8 +33,7 @@
       "handlelistnullabilitytransparently": false,
       "emitauthprovider": false,
       "generateindexrules": false,
-      "enabledartnullsafety": false,
-      "generatemodelsforlazyloadandcustomselectionset": false
+      "enabledartnullsafety": false
     },
     "appsync": {
       "generategraphqlpermissions": false
@@ -58,5 +49,8 @@
     "project": {
       "overrides": true
     }
+  },
+  "debug": {
+    "shareProjectConfig": true
   }
 }
