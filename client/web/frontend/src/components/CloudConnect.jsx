@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Amplify,{Auth} from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "../aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
 import AWSConfiguration from "../aws-iotcore-configuration";
@@ -9,7 +9,7 @@ const arrayRemove = (arr, value) => {
   return arr.filter((item) => item !== value);
 };
 
-const CloudConnect = ({item}) => {
+const CloudConnect = ({ item }) => {
   // ALLOW USER TO SUBSCRIBE TO MQTT TOPICS
   const [desiredSubscriptionTopic, setDesiredSubscriptionTopic] = useState("#");
   const [desiredPublishTopic, setDesiredPublishTopic] = useState("0000");
@@ -29,42 +29,16 @@ const CloudConnect = ({item}) => {
 
   // The logic below create a new array of video and sensor connectID for parallel mqtt subscription
 
-  /**Mine */
-  // const subscribeStack = (arrObj) => {
-  //   return arrObj.map((subscriber) => {
-  //     if (subscriber.dbName.includes("spyCam")) return subscriber.dbName;
-  //     let sensor = subscriber.dbName.split("/")
-  //     sensor[1] = "/sensor/";
-  //     return sensor.join("");
-  //   });
-  // };
 
-  /**Gimini */
-  // const subscribeStack = (arrObj) => {
-  //   return arrObj.map((subscriber) => {
-  //     // Check for "spyCam" first for efficiency
-  //     if (subscriber.dbName.includes("spyCam")) return subscriber.dbName;
-  //     // Use map to modify the dbName for other subscribers
-  //     return subscriber.dbName.replace(/\/([^/]+)\//, "/sensor/");
-  //   });
-  // };
-
-  /**Meta AI */
-  // const subscribeStack = (arrObj) => {
-  //   return arrObj.map((subscriber) => {
-  //     const dbName = subscriber.dbName;
-  //     return dbName.includes("spyCam")
-  //       ? dbName
-  //       : dbName.replace(/\/[^\/]+/, "/sensor/"); //small error
-  //   });
-  // };
-
-  /**GPT 3.5 */
+  /** GPT 3.5 and me */
   const subscribeStack = (arrObj) => {
-    return arrObj.map((subscriber) => {
+    return arrObj.flatMap((subscriber) => {
       return subscriber.dbName.includes("spyCam")
         ? subscriber.dbName
-        : subscriber.dbName.replace("/", "/sensor/");
+        : [
+            subscriber.dbName.replace("/", "/sensor/"),
+            subscriber.dbName.replace("/", "/ack/"),
+          ];
     });
   };
 
@@ -93,18 +67,18 @@ const CloudConnect = ({item}) => {
       secretKey: essentialCredentials.secretAccessKey,
       sessionToken: essentialCredentials.sessionToken,
     });
-      
+
     console.log(
       "Publisher trying to connect to AWS IoT for clientId:",
       clientId
-      );
-      
+    );
+
     // On connect, update status
     newMqttClient.on("connect", function () {
       setIsConnected(true);
       console.log("Publisher connected to AWS IoT for clientId:", clientId);
     });
-      
+
     // update state to track mqtt client
     setMqttClient(newMqttClient);
   };
