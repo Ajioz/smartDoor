@@ -13,56 +13,25 @@
     },
     "categories": {
       "auth": {
-        "cognito81d9f49f": {}
+        "cognitoajiozi": {}
       }
     }
   },
-  "ajiozdev": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-awsecurity-ajiozdev-00946-authRole",
-      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsecurity-ajiozdev-00946-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsecurity-ajiozdev-00946-authRole",
+      "AuthRoleName": "amplify-devsecurity-dev-153236-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-devsecurity-dev-153236-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-devsecurity-dev-153236-authRole",
       "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-awsecurity-ajiozdev-00946-deployment",
-      "UnauthRoleName": "amplify-awsecurity-ajiozdev-00946-unauthRole",
-      "StackName": "amplify-awsecurity-ajiozdev-00946",
-      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-awsecurity-ajiozdev-00946/6912e880-0a6b-11ef-9566-0219c3e80425",
-      "AmplifyAppId": "d200idvs8zbqod"
-    }
-  },
-  "prodev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-awsecurity-prodev-03054-authRole",
-      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsecurity-prodev-03054-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsecurity-prodev-03054-authRole",
-      "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-awsecurity-prodev-03054-deployment",
-      "UnauthRoleName": "amplify-awsecurity-prodev-03054-unauthRole",
-      "StackName": "amplify-awsecurity-prodev-03054",
-      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-awsecurity-prodev-03054/5c8560e0-0a6e-11ef-89da-06ea7872a059",
-      "AmplifyAppId": "d200idvs8zbqod"
+      "DeploymentBucketName": "amplify-devsecurity-dev-153236-deployment",
+      "UnauthRoleName": "amplify-devsecurity-dev-153236-unauthRole",
+      "StackName": "amplify-devsecurity-dev-153236",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-devsecurity-dev-153236/7e408b40-0bb5-11ef-823e-028955e024ed",
+      "AmplifyAppId": "d2e0anlcpf1i9u"
     },
     "categories": {
       "auth": {
-        "cognito81d9f49f": {}
-      }
-    }
-  },
-  "door": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-awsecurity-door-84907-authRole",
-      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsecurity-door-84907-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsecurity-door-84907-authRole",
-      "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-awsecurity-door-84907-deployment",
-      "UnauthRoleName": "amplify-awsecurity-door-84907-unauthRole",
-      "StackName": "amplify-awsecurity-door-84907",
-      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-awsecurity-door-84907/f6cb5840-0ab3-11ef-a458-06523a4f6d5f",
-      "AmplifyAppId": "d1wx7o4epjell0"
-    },
-    "categories": {
-      "auth": {
-        "cognito81d9f49f": {}
+        "cognitoajiozi": {}
       }
     }
   }

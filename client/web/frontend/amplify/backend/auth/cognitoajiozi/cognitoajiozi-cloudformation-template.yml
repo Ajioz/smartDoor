@@ -172,7 +172,7 @@ Resources:
   UserPoolClientWeb:
     Type: AWS::Cognito::UserPoolClient
     Properties:
-      ClientName: cognito81d9f49f_app_clientWeb
+      ClientName: cognitoajiozi_app_clientWeb
       RefreshTokenValidity:
         Ref: userpoolClientRefreshTokenValidity
       UserPoolId:
@@ -324,10 +324,10 @@ Resources:
       IdentityPoolName:
         Fn::If:
           - ShouldNotCreateEnvResources
-          - cognito81d9f49f_identitypool_81d9f49f
+          - cognitoajiozi_identitypool_81d9f49f
           - Fn::Join:
               - ''
-              - - cognito81d9f49f_identitypool_81d9f49f
+              - - cognitoajiozi_identitypool_81d9f49f
                 - __
                 - Ref: env
       CognitoIdentityProviders:

@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "cognito81d9f49f": {
+    "cognitoajiozi": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "AppClientSecret": "string",
