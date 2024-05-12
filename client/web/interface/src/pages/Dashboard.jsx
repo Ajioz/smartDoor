@@ -124,6 +124,8 @@ const Dashboard = () => {
                         item={true}
                         cat={category}
                         id={_id}
+                        target={value.id}
+                        update={value.msg}
                         handleItem={handleItem}
                         setKeypad={setKeypad}
                       />
@@ -156,6 +158,8 @@ const Dashboard = () => {
                           item={false}
                           cat={category}
                           id={item._id}
+                          target={value.id}
+                          update={value.msg}
                           handleItem={handleItem}
                           setKeypad={setKeypad}
                         />

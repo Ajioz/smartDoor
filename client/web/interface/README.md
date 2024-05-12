@@ -71,10 +71,11 @@ Refer: https://docs.amplify.aws/start/getting-started/installation/q/integration
 
 ## Screenshots
 
-![alt text](./images/signup.png)
-![alt text](./images/login.png)
-![alt text](./images/demo1.png)
-![alt text](./images/demo2.png)
+
+![signup](./images/signup.png)
+![login](./images/login.png)
+![demo1](./images/demo1.png)
+![demo2](./images/demo2.png)
 
 ## Local Deployment (website on localhost)
 
