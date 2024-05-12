@@ -3,13 +3,33 @@ import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "../aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
 import AWSConfiguration from "../aws-iotcore-configuration";
-import Display from "./Display";
 Amplify.configure(awsmobile);
 
-const CloudConnect = ({ item, keypad }) => {
+// import Display from "./Display";
+
+const CloudConnect = ({ item, keypad, setValue }) => {
   const [subscribedTopics, setSubscribedTopics] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [mqttClient, setMqttClient] = useState();
+
+  /**
+   * The logic below create a new array of video and sensor connectID for
+   * parallel mqtt subscription -->  GPT 3.5 and me
+   */
+  const subscribeStack = useCallback((arrObj) => {
+    return arrObj.flatMap((subscriber) => {
+      return subscriber.dbName.includes("spyCam")
+        ? subscriber.dbName
+        : [
+            subscriber.dbName.replace("/", "/sensor/"),
+            subscriber.dbName.replace("/", "/ack/"),
+          ];
+    });
+  }, []);
+
+  useEffect(() => {
+    setSubscribedTopics(subscribeStack(item));
+  }, [setSubscribedTopics]);
 
   /** helper method to publish data */
   const connectToAwsIot = async () => {
@@ -17,7 +37,7 @@ const CloudConnect = ({ item, keypad }) => {
     // Subscriptions each get their own child object with separate connections.
 
     // mqtt clients require a unique clientId; we generate one below
-    let clientId = "smartlock-" + Math.floor(Math.random() * 100000 + 1);
+    let clientId = "smartLock-" + Math.floor(Math.random() * 100000 + 1);
 
     // get credentials and, from them, extract key, secret key, and session token
     // Amplify's Auth functionality makes this easy for us...
@@ -44,10 +64,31 @@ const CloudConnect = ({ item, keypad }) => {
 
     // On connect, update status
     newMqttClient.on("connect", function () {
+      newMqttClient.subscribe(subscribedTopics); //added subscribers
       setIsConnected(true);
-      console.log("Publisher connected to AWS IoT for clientId:", clientId);
+      console.log(
+        "Publisher and subscribers connected to AWS IoT for clientId:",
+        clientId
+      );
     });
 
+    // add event handler for received messages
+    newMqttClient.on("message", async function (topic, payload) {
+      let rawMessage = payload.toString();
+      let parseMessage = JSON.parse(rawMessage);
+      if (parseMessage.sensor_a0) {
+        if (isMounted) {
+          setValue({ id: topic, msg: parseMessage.sensor_a0 });
+        }
+      } else {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 2000);
+          if (isMounted) {
+            setValue({ id: topic, msg: rawMessage });
+          }
+        });
+      }
+    });
     // update state to track mqtt client
     setMqttClient(newMqttClient);
   };
@@ -55,25 +96,6 @@ const CloudConnect = ({ item, keypad }) => {
   useEffect(() => {
     connectToAwsIot();
   }, []); // the empty [] ensures only run once
-
-  /**
-   * The logic below create a new array of video and sensor connectID for
-   * parallel mqtt subscription -->  GPT 3.5 and me
-   */
-  const subscribeStack = useCallback((arrObj) => {
-    return arrObj.flatMap((subscriber) => {
-      return subscriber.dbName.includes("spyCam")
-        ? subscriber.dbName
-        : [
-            subscriber.dbName.replace("/", "/sensor/"),
-            subscriber.dbName.replace("/", "/ack/"),
-          ];
-    });
-  }, []);
-
-  useEffect(() => {
-    setSubscribedTopics(subscribeStack(item));
-  }, [setSubscribedTopics]);
 
   const handlePublishRequest = useCallback(() => {
     mqttClient.publish(keypad.dbName, keypad.code);
@@ -85,13 +107,15 @@ const CloudConnect = ({ item, keypad }) => {
 
   return (
     <div>
-      {subscribedTopics.map((topic) => {
+      {/* {subscribedTopics.map((topic) => {
         return <MQTTSubscription key={topic} topic={topic} item={item} />;
-      })}
+      })} */}
+      {isConnected}
     </div>
   );
 };
 
+/*
 //######################################################################################
 const MQTTSubscription = (props) => {
   const [isConnected, setIsConnected] = useState(false);
@@ -179,6 +203,6 @@ const MQTTSubscription = (props) => {
       ))}
     </div>
   );
-};
+}; */
 
 export default CloudConnect;

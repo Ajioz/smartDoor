@@ -37,6 +37,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const [keypad, setKeypad] = useState({ dbName: "", code: "" });
+  const [value, setValue] = useState({ id: "", msg: "" });
   const [category, setCategory] = useState({
     del: false,
     id: "",
@@ -94,7 +95,8 @@ const Dashboard = () => {
       <Button
         onClick={() => {
           setShowSidebar(!showSidebar);
-        }}>
+        }}
+      >
         <FaArrowRight />
       </Button>
       <Sidebar />
@@ -109,7 +111,8 @@ const Dashboard = () => {
         <>
           <LowerSection>
             <LowerContainer
-              jjcontent={isEven(control.item.length) ? "flex-end" : "center"}>
+              jjcontent={isEven(control.item.length) ? "flex-end" : "center"}
+            >
               {control.item.length > 0 &&
                 control.item.map((item, index) => {
                   const { _id, category } = item;
@@ -191,7 +194,7 @@ const Dashboard = () => {
         label2={category.label2}
         action={category.action}
       />
-      <CloudConnect {...control} keypad={keypad}/>
+      <CloudConnect {...control} keypad={keypad} setValue={setValue} />
     </Container>
   );
 };
