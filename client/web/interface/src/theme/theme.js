@@ -498,6 +498,21 @@ export const VideoPlayerContainer = styled.div`
   }
 `;
 
+export const Dummy = styled.section`
+width: 100%;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+margin: 10px auto;
+background-color: #ddd;
+height: 350px;
+p{
+  color: #333;
+  font-size: 20px;
+  font-family: monospace;
+}
+`
 export const Video = styled.video`
   width: 100%;
   display: block;
