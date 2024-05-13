@@ -15,7 +15,7 @@ const toastParam = {
   theme: "light",
 };
 
-const CloudConnect = ({ item, keypad, setValue, state }) => {
+const CloudConnect = ({ item, keypad, setValue }) => {
   const [subscribedTopics, setSubscribedTopics] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [mqttClient, setMqttClient] = useState();
@@ -62,7 +62,6 @@ const CloudConnect = ({ item, keypad, setValue, state }) => {
     // Amplify's Auth functionality makes this easy for us...
     let currentCredentials = await Auth.currentCredentials();
     let essentialCredentials = Auth.essentialCredentials(currentCredentials);
-    console.log(essentialCredentials);
   
 
     // Create an MQTT client
@@ -122,9 +121,9 @@ const CloudConnect = ({ item, keypad, setValue, state }) => {
     mqttClient.publish(keypad.dbName, keypad.code);
   }, []);
 
-  useEffect(() => {
-    handlePublishRequest();
-  }, [handlePublishRequest]);
+  // useEffect(() => {
+  //   handlePublishRequest();
+  // }, [handlePublishRequest]);
 
   const checkConnect = useCallback(() => {
     if (isConnected) {

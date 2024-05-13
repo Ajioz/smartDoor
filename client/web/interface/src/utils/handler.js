@@ -118,7 +118,7 @@ export const handleValidation = async (
           toast.success(res.message, toastParam);
           hasRun.current = true;
           delay(1000);
-          // storeToken(res.token);
+          storeToken(res.token);
           return decodeToken(res.token);
         } catch (error) {
           console.log(error);

@@ -38,7 +38,6 @@ const Dashboard = () => {
   } = useGlobalContext();
 
   const navigate = useNavigate();
-  const { state } = useLocation();
 
   const [keypad, setKeypad] = useState({ dbName: "", code: "" });
   const [value, setValue] = useState({ id: "", msg: "" });
@@ -202,7 +201,7 @@ const Dashboard = () => {
         label2={category.label2}
         action={category.action}
       />
-      <CloudConnect {...control} keypad={keypad} setValue={setValue} state={state } />
+      <CloudConnect {...control} keypad={keypad} setValue={setValue} />
     </Container>
   );
 };
