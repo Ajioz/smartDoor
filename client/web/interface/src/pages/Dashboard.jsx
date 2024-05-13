@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+
 import {
   Button,
   Container,
@@ -14,6 +15,7 @@ import {
   Tag,
   Line,
 } from "../theme/theme";
+
 import dashboard from "../images/dashboard.jpg";
 import { AlertNotify, Boardchip } from "../components/Chips";
 import Keypad from "../components/Keypad";
@@ -21,6 +23,7 @@ import VideoPlayer from "../components/VideoPlayer";
 import AddItemForm from "../components/AddItemForm";
 import { useEffect } from "react";
 import CloudConnect from "../components/CloudConnect";
+
 // import { control } from "../data";
 
 const Dashboard = () => {
@@ -35,6 +38,7 @@ const Dashboard = () => {
   } = useGlobalContext();
 
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const [keypad, setKeypad] = useState({ dbName: "", code: "" });
   const [value, setValue] = useState({ id: "", msg: "" });
@@ -198,7 +202,7 @@ const Dashboard = () => {
         label2={category.label2}
         action={category.action}
       />
-      <CloudConnect {...control} keypad={keypad} setValue={setValue} />
+      <CloudConnect {...control} keypad={keypad} setValue={setValue} state={state } />
     </Container>
   );
 };

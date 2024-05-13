@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback } from "react";
 import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "../aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
-import AWSConfiguration from "../aws-iotcore-configuration";
+import AWSConfiguration from "./aws-iot-configuration";
 import { toast } from "react-toastify";
-Amplify.configure(awsmobile);
 
+Amplify.configure(awsmobile);
 
 const toastParam = {
   position: "top-right",
@@ -15,8 +15,7 @@ const toastParam = {
   theme: "light",
 };
 
-
-const CloudConnect = ({ item, keypad, setValue }) => {
+const CloudConnect = ({ item, keypad, setValue, state }) => {
   const [subscribedTopics, setSubscribedTopics] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [mqttClient, setMqttClient] = useState();
@@ -57,12 +56,14 @@ const CloudConnect = ({ item, keypad, setValue }) => {
     // Subscriptions each get their own child object with separate connections.
 
     // mqtt clients require a unique clientId; we generate one below
-    let clientId = "smartLock-" + Math.floor(Math.random() * 100000 + 1);
+    let clientId = "smart-lock-" + Math.floor(Math.random() * 100000 + 1);
 
     // get credentials and, from them, extract key, secret key, and session token
     // Amplify's Auth functionality makes this easy for us...
     let currentCredentials = await Auth.currentCredentials();
     let essentialCredentials = Auth.essentialCredentials(currentCredentials);
+    console.log(essentialCredentials);
+  
 
     // Create an MQTT client
     let newMqttClient = AWSIoTData.device({
@@ -89,7 +90,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
       console.log(
         "Publisher and subscribers connected to AWS IoT for clientId:",
         clientId
-      );
+      ); 
     });
 
     // add event handler for received messages

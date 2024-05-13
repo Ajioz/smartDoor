@@ -50,23 +50,23 @@ const FormBox = (props) => {
       hasSent,
       setHasSent
     );
+    actions.resetForm();
     if (username) {
       if (username !== " " && values.password !== " ") {
         console.log({ username, password: values.password });
         try {
-          await Auth.signIn("Ajioz", "Onoriode1!");
-          // await Auth.signIn(username, values.password);
           console.log("Attempting to signin to aws...");
+          const res = await Auth.signIn("Ajioz", "Onoriode1!");
+          // const res = await Auth.signIn(username, values.password);
           // Redirect to dashboard after successful sign-in
+          console.log(res)
           navigate("/dashboard");
         } catch (error) {
           console.log(error.message);
         }
       }
     }
-    actions.resetForm();
   };
-
 
   return (
     <>
