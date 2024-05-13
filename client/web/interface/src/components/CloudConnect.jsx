@@ -104,15 +104,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
   useEffect(() => {
     handlePublishRequest();
   }, [handlePublishRequest]);
-
-  return (
-    <div>
-      {/* {subscribedTopics.map((topic) => {
-        return <MQTTSubscription key={topic} topic={topic} item={item} />;
-      })} */}
-      {isConnected}
-    </div>
-  );
+  return null;
 };
 
 /*
