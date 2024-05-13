@@ -1,8 +1,9 @@
-import React, { useRef, memo } from "react";
+import React, { /*useRef,*/ memo } from "react";
 import {
   ActionBtnContainer,
+  Dummy,
   ExtendContainer,
-  Video,
+  // Video,
   VideoPlayerContainer,
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
@@ -14,7 +15,7 @@ import { details, findItem } from "../utils/handler";
 
 const VideoPlayer = memo(
   ({ src, item, cat, id, handleItem, update, target }) => {
-    const videoRef = useRef(null);
+    // const videoRef = useRef(null);
     const { control } = useGlobalContext();
     const navigate = useNavigate();
 

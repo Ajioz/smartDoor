@@ -1,16 +1,36 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Amplify, { Auth } from "aws-amplify";
 import awsmobile from "../aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
 import AWSConfiguration from "../aws-iotcore-configuration";
+import { toast } from "react-toastify";
 Amplify.configure(awsmobile);
 
-// import Display from "./Display";
+
+const toastParam = {
+  position: "top-right",
+  autoClose: 3000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+};
+
 
 const CloudConnect = ({ item, keypad, setValue }) => {
   const [subscribedTopics, setSubscribedTopics] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [mqttClient, setMqttClient] = useState();
+
+  // Add a variable to track the mounted state
+  let isMounted = true;
+
+  // Use the useEffect hook to update the mounted state
+  useEffect(() => {
+    isMounted = true;
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   /**
    * The logic below create a new array of video and sensor connectID for
@@ -104,6 +124,18 @@ const CloudConnect = ({ item, keypad, setValue }) => {
   useEffect(() => {
     handlePublishRequest();
   }, [handlePublishRequest]);
+
+  const checkConnect = useCallback(() => {
+    if (isConnected) {
+      toast.success("You're in the cloud", toastParam);
+      setIsConnected(false);
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    checkConnect();
+  }, [checkConnect]);
+  
   return null;
 };
 

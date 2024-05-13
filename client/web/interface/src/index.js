@@ -4,12 +4,14 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { AppProvider } from "./context/context";
-
+import ErrorBoundary from "./components/ErrorBoundary";
 
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
-      <App />,
+      <ErrorBoundary>
+        <App />,
+      </ErrorBoundary>
     </AppProvider>
   </React.StrictMode>,
   document.getElementById("root")

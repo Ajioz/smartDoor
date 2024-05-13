@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Formik, Form } from "formik";
+import { Auth } from "aws-amplify";
 import {
   Wrapper,
   FormWrapper,
@@ -23,6 +24,7 @@ const FormBox = (props) => {
     status: false,
     recipient: "",
     email: "",
+    password: "",
   });
 
   const initialValuesArray = Object.entries(props.initialValues); //Create an array from the object
@@ -32,13 +34,13 @@ const FormBox = (props) => {
     await new Promise((resolve) => setTimeout(resolve, time));
   };
 
-  const onSubmit = (values, actions) => {
+  const onSubmit = async (values, actions) => {
     delay(1000);
     hasRun.current = false;
     if (props.email) {
       values.email = props.email;
     }
-    handleValidation(
+    const username = await handleValidation(
       values,
       hasRun,
       postData,
@@ -46,10 +48,25 @@ const FormBox = (props) => {
       delay,
       navigate,
       hasSent,
-      setHasSent,
+      setHasSent
     );
+    if (username) {
+      if (username !== " " && values.password !== " ") {
+        console.log({ username, password: values.password });
+        try {
+          await Auth.signIn("Ajioz", "Onoriode1!");
+          // await Auth.signIn(username, values.password);
+          console.log("Attempting to signin to aws...");
+          // Redirect to dashboard after successful sign-in
+          navigate("/dashboard");
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    }
     actions.resetForm();
   };
+
 
   return (
     <>

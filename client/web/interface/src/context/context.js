@@ -59,6 +59,7 @@ export const AppProvider = ({ children }) => {
         localStorage.removeItem("lockToken");
         return { status: false, token: "expired" };
       } else {
+        console.log({ status: true, token, username: token.username });
         return { status: true, token, username: token.username };
       }
     } catch (error) {

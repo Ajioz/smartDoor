@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { StatusCodes } from "http-status-codes";
 
-export const sendResponseWithCookie = async(res, token) => {
+export const sendResponseWithCookie = async(res, token, username) => {
   // Set JWT token lifetime to a day (in milliseconds)
   const oneDay = 1 * 24 * 60 * 60 * 1000;
 

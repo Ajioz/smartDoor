@@ -146,8 +146,11 @@
                         [
                           "\n",
                           [
-                            "import * as IAM from '@aws-sdk/client-iam';",
-                            "import * as response from 'cfn-response';",
+                            "const { CognitoIdentityServiceProvider } = require('@aws-sdk/client-cognito-identity-service-provider');",
+                            "const identity = new CognitoIdentityServiceProvider({region:'eu-west-2'})",
+                            "const { CfnResponse } = require('@aws-sdk/client-cloudformation');",
+                            "const response = new CfnResponse()"
+                            "const client = require '@aws-sdk/client-iam';",
                             "let responseData = {};",
                             "exports.handler = function(event, context) {",
                             "  try {",
