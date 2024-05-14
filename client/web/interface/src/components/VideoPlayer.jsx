@@ -1,9 +1,9 @@
-import React, { useRef, memo } from "react";
+import React, { /*useRef,*/ memo } from "react";
 import {
   ActionBtnContainer,
   Dummy,
   ExtendContainer,
-  Video,
+  // Video,
   VideoPlayerContainer,
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
@@ -15,7 +15,7 @@ import { details, findItem } from "../utils/handler";
 
 const VideoPlayer = memo(
   ({ src, item, cat, id, handleItem, update, target }) => {
-    const videoRef = useRef(null);
+    // const videoRef = useRef(null);
     const { control } = useGlobalContext();
     const navigate = useNavigate();
 
@@ -59,13 +59,13 @@ const VideoPlayer = memo(
                   onClick={() => details(id, control, navigate)}
                 />
               </ActionBtnContainer>
-              {/* <Dummy>
+              <Dummy>
                 <p>{update}</p>
-              </Dummy> */}
-              <Video ref={videoRef} controls>
+              </Dummy>
+              {/* <Video ref={videoRef} controls>
               <source src={src} type="video/mp4" />
               Your browser does not support the video tag.
-            </Video>
+            </Video> */}
             </VideoPlayerContainer>
           ) : (
             <AddItemBtn

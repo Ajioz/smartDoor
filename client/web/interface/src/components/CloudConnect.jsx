@@ -35,20 +35,23 @@ const CloudConnect = ({ item, keypad, setValue }) => {
    * The logic below create a new array of video and sensor connectID for
    * parallel mqtt subscription -->  GPT 3.5 and me
    */
-  const subscribeStack = useCallback((arrObj) => {
-    return arrObj.flatMap((subscriber) => {
-      return subscriber.dbName.includes("spyCam")
-        ? subscriber.dbName
-        : [
-            subscriber.dbName.replace("/", "/sensor/"),
-            subscriber.dbName.replace("/", "/ack/"),
-          ];
-    });
-  }, []);
+  const subscribeStack = useCallback(
+    (arrObj) => {
+      return arrObj.flatMap((subscriber) => {
+        return subscriber.dbName.includes("spyCam")
+          ? subscriber.dbName
+          : [
+              subscriber.dbName.replace("/", "/sensor/"),
+              subscriber.dbName.replace("/", "/ack/"),
+            ];
+      });
+    },
+    [item]
+  );
 
   useEffect(() => {
     setSubscribedTopics(subscribeStack(item));
-  }, [setSubscribedTopics]);
+  }, [subscribeStack]);
 
   /** helper method to publish data */
   const connectToAwsIot = async () => {
@@ -96,6 +99,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
       newMqttClient.on("message", async function (topic, payload) {
         let rawMessage = payload.toString();
         let parseMessage = JSON.parse(rawMessage);
+        console.log(parseMessage);
         if (parseMessage.sensor_a0) {
           if (isMounted) {
             setValue({ id: topic, msg: parseMessage.sensor_a0 });
@@ -112,13 +116,17 @@ const CloudConnect = ({ item, keypad, setValue }) => {
       // update state to track mqtt client
       setMqttClient(newMqttClient);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
 
   useEffect(() => {
-    connectToAwsIot();
-  }, []); // the empty [] ensures only run once
+    console.log("loading subscribedTopics...");
+    if (subscribedTopics.length > 0) {
+      console.log("loaded subscribedTopics!");
+      connectToAwsIot();
+    }
+  }, [subscribedTopics]);
 
   const handlePublishRequest = useCallback(() => {
     mqttClient.publish(keypad.dbName, keypad.code);
