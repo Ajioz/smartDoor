@@ -17,10 +17,7 @@ import { handleValidation } from "../utils/handler";
 
 const FormBox = (props) => {
   const navigate = useNavigate();
-  const {
-    postData,
-    control: { loading },
-  } = useGlobalContext();
+  const { postData } = useGlobalContext();
   const hasRun = useRef(false);
 
   const [hasSent, setHasSent] = useState({

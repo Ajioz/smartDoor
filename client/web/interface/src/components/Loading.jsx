@@ -1,64 +1,133 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import styled, { css, keyframes } from "styled-components";
 import ReactLoading from "react-loading";
-import styled, { keyframes } from "styled-components";
+import { useGlobalContext } from "../context/context";
 
-const slideInAndOut = keyframes`
-  0%, 100% {
-    transform: translateY(-100%);
+const colorList = ["#ff9100", "#00b0ff", "#827717", "#78909c"];
+
+const slideIn = keyframes`
+  0% {
+    transform: translateY(100%);
     opacity: 0;
   }
-  10%, 90% {
+  100% {
     transform: translateY(0);
     opacity: 1;
   }
 `;
 
+const slideOut = keyframes`
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+`;
+
 const LoadingScreenWrapper = styled.div`
+  position: relative;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 97vh;
-  background-color: #f3f3f3;
+  min-height: 50vh;
+  width: 100%;
 `;
 
 const LoadingMessage = styled.div`
+  position: absolute;
+  width: 100%;
   font-size: 24px;
-  margin: 20px auto;
+  opacity: 0;
   color: ${(props) => props.color};
-  font-family: monospace;
-  animation: ${(props) => props.animate};
+  ${({ index, activeindex }) =>
+    index === activeindex &&
+    css`
+      animation: ${slideIn} 1s forwards, ${slideOut} 1s forwards 2s;
+    `}
 `;
 
-const LoadingScreen = () => {
-  const [messageIndex, setMessageIndex] = useState(0);
-  const messages = [
-    "Processing request...",
-    "Almost there...",
-    "Taking you to the cloud...",
-    "Thank you for your patience!",
-  ];
-  const colorList = ["#ff9100", "#00b0ff", "#827717", "#78909c"];
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  transition: all 0.3s linear;
+  visibility: hidden;
+  z-index: -1;
+  &.show-modal {
+    visibility: visible;
+    z-index: 10;
+    background: ${(props) => props.background};
+  }
+`;
+
+const ModalContainer = styled.div`
+  border-radius: 0.25rem;
+  width: 40%;
+  min-height: 30vh;
+  text-align: center;
+  display: grid;
+  place-items: center;
+  position: relative;
+  @media only screen and (max-width: 560px) {
+    width: 90%;
+  }
+`;
+
+const LoadingScreen = ({ type, messages, background }) => {
+  const {
+    control: { loading },
+  } = useGlobalContext();
+  const [activeindex, setActiveIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
-    }, 3000); // Change message every 2 seconds
+      setActiveIndex((prevIndex) => (prevIndex + 1) % messages.length);
+    }, 5000); // Interval includes time for both slide in and slide out
     return () => clearInterval(intervalId);
   }, []);
 
+  const setModal = useCallback(() => {
+    if (!showModal) loading && setShowModal(true);
+    !loading && setShowModal(false);
+  }, [loading]);
+
+  useEffect(() => setModal(), [setModal]);
+
   return (
-    <LoadingScreenWrapper>
-      <ReactLoading
-        type="bubbles"
-        color={colorList[messageIndex]}
-        width={100}
-        className="twik"
-      />
-      <LoadingMessage color={colorList[messageIndex]} animate={ slideInAndOut}>
-        {messages[messageIndex]}
-      </LoadingMessage>
-    </LoadingScreenWrapper>
+    <ModalOverlay
+      className={`${showModal && "show-modal"}`}
+      background={background}
+    >
+      <ModalContainer>
+        <LoadingScreenWrapper>
+          <ReactLoading
+            type={type}
+            height={250}
+            color={colorList[activeindex]}
+            width={100}
+            className="twik"
+          />
+          {messages.map((message, index) => (
+            <LoadingMessage
+              key={index}
+              index={index}
+              activeindex={activeindex}
+              color={colorList[index]}
+            >
+              {message}
+            </LoadingMessage>
+          ))}
+        </LoadingScreenWrapper>
+      </ModalContainer>
+    </ModalOverlay>
   );
 };
 

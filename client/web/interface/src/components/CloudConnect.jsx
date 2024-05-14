@@ -52,64 +52,68 @@ const CloudConnect = ({ item, keypad, setValue }) => {
 
   /** helper method to publish data */
   const connectToAwsIot = async () => {
-    // This connection/function is only for publishing messages;
-    // Subscriptions each get their own child object with separate connections.
+    try {
+      // This connection/function is only for publishing messages;
+      // Subscriptions each get their own child object with separate connections.
 
-    // mqtt clients require a unique clientId; we generate one below
-    let clientId = "smart-lock-" + Math.floor(Math.random() * 100000 + 1);
+      // mqtt clients require a unique clientId; we generate one below
+      let clientId = "smart-lock-" + Math.floor(Math.random() * 100000 + 1);
 
-    // get credentials and, from them, extract key, secret key, and session token
-    // Amplify's Auth functionality makes this easy for us...
-    let currentCredentials = await Auth.currentCredentials();
-    let essentialCredentials = Auth.essentialCredentials(currentCredentials);
+      // get credentials and, from them, extract key, secret key, and session token
+      // Amplify's Auth functionality makes this easy for us...
+      let currentCredentials = await Auth.currentCredentials();
+      let essentialCredentials = Auth.essentialCredentials(currentCredentials);
 
-    // Create an MQTT client
-    let newMqttClient = AWSIoTData.device({
-      region: AWSConfiguration.region,
-      host: AWSConfiguration.host,
-      clientId: clientId,
-      protocol: "wss",
-      maximumReconnectTimeMs: 8000,
-      debug: true,
-      accessKeyId: essentialCredentials.accessKeyId,
-      secretKey: essentialCredentials.secretAccessKey,
-      sessionToken: essentialCredentials.sessionToken,
-    });
+      // Create an MQTT client
+      let newMqttClient = AWSIoTData.device({
+        region: AWSConfiguration.region,
+        host: AWSConfiguration.host,
+        clientId: clientId,
+        protocol: "wss",
+        maximumReconnectTimeMs: 8000,
+        debug: true,
+        accessKeyId: essentialCredentials.accessKeyId,
+        secretKey: essentialCredentials.secretAccessKey,
+        sessionToken: essentialCredentials.sessionToken,
+      });
 
-    console.log(
-      "Publisher trying to connect to AWS IoT for clientId:",
-      clientId
-    );
-
-    // On connect, update status
-    newMqttClient.on("connect", function () {
-      newMqttClient.subscribe(subscribedTopics); //added subscribers
-      setIsConnected(true);
       console.log(
-        "Publisher and subscribers connected to AWS IoT for clientId:",
+        "Publisher trying to connect to AWS IoT for clientId:",
         clientId
       );
-    });
 
-    // add event handler for received messages
-    newMqttClient.on("message", async function (topic, payload) {
-      let rawMessage = payload.toString();
-      let parseMessage = JSON.parse(rawMessage);
-      if (parseMessage.sensor_a0) {
-        if (isMounted) {
-          setValue({ id: topic, msg: parseMessage.sensor_a0 });
-        }
-      } else {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 2000);
+      // On connect, update status
+      newMqttClient.on("connect", function () {
+        newMqttClient.subscribe(subscribedTopics); //added subscribers
+        setIsConnected(true);
+        console.log(
+          "Publisher and subscribers connected to AWS IoT for clientId:",
+          clientId
+        );
+      });
+
+      // add event handler for received messages
+      newMqttClient.on("message", async function (topic, payload) {
+        let rawMessage = payload.toString();
+        let parseMessage = JSON.parse(rawMessage);
+        if (parseMessage.sensor_a0) {
           if (isMounted) {
-            setValue({ id: topic, msg: rawMessage });
+            setValue({ id: topic, msg: parseMessage.sensor_a0 });
           }
-        });
-      }
-    });
-    // update state to track mqtt client
-    setMqttClient(newMqttClient);
+        } else {
+          await new Promise((resolve) => {
+            setTimeout(resolve, 2000);
+            if (isMounted) {
+              setValue({ id: topic, msg: rawMessage });
+            }
+          });
+        }
+      });
+      // update state to track mqtt client
+      setMqttClient(newMqttClient);
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   useEffect(() => {
@@ -126,7 +130,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
 
   const checkConnect = useCallback(() => {
     if (isConnected) {
-      toast.success("You're in the cloud", toastParam);
+      toast.success("You're in the cloud ☁️", toastParam);
       setIsConnected(false);
     }
   }, [isConnected]);

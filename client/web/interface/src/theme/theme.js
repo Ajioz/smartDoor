@@ -506,7 +506,7 @@ justify-content: center;
 align-items: center;
 margin: 10px auto;
 background-color: #ddd;
-height: 350px;
+height: 150px;
 p{
   color: #333;
   font-size: 20px;

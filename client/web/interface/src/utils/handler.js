@@ -115,7 +115,7 @@ export const handleValidation = async (
           } else {
             console.log("Cookie not found");
           }
-          toast.success(res.message, toastParam);
+          toast.success("User Found, let's Cloud 🚀!", toastParam);
           hasRun.current = true;
           delay(1000);
           storeToken(res.token);

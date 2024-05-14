@@ -14,15 +14,13 @@ import Status from "./pages/Status";
 import Expired from "./pages/Expired";
 import Error from "./pages/Error";
 import AuthDisplay from "./components/AuthDisplay";
-import LoadingScreen from "./components/Loading";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<LoadingScreen />} relative="path" />
-          {/* <Route path="/" element={<Login />} relative="path" /> */}
+          <Route path="/" element={<Login />} relative="path" />
           <Route path="/email" element={<Login />} relative="path" />
           <Route path="/register" element={<Register relative="path" />} />
           <Route path="/dashboard" element={<Dashboard />} relative="path" />

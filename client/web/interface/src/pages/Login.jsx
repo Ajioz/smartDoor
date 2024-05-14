@@ -13,14 +13,20 @@ import {
 import { loginSchema, resetSchema, resetPasswordSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
 import { useGlobalContext } from "../context/context";
-
+import LoadingScreen from "../components/Loading";
 
 const initialValues = { email: "", password: "" };
 const resetEmail = { email: "" };
 const resetPassword = { password: "", confirmPassword: "" };
 
-const Login = () => {
+const messages = [
+  "So Glad to see you again...",
+  "Processing Your Request...",
+  "Almost There...",
+  "Taking You To The Cloud...",
+];
 
+const Login = () => {
   const { isToken } = useGlobalContext();
   const location = useLocation();
   const { state } = useLocation();
@@ -129,6 +135,11 @@ const Login = () => {
           />
         </>
       )}
+      <LoadingScreen
+        type={"bubbles"}
+        messages={messages}
+        background={"rgba(0, 0, 0, 0.9)"}
+      />
     </Container>
   );
 };
