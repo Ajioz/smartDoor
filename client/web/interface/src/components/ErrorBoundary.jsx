@@ -16,10 +16,12 @@ class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <Container>
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center"}}>
           <h2 style={{color:"#fff"}}>Something went wrong!</h2>
           <ClaimBtn onClick={() => this.setState({ hasError: false })}>
             Try again
           </ClaimBtn>
+          </div>
         </Container>
       );
     }

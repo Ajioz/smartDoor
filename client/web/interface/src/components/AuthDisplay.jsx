@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Auth} from 'aws-amplify';
 import JSONTree from 'react-json-tree';
 import AWS from 'aws-sdk';
-import AWSConfiguration from '../aws-iotcore-configuration.js';
+import AWSConfiguration from './aws-iotcore-configuration.js';
 import { useNavigate } from 'react-router-dom';
 
 function createAndAttachPolicy(id) {

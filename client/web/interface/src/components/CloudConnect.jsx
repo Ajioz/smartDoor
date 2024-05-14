@@ -62,7 +62,6 @@ const CloudConnect = ({ item, keypad, setValue }) => {
     // Amplify's Auth functionality makes this easy for us...
     let currentCredentials = await Auth.currentCredentials();
     let essentialCredentials = Auth.essentialCredentials(currentCredentials);
-  
 
     // Create an MQTT client
     let newMqttClient = AWSIoTData.device({
@@ -89,7 +88,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
       console.log(
         "Publisher and subscribers connected to AWS IoT for clientId:",
         clientId
-      ); 
+      );
     });
 
     // add event handler for received messages
@@ -121,9 +120,9 @@ const CloudConnect = ({ item, keypad, setValue }) => {
     mqttClient.publish(keypad.dbName, keypad.code);
   }, []);
 
-  // useEffect(() => {
-  //   handlePublishRequest();
-  // }, [handlePublishRequest]);
+  useEffect(() => {
+    if (isConnected) handlePublishRequest();
+  }, [handlePublishRequest]);
 
   const checkConnect = useCallback(() => {
     if (isConnected) {
@@ -135,7 +134,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
   useEffect(() => {
     checkConnect();
   }, [checkConnect]);
-  
+
   return null;
 };
 
