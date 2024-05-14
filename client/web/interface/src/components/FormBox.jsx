@@ -54,7 +54,7 @@ const FormBox = (props) => {
     if (username) {
       if (username !== " " && values.password !== " ") {
         try {
-          console.log("Attempting to signin to aws...");
+          console.log("Attempting cloud login...");
           await Auth.signIn(username, values.password);
           // Redirect to dashboard after successful sign-in
           return navigate("/dashboard");

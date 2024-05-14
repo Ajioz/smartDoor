@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Amplify, { Auth } from "aws-amplify";
-import awsmobile from "../aws-exports";
+import awsmobile from "./aws-exports";
 import AWSIoTData from "aws-iot-device-sdk";
 import AWSConfiguration from "./aws-iot-configuration";
 import { toast } from "react-toastify";
