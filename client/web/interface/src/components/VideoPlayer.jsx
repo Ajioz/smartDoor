@@ -84,7 +84,7 @@ const VideoPlayer = memo(
   },
   (prevProps, nextProps) => {
     // Check if this component is the target for update
-    if (nextProps.target === prevProps.dbName) {
+    if (nextProps.target === nextProps.dbName) {
       // If the 'update' prop has changed, allow re-render
       return prevProps.update === nextProps.update;
     }
