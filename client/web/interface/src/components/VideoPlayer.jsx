@@ -1,9 +1,9 @@
-import React, { /*useRef,*/ memo } from "react";
+import React, { useRef, memo } from "react";
 import {
   ActionBtnContainer,
   Dummy,
   ExtendContainer,
-  // Video,
+  Video,
   VideoPlayerContainer,
 } from "../theme/theme";
 import AddItemBtn from "./AddItemBtn";
@@ -11,14 +11,12 @@ import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import { useGlobalContext } from "../context/context";
 import { useNavigate } from "react-router-dom";
 import { details, findItem } from "../utils/handler";
-// import { control } from "../data";
 
 const VideoPlayer = memo(
   ({ src, item, cat, id, handleItem, update, target, dbName }) => {
-    // const videoRef = useRef(null);
+    const videoRef = useRef(null);
     const { control } = useGlobalContext();
     const navigate = useNavigate();
-    // console.log(target, dbName);
 
     const handleEdit = (id, disable, label1, label2) => {
       const { name } = findItem(control, id);

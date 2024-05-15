@@ -54,7 +54,6 @@ const Dashboard = () => {
   const [isDisable, setIsDisable] = useState(false);
   const hasRan = useRef(false);
 
-  console.log(keypad);
 
   const handleItem = (del, id, disable, label1, label2, cat, name, action) => {
     setShowModal(!showModal);

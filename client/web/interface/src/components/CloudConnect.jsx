@@ -49,6 +49,13 @@ const CloudConnect = ({ item, keypad, setValue }) => {
     [item]
   );
 
+  // Helper method to check if keypad has value
+  const checkState = (obj) => {
+    return Object.entries(obj).every(([key, value]) => {
+      return value !== "" && value !== " ";
+    });
+  };
+
   useEffect(() => {
     setSubscribedTopics(subscribeStack(item));
   }, [subscribeStack]);
@@ -117,6 +124,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
           console.log(error.message);
         }
       });
+
       // update state to track mqtt client
       setMqttClient(newMqttClient);
     } catch (error) {
@@ -135,10 +143,10 @@ const CloudConnect = ({ item, keypad, setValue }) => {
 
   const handlePublishRequest = useCallback(() => {
     mqttClient.publish(keypad.dbName, keypad.code);
-  }, []);
+  }, [keypad]);
 
   useEffect(() => {
-    if (isConnected) handlePublishRequest();
+    checkState(keypad) && handlePublishRequest();
   }, [handlePublishRequest]);
 
   const checkConnect = useCallback(() => {
