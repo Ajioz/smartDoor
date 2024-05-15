@@ -15,7 +15,7 @@ const toastParam = {
   theme: "light",
 };
 
-const CloudConnect = ({ item, keypad, setValue }) => {
+const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
   const [subscribedTopics, setSubscribedTopics] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [mqttClient, setMqttClient] = useState();
@@ -55,6 +55,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
       return value !== "" && value !== " ";
     });
   };
+
 
   useEffect(() => {
     setSubscribedTopics(subscribeStack(item));
@@ -107,7 +108,8 @@ const CloudConnect = ({ item, keypad, setValue }) => {
         try {
           let rawMessage = payload.toString();
           let parseMessage = JSON.parse(rawMessage);
-          console.log(parseMessage);
+          findTopic(topic, parseMessage);
+          console.log(topic, parseMessage);
           if (parseMessage.sensor_a0) {
             if (isMounted) {
               setValue({ id: topic, msg: parseMessage.sensor_a0 });
@@ -151,7 +153,7 @@ const CloudConnect = ({ item, keypad, setValue }) => {
 
   const checkConnect = useCallback(() => {
     if (isConnected) {
-      toast.success("You're in the cloud ☁️", toastParam);
+      toast.success("You're now in cloud ☁️", toastParam);
       setIsConnected(false);
     }
   }, [isConnected]);
