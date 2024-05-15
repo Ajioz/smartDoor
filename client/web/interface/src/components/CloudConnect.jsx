@@ -153,7 +153,7 @@ const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
 
   const checkConnect = useCallback(() => {
     if (isConnected) {
-      toast.success("You're now in cloud ☁️", toastParam);
+      toast.success("You're in cloud ☁️", toastParam);
       setIsConnected(false);
     }
   }, [isConnected]);

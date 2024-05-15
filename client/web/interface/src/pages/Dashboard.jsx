@@ -112,7 +112,7 @@ const Dashboard = () => {
           flag,
         });
       } else if (sensor) {
-        setShow({ ...show, alert: true });
+        setShow({ ...show, alert: flag });
       }
     } catch (error) {
       console.log(error.message);

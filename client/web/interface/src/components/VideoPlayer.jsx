@@ -1,7 +1,6 @@
 import React, { useRef, memo } from "react";
 import {
   ActionBtnContainer,
-  Dummy,
   ExtendContainer,
   Video,
   VideoPlayerContainer,
@@ -58,13 +57,10 @@ const VideoPlayer = memo(
                   onClick={() => details(id, control, navigate)}
                 />
               </ActionBtnContainer>
-              <Dummy>
-                <p>{update}</p>
-              </Dummy>
-              {/* <Video ref={videoRef} controls>
+              <Video ref={videoRef} controls>
               <source src={src} type="video/mp4" />
               Your browser does not support the video tag.
-            </Video> */}
+            </Video>
             </VideoPlayerContainer>
           ) : (
             <AddItemBtn
