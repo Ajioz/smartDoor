@@ -14,10 +14,11 @@ import { details, findItem } from "../utils/handler";
 // import { control } from "../data";
 
 const VideoPlayer = memo(
-  ({ src, item, cat, id, handleItem, update, target }) => {
+  ({ src, item, cat, id, handleItem, update, target, dbName }) => {
     // const videoRef = useRef(null);
     const { control } = useGlobalContext();
     const navigate = useNavigate();
+    // console.log(target, dbName);
 
     const handleEdit = (id, disable, label1, label2) => {
       const { name } = findItem(control, id);
@@ -82,7 +83,13 @@ const VideoPlayer = memo(
     );
   },
   (prevProps, nextProps) => {
-    return nextProps.target === nextProps.id && nextProps.update;
+    // Check if this component is the target for update
+    if (nextProps.target === prevProps.dbName) {
+      // If the 'update' prop has changed, allow re-render
+      return prevProps.update === nextProps.update;
+    }
+    // If this component is not the target, prevent re-render
+    return true;
   }
 );
 

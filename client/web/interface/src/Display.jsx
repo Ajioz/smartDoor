@@ -9,7 +9,13 @@ const Display = memo(
     );
   },
   (prevProps, nextProps) => {
-    return nextProps.target === nextProps.id && nextProps.message;
+    // Check if this component is the target for update
+    if (nextProps.target === prevProps.dbName) {
+      // If the 'update' prop has changed, allow re-render
+      return prevProps.update === nextProps.update;
+    }
+    // If this component is not the target, prevent re-render
+    return true;
   }
 );
 

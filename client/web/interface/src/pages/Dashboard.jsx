@@ -129,6 +129,7 @@ const Dashboard = () => {
                         id={_id}
                         target={value.id}
                         update={value.msg}
+                        dbName={item.dbName}
                         handleItem={handleItem}
                         setKeypad={setKeypad}
                       />

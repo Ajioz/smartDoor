@@ -97,26 +97,31 @@ const CloudConnect = ({ item, keypad, setValue }) => {
 
       // add event handler for received messages
       newMqttClient.on("message", async function (topic, payload) {
-        let rawMessage = payload.toString();
-        let parseMessage = JSON.parse(rawMessage);
-        console.log(parseMessage);
-        if (parseMessage.sensor_a0) {
-          if (isMounted) {
-            setValue({ id: topic, msg: parseMessage.sensor_a0 });
-          }
-        } else {
-          await new Promise((resolve) => {
-            setTimeout(resolve, 2000);
+        try {
+          let rawMessage = payload.toString();
+          let parseMessage = JSON.parse(rawMessage);
+          console.log(parseMessage);
+          if (parseMessage.sensor_a0) {
             if (isMounted) {
-              setValue({ id: topic, msg: rawMessage });
+              setValue({ id: topic, msg: parseMessage.sensor_a0 });
             }
-          });
+          } else {
+            await new Promise((resolve) => {
+              setTimeout(resolve, 2000);
+              if (isMounted) {
+                setValue({ id: topic, msg: rawMessage });
+              }
+            });
+          }
+        } catch (error) {
+          console.log(error.message);
         }
       });
       // update state to track mqtt client
       setMqttClient(newMqttClient);
     } catch (error) {
       console.log(error.message);
+      return toast.warning(error.message, toastParam);
     }
   };
 
