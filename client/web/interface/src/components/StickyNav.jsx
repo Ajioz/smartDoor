@@ -11,6 +11,7 @@ const slideIn = keyframes`
     transform: translateY(0);
   }
 `;
+
 const slideOut = keyframes`
   from {
     transform: translateY(0);
@@ -21,7 +22,7 @@ const slideOut = keyframes`
 `;
 
 const NavWrapper = styled.nav`
-  background-color: ${(props) => props.background};
+  background-color: ${(props) => (props.background ? "#64dd17" : "#ff5252")};
   position: fixed; // Changed from relative to fixed to stick at the top
   top: 0;
   width: 100%;
@@ -30,6 +31,7 @@ const NavWrapper = styled.nav`
   animation: ${(props) => (props.animateOut ? slideOut : slideIn)} 0.5s ease-out
     forwards;
 `;
+
 const Nav = styled.nav`
   position: relative;
   width: 95%;
@@ -41,6 +43,7 @@ const Nav = styled.nav`
   font-family: monospace;
   font-weight: bolder;
 `;
+
 const Btn = styled.section`
   width: 5%;
   display: flex;
@@ -84,10 +87,7 @@ const StickyNav = ({ setShow, status, update, flag }) => {
   return (
     <>
       {status && (
-        <NavWrapper
-          background={flag ? "#64dd17" : "#ff5252"}
-          animateOut={animateOut}
-        >
+        <NavWrapper background={flag} animateOut={animateOut}>
           <Nav>{update}</Nav>
           <Btn>
             <FaTimes onClick={handleClose} />

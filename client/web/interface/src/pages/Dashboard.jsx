@@ -49,7 +49,12 @@ const Dashboard = () => {
     action: "",
   });
   const [isDisable, setIsDisable] = useState(false);
-  const [show, setShow] = useState({ status: false, update: "", flag: false });
+  const [show, setShow] = useState({
+    status: false,
+    update: "",
+    flag: false,
+    alert: false,
+  });
   const hasRan = useRef(false);
 
   const handleItem = (del, id, disable, label1, label2, cat, name, action) => {
@@ -88,17 +93,27 @@ const Dashboard = () => {
     return false;
   };
 
-  const findTopic = (topic, { ack }) => {
+  const topicHelper = (topic) => {
+    return {
+      acknowledgement: topic.includes("/ack/"),
+      sensor: topic.includes("/sensor/"),
+    };
+  };
+
+  const findTopic = (topic, { state }) => {
+    const { acknowledgement, sensor } = topicHelper(topic);
     try {
-      let flag = ack === "Accepted" ? true : false;
-      let response = topic.includes("/ack/");
-      if (response)
+      let flag = state === "Accepted" ? true : state === "human" ? true : false;
+      if (acknowledgement) {
         setShow({
           ...show,
           status: true,
-          update: flag ? `${ack}: Door Opened ` : `${ack}: Wrong Passcode`,
+          update: flag ? `${state}: Door Opened ` : `${state}: Wrong PassCode`,
           flag,
         });
+      } else if (sensor) {
+        setShow({ ...show, alert: true });
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -122,7 +137,7 @@ const Dashboard = () => {
             <Boardchip />
             {control.item.length > 0 &&
               control.item[0].category === "doorLock" && (
-                <AlertNotify status={control.status} />
+                <AlertNotify status={show.alert} />
               )}
           </UpperSection>
           <>

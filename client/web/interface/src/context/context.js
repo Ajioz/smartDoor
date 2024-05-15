@@ -10,11 +10,7 @@ export const AppProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const [control, setControl] = useState({
-    status: false,
-    item: [],
-    loading: false,
-  });
+  const [control, setControl] = useState({ item: [], loading: false });
 
   const ajiozItem = async (action, id, obj) => {
     const { token } = isToken();
