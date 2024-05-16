@@ -6,7 +6,6 @@ import authRouter from "./routes/authRoute.js";
 import thingRouter from "./routes/thingRoute.js";
 import cookieParser from "cookie-parser";
 
-import { createProxyMiddleware } from"http-proxy-middleware";
 
 //Extra security
 import helmet from "helmet";

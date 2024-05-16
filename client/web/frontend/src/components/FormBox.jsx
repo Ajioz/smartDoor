@@ -52,7 +52,6 @@ const FormBox = (props) => {
       if (props.email) {
         values.email = props.email;
       }
-
       const username = await handleValidation(
         values,
         hasRun,
@@ -67,17 +66,15 @@ const FormBox = (props) => {
       if (username) {
         if (username !== " " && values.password !== " ") {
           try {
-            console.log("Attempting cloud login...");
             await Auth.signIn(username, values.password);
             // Redirect to dashboard after successful sign-in
             return navigate("/dashboard");
           } catch (error) {
-            console.log(error.message);
+            return toast.error(error.message, toastParam);
           }
         }
       }
     } catch (error) {
-      console.log(error.message);
       return toast.warning("Service Unreachable, try later!", toastParam);
     }
   };
