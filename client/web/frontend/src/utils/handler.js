@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import Cookies from "js-cookie"; // Import js-cookie
+import { jwtDecode } from "jwt-decode";
 
 const toastParam = {
   position: "top-right",
@@ -114,10 +115,11 @@ export const handleValidation = async (
           } else {
             console.log("Cookie not found");
           }
-          toast.success(res.message, toastParam);
+          toast.success("User Found, let's Cloud 🚀!", toastParam);
           hasRun.current = true;
           delay(1000);
-          storeToken(res.token, navigate);
+          storeToken(res.token);
+          return decodeToken(res.token);
         } catch (error) {
           console.log(error);
         }
@@ -179,7 +181,7 @@ export const handleItemSubmit = async (
 ) => {
   const res = await ajiozItem(action, id, formData);
   hasRun.current = false;
-  if (res?.status === 201) {
+  if (res && res.status === 201) {
     if (!hasRun.current) {
       toast.success(res.data.message, toastParam);
       hasRun.current = true;
@@ -211,7 +213,16 @@ export const logout = () => {
   Cookies.remove("token");
 };
 
-const storeToken = (token, navigate) => {
+const storeToken = (token) => {
   localStorage.setItem("lockToken", JSON.stringify(token));
-  return navigate("/dashboard");
+  // return navigate("/dashboard");
+};
+
+const decodeToken = (token) => {
+  try {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.username;
+  } catch (error) {
+    console.error("Error decoding token:", error);
+  }
 };

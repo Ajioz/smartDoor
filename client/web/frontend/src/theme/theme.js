@@ -295,7 +295,7 @@ export const ClaimBtn = styled.button`
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0 0.3);
   transition: 0.5s;
-  margin: 10px auto -10px auto;
+  margin: 10px auto;
   &:hover {
     cursor: pointer;
     box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
@@ -498,6 +498,21 @@ export const VideoPlayerContainer = styled.div`
   }
 `;
 
+export const Dummy = styled.section`
+width: 100%;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+margin: 10px auto;
+background-color: #ddd;
+height: 150px;
+p{
+  color: #333;
+  font-size: 20px;
+  font-family: monospace;
+}
+`
 export const Video = styled.video`
   width: 100%;
   display: block;

@@ -38,10 +38,10 @@ const Instruction = (props) => {
 
   const loadState = useCallback(() => {
     setStateFlag({
-      flag: state?.flag,
-      singleItem: state?.singleItem,
+      flag: state && state.flag,
+      singleItem: state && state.singleItem,
     });
-  }, [state?.flag, state?.singleItem]);
+  }, [state && state.flag, state && state.singleItem]);
 
   useEffect(() => {
     loadState();

@@ -13,14 +13,20 @@ import {
 import { loginSchema, resetSchema, resetPasswordSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
 import { useGlobalContext } from "../context/context";
-
+import LoadingScreen from "../components/Loading";
 
 const initialValues = { email: "", password: "" };
 const resetEmail = { email: "" };
 const resetPassword = { password: "", confirmPassword: "" };
 
-const Login = () => {
+const messages = [
+  "So Glad to see you again...",
+  "Processing Your Request...",
+  "Almost There...",
+  "Taking You To The Cloud...",
+];
 
+const Login = () => {
   const { isToken } = useGlobalContext();
   const location = useLocation();
   const { state } = useLocation();
@@ -37,8 +43,8 @@ const Login = () => {
       const result = decode(location.search.split("=")[1]);
       setHistory({ ...history, result });
       hasDecoded.current = true;
+      setReset({ ...reset, passwordReset: result && result.server });
       navigate("/");
-      setReset({ ...reset, passwordReset: result?.server });
     }
     state && setReset({ ...reset, passwordReset: !state });
   }, [location.search, history, setHistory, reset, navigate, state]);
@@ -73,7 +79,7 @@ const Login = () => {
             schema={resetPasswordSchema}
             btn={"Reset My Password"}
             initialValues={resetPassword}
-            email={history.result?.email}
+            email={history.result && history.result.email}
             setReset={setReset}
             reset={reset}
           />
@@ -129,6 +135,11 @@ const Login = () => {
           />
         </>
       )}
+      <LoadingScreen
+        type={"bubbles"}
+        messages={messages}
+        background={"rgba(0, 0, 0, 0.9)"}
+      />
     </Container>
   );
 };

@@ -1,0 +1,38 @@
+{
+  "cpapp": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awsamplifyreacttempl-cpapp-132902-authRole",
+      "UnauthRoleArn": "arn:aws:iam::954075284382:role/amplify-awsamplifyreacttempl-cpapp-132902-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::954075284382:role/amplify-awsamplifyreacttempl-cpapp-132902-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-awsamplifyreacttempl-cpapp-132902-deployment",
+      "UnauthRoleName": "amplify-awsamplifyreacttempl-cpapp-132902-unauthRole",
+      "StackName": "amplify-awsamplifyreacttempl-cpapp-132902",
+      "StackId": "arn:aws:cloudformation:us-east-1:954075284382:stack/amplify-awsamplifyreacttempl-cpapp-132902/d6f39000-7000-11ec-bef8-0a3d0a4ac375",
+      "AmplifyAppId": "d150kh01nxvr10"
+    },
+    "categories": {
+      "auth": {
+        "cognitoajiozi": {}
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-devsecurity-dev-153236-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-devsecurity-dev-153236-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-devsecurity-dev-153236-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-devsecurity-dev-153236-deployment",
+      "UnauthRoleName": "amplify-devsecurity-dev-153236-unauthRole",
+      "StackName": "amplify-devsecurity-dev-153236",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-devsecurity-dev-153236/7e408b40-0bb5-11ef-823e-028955e024ed",
+      "AmplifyAppId": "d2e0anlcpf1i9u"
+    },
+    "categories": {
+      "auth": {
+        "cognitoajiozi": {}
+      }
+    }
+  }
+}

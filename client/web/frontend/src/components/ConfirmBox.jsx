@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/context";
 import { handleSubmit } from "../utils/handler";
 import { toast } from "react-toastify";
-// import { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 
 const toastParam = {
   position: "top-right",

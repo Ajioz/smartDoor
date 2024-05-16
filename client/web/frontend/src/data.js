@@ -7,6 +7,7 @@ import {
   FaSignOutAlt,
   FaPlus,
   FaHome,
+  FaDev,
 } from "react-icons/fa";
 
 const logOut = () => {
@@ -29,6 +30,12 @@ export const links = [
   },
   {
     id: 3,
+    url: "/auth",
+    text: "AuthDisplay",
+    icon: <FaDev />,
+  },
+  {
+    id: 4,
     url: "/add_doors",
     text: "Add Lock",
     icon: <FaPlus />,

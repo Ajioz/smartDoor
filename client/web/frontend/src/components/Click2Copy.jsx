@@ -32,7 +32,7 @@ const ClickToCopy = ({ item }) => {
 
   return (
     <Form>
-      {vitals?.map((connectId, index) => {
+      {vitals && vitals.map((connectId, index) => {
         return (
           <GroupForm key={index}>
             <FormField

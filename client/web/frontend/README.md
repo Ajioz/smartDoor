@@ -1,70 +1,184 @@
-# Getting Started with Create React App
+# aws-amplify-react-iot-pub-sub-using-cp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This is a very basic AWS Amplify + AWS IoT Javascript SDK + React project that combines basic authentication via Amazon Cognito with AWS IoT Core pubsub via the aws-iot-device-sdk
 
-In the project directory, you can run:
+(1) allows user to signup, signin and signout
+(2) when user signs up, it creates Cognito user pool and Identity pool.
+(3) when a user signs-in, authenticate via Cognito, it creates IoT policy and attaches with the cognito identity and allows the user perform pub/sub using that identity
+(4) subscribe to one or more topics and
+(5) publish messages to a user-specified topic.
 
-### `npm start`
+The functionality is similar to (though simpler, less pretty) version of the "Test" tab in the AWS IoT console:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Refer: https://docs.amplify.aws/start/getting-started/installation/q/integration/js
 
-### `npm test`
+1. Before we begin, make sure you have the following installed:
+   Node.js v12.x or later
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```sh
+      node -v
+   ```
 
-### `npm run build`
+   npm v5.x or later
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```sh
+      npm -v
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   git v2.14.1 or later
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```sh
+      git --version
+   ```
 
-### `npm run eject`
+2. Install amplify cli
+   npm install -g @aws-amplify/cli
+3. Create IAM user in your AWS account
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   a. Login to IAM console
+   b. Go to "Users" and click "Add User", select both access types (copy the access key, secret key and the console password)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Configure Amplify to use your AWS account
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   amplify configure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   Example:
 
-## Learn More
+   Sign in to your AWS administrator account:
+   https://console.aws.amazon.com/
+   Press Enter to continue
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   Ignore the browser and hit enter in the shell
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   Specify the AWS Region: us-east-1
+   Specify the username of the new IAM user:
+   ? user name: <iam user your created above>
+   Complete the user creation using the AWS console
+   https://console.aws.amazon.com/iam/home?region=us-east-1#/users$new?step=final&accessKey&userNames=iotsampleappuser&permissionType=policies&policies=arn:aws:iam::aws:policy%2FAdministratorAccess
+   Press Enter to continue
 
-### Code Splitting
+   Enter the access key of the newly created user:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ? accessKeyId: <enter access key copied from above step>
+   ? secretAccessKey: <enter secret key copied from above step>
 
-### Analyzing the Bundle Size
+   This would update/create the AWS Profile in your local machine
+   ? Profile Name: <profile name> #copy the profile name you will need it later
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Screenshots
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+![signup](./images/signup.png)
+![login](./images/login.png)
+![demo1](./images/demo1.png)
+![demo2](./images/demo2.png)
 
-### Advanced Configuration
+## Local Deployment (website on localhost)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Clone the repo
 
-### Deployment
+```sh
+git clone https://github.com/aws-samples/aws-amplify-react-iot-pub-sub-using-cp
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+2. move to project root
 
-### `npm run build` fails to minify
+```sh
+cd aws-amplify-react-iot-pub-sub-using-cp
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+3. Install dependencies
+
+```sh
+npm install
+```
+
+2. Initialize Amplify
+
+```sh
+amplify init
+```
+
+Note: It is recommended to run this command from the root of your app directory
+? Do you want to use an existing environment? Yes
+? Choose the environment you would like to use: (Use arrow keys)
+❯ test
+? Select the authentication method you want to use: AWS profile
+? Please choose the profile you want to use sampleappprofile
+
+3. Push / create your backend
+
+```
+amplify push
+```
+
+? Are you sure you want to continue? Yes
+
+4. Navigate to the [AWS IoT web console](https://console.aws.amazon.com/iot/home?) and:
+
+1. Click **Settings** in the lower left, and copy your **Endpoint** to a text file; you'll need this later. It would look similar to below:
+
+
+    ```
+    a2p5nqoyw6nu1b-ats.iot.us-east-1.amazonaws.com
+    ```
+
+5. Navigate to the [Cognito Console](https://console.aws.amazon.com/cognito/home?) and:
+
+1. Click **Manage Identity Pools** (not user pools)
+1. Click the pool name for your app, it should look similar to `cognito81d9f49f_identitypool_81d9f49f_test`
+1. Copy the **Sample Code** link on left, and in the code example, copy your **Identity Pool ID** to a text file; you'll need this later. It will look like `us-east-1:bf43e8cf-2a9d-410b-ab6b-3da084908fa7`
+
+1. Open `src/aws-iot-configuration.js` and:
+
+1. set the **endpoint** to the value from above. Be sure to prefix the endpoint value with `wss://` (for websockets) and add a suffix of `/mqtt`, as in the example below.
+
+1. Set the **host** to the endpoint value as-is.
+
+1. Specify your AWS **region**
+
+1. Set the pool ID to the Cognito Pool ID you gathered from above.
+
+```js
+// src/aws-iot-configuration.js
+var awsIotConfiguration = {
+  endpoint: "wss://a2p524qoyw6nu1b-ats.iot.us-east-1.amazonaws.com/mqtt",
+  region: "us-east-1",
+  poolId: "us-east-1:bf52e8cf-2a9d-410b-ab6b-3da084908fa7",
+  host: "a2p524qoyw6nu1b-ats.iot.us-east-1.amazonaws.com",
+};
+```
+
+3. Open `src/aws-iotcore-configuration.js` and:
+   1. set the **endpoint** Iot control plane endpoint for the region
+   2. specify your AWS **region**
+   3. specify policy to attach to the authenticated cognito identity
+
+```js
+// src/aws-iotcore-configuration.js
+var awsIotConfiguration = {
+  endpoint: "https://iot.us-east-1.amazonaws.com",
+  region: "us-east-1",
+  apiVersion: "2015-05-28",
+  policy:
+    '{"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": [ "iot:Subscribe" ], "Resource": ["arn:aws:iot:us-east-1:123456789012:topicfilter/*"]},{"Effect": "Allow","Action": [ "iot:Connect" ],"Resource": ["arn:aws:iot:us-east-1:123456789012:client/*"] },{"Effect": "Allow","Action": [ "iot:Publish","iot:Receive" ],"Resource": ["arn:aws:iot:us-east-1:123456789012:topic/*"]}]}',
+};
+```
+
+7. Navigate to the [AWS IAM Console](https://console.aws.amazon.com/iam/home?#/roles) and search for the IAM role for your authorized Cognito Identity pool users.
+   It will have a name similar to `arn:aws:iam::123456790:role/amplify-awsamplifyreacttempl-test-115859-authRole` and have a creation time that matches the date your deploying this project. Be sure to select the `authRole`, not the `unauthRole`
+
+1. Click **Attach Policies**
+1. Search for and select the `AWSIoTFullAccess` policy
+
+1. Run the website locally
+
+```
+npm run start
+```
+
+5. Navigate to `localhost:3000`, sign up, and test!

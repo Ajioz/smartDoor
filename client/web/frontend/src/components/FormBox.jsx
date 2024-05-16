@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Formik, Form } from "formik";
+import { Auth } from "aws-amplify";
+import { toast } from "react-toastify";
 import {
   Wrapper,
   FormWrapper,
@@ -14,6 +16,16 @@ import EmailConfirmation from "./EmailConfirmation";
 import { useGlobalContext } from "../context/context";
 import { handleValidation } from "../utils/handler";
 
+
+const toastParam = {
+  position: "top-right",
+  autoClose: 3000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+};
+
+
 const FormBox = (props) => {
   const navigate = useNavigate();
   const { postData } = useGlobalContext();
@@ -23,6 +35,7 @@ const FormBox = (props) => {
     status: false,
     recipient: "",
     email: "",
+    password: "",
   });
 
   const initialValuesArray = Object.entries(props.initialValues); //Create an array from the object
@@ -32,23 +45,41 @@ const FormBox = (props) => {
     await new Promise((resolve) => setTimeout(resolve, time));
   };
 
-  const onSubmit = (values, actions) => {
-    delay(1000);
-    hasRun.current = false;
-    if (props.email) {
-      values.email = props.email;
+  const onSubmit = async (values, actions) => {
+    try {
+      delay(1000);
+      hasRun.current = false;
+      if (props.email) {
+        values.email = props.email;
+      }
+
+      const username = await handleValidation(
+        values,
+        hasRun,
+        postData,
+        props,
+        delay,
+        navigate,
+        hasSent,
+        setHasSent
+      );
+      actions.resetForm();
+      if (username) {
+        if (username !== " " && values.password !== " ") {
+          try {
+            console.log("Attempting cloud login...");
+            await Auth.signIn(username, values.password);
+            // Redirect to dashboard after successful sign-in
+            return navigate("/dashboard");
+          } catch (error) {
+            console.log(error.message);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+      return toast.warning("Service Unreachable, try later!", toastParam);
     }
-    handleValidation(
-      values,
-      hasRun,
-      postData,
-      props,
-      delay,
-      navigate,
-      hasSent,
-      setHasSent,
-    );
-    actions.resetForm();
   };
 
   return (

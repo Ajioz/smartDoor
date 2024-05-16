@@ -13,26 +13,39 @@
     },
     "categories": {
       "auth": {
-        "cognitoajiozi": {}
+        "cognito81d9f49f": {}
       }
     }
   },
-  "dev": {
+  "test": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-devsecurity-dev-153236-authRole",
-      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-devsecurity-dev-153236-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-devsecurity-dev-153236-authRole",
+      "AuthRoleName": "amplify-awsamplifyreacttempl-test-72722-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-test-72722-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-test-72722-authRole",
       "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-devsecurity-dev-153236-deployment",
-      "UnauthRoleName": "amplify-devsecurity-dev-153236-unauthRole",
-      "StackName": "amplify-devsecurity-dev-153236",
-      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-devsecurity-dev-153236/7e408b40-0bb5-11ef-823e-028955e024ed",
-      "AmplifyAppId": "d2e0anlcpf1i9u"
+      "DeploymentBucketName": "amplify-awsamplifyreacttempl-test-72722-deployment",
+      "UnauthRoleName": "amplify-awsamplifyreacttempl-test-72722-unauthRole",
+      "StackName": "amplify-awsamplifyreacttempl-test-72722",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-awsamplifyreacttempl-test-72722/f71a8ef0-c581-11ee-8637-06590e209fe9",
+      "AmplifyAppId": "d202mnbxjsvpku"
     },
     "categories": {
       "auth": {
-        "cognitoajiozi": {}
+        "awsamplifyreacttempl7a78fa81": {}
       }
+    }
+  },
+  "testing": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awsamplifyreacttempl-testing-73331-authRole",
+      "UnauthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-testing-73331-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::316711705658:role/amplify-awsamplifyreacttempl-testing-73331-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-awsamplifyreacttempl-testing-73331-deployment",
+      "UnauthRoleName": "amplify-awsamplifyreacttempl-testing-73331-unauthRole",
+      "StackName": "amplify-awsamplifyreacttempl-testing-73331",
+      "StackId": "arn:aws:cloudformation:eu-west-2:316711705658:stack/amplify-awsamplifyreacttempl-testing-73331/d2559af0-c582-11ee-ab04-066993bb7f35",
+      "AmplifyAppId": "d202mnbxjsvpku"
     }
   }
 }

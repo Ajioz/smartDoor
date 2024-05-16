@@ -25,6 +25,7 @@ const EmailConfirmation = ({ recipient, email }) => {
         toast.success("Email resent, check your inbox", toastParam);
         hasRun.current = true;
       }
+        toast.success("Email resent, check your inbox", toastParam);
       delay(1000);
     }
   };

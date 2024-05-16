@@ -71,7 +71,7 @@ const AddItemForm = (props) => {
     delay(1000);
     setShowModal(!showModal);
     const { status, token } = isToken();
-    if (status && response?.status === 201) await fetchData(token);
+    if (status && response && response.status === 201) await fetchData(token);
   };
 
  

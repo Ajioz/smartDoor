@@ -51,7 +51,7 @@ const DoorSecurityKeypad = (props) => {
   const handleUnlock = (id) => {
     const { dbName } = findItem(control, id);
     props.setKeypad({ dbName, code });
-    alert("Door unlocked!");
+    // alert("Door unlocked!");
     setCode("");
   };
 
