@@ -49,13 +49,20 @@ const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
     [item]
   );
 
+  const isNumeric = (inputString) => {
+    // This regex will match any string that contains anything other than digits
+    let pattern = /[^0-9]/;
+    // If the pattern is found in the inputString, return false
+    const state = !pattern.test(inputString);
+    return state ? inputString : " ";
+  };
+
   // Helper method to check if keypad has value
   const checkState = (obj) => {
     return Object.entries(obj).every(([key, value]) => {
       return value !== "" && value !== " ";
     });
   };
-
 
   useEffect(() => {
     setSubscribedTopics(subscribeStack(item));
@@ -144,7 +151,8 @@ const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
   }, [subscribedTopics]);
 
   const handlePublishRequest = useCallback(() => {
-    mqttClient.publish(keypad.dbName, keypad.code);
+    const validate = isNumeric(keypad.code);
+    mqttClient.publish(keypad.dbName, validate);
   }, [keypad]);
 
   useEffect(() => {
@@ -164,6 +172,5 @@ const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
 
   return null;
 };
-
 
 export default CloudConnect;

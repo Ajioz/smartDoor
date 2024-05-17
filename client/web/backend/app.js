@@ -6,7 +6,6 @@ import authRouter from "./routes/authRoute.js";
 import thingRouter from "./routes/thingRoute.js";
 import cookieParser from "cookie-parser";
 
-
 //Extra security
 import helmet from "helmet";
 import cors from "cors";
@@ -17,7 +16,6 @@ import rateLimiter from "express-rate-limit";
 import NotFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import authenticateUser from "./middlewares/authentication.js";
-
 
 const app = express();
 
@@ -48,7 +46,6 @@ app.use(
 
 // Add cookieParser middleware with a secret string
 app.use(cookieParser(process.env.JWT_SECRET));
-
 
 // app.use("/api/user", authRouter, proxy);
 app.use("/api/user", authRouter);
