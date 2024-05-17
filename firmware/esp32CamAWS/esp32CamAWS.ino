@@ -1,11 +1,3 @@
-/////////////////////////////////////////////////////////////////
-/*
-  AWS IoT | ESP32CAM working as a publisher on MQTT
-  Video Tutorial: https://youtu.be/7_3qbou_keg
-  Created by Eric N. (ThatProject)
-*/
-/////////////////////////////////////////////////////////////////
-
 #include "secrets.h"
 #include <WiFiClientSecure.h>
 #include <MQTTClient.h>
@@ -29,7 +21,7 @@
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 
-#define ESP32CAM_PUBLISH_TOPIC   "esp32/cam_0"
+#define ESP32CAM_PUBLISH_TOPIC   "eGas/IoTcam_1"
 
 const int bufferSize = 1024 * 23; // 23552 bytes
 
