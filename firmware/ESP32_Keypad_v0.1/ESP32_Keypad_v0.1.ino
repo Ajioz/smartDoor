@@ -16,9 +16,31 @@ byte colPins[COLS] = {26, 25, 33, 32}; /* connect to the column pinouts of the k
 /* initialize an instance of class NewKeypad */
 Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
 
-void setup(){
-Serial.begin(9600);
+bool isNumeric(String inputString) {
+  // This regex will match any string that contains anything other than digits
+  // In Arduino C++, regular expressions are not natively supported, so we'll use a different approach
+
+  for (unsigned int i = 0; i < inputString.length(); i++) {
+    if (!isDigit(inputString[i])) {
+      // If the character is not a digit, return false
+      return false;
+    }
+  }
+  // If all characters are digits, return true
+  return true;
 }
+
+// Example usage:
+void setup() {
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB
+  }
+
+  Serial.println(isNumeric("12345"));  // Should print true
+  Serial.println(isNumeric("123a45")); // Should print false
+}
+
 
 void loop(){
   char customKey = customKeypad.getKey();
