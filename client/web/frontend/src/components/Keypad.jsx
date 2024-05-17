@@ -51,7 +51,7 @@ const DoorSecurityKeypad = (props) => {
   // Replace this function with your authentication logic
   const handleUnlock = (id) => {
     const { dbName } = findItem(control, id);
-    props.setKeypad({ dbName, code: `${"kwwjwiwjwjdjdj$!)"}` });
+    props.setKeypad({ dbName, code });
     setCode("");
   };
 
