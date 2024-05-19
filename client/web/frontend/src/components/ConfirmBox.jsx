@@ -33,14 +33,17 @@ const Confirmation = (props) => {
     handleSubmit(action, postData, setEmail, email, hasRun, navigate);
   };
 
-  const confirmSignUp = async () => {
+  const confirmHandler = async () => {
     try {
       const { username } = isToken();
       const res = await Auth.confirmSignUp(username, code);
       console.log(res);
       if (res === "SUCCESS") {
-        toast.success(res, toastParam);
-        return navigate("/");
+        const { data } = await postData("user/validate", {signupString, email});
+        if (data.status) {
+          toast.success(res, toastParam);
+          return navigate("/");
+        }
       }
       return toast.error("Couldn't confirm user", toastParam);
     } catch (error) {
@@ -72,7 +75,7 @@ const Confirmation = (props) => {
                   required
                 />
                 <section className="back">
-                  <Backbtn onClick={confirmSignUp}>
+                  <Backbtn onClick={confirmHandler}>
                     &nbsp;{props.action}
                   </Backbtn>
                 </section>
