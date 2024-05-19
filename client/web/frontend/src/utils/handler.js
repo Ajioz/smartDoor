@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import Cookies from "js-cookie"; // Import js-cookie
 import { jwtDecode } from "jwt-decode";
+import { Auth } from "aws-amplify";
 
 const toastParam = {
   position: "top-right",
@@ -153,7 +154,8 @@ export const handleValidation = async (
         toastMsg(message);
       }
     } else {
-      const message = await postData("user/signup", obj);
+      handleSignUp(obj.username, obj.email, obj.password);    //sign up to aws
+      const message = await postData("user/signup", obj);     //sign up to my mdb
       if (
         message.server === 535 ||
         message.server === "" ||
@@ -214,6 +216,21 @@ export const findItem = (array, id) => {
 export const details = (id, array, navigate) => {
   const singleItem = array.item.filter((item) => item._id === id);
   navigate("/info", { state: { flag: true, singleItem } });
+};
+
+// Sign up to aws and my MBD
+const handleSignUp = async (username, email, password) => {
+  // console.log({ email, username, password });
+  try {
+    await Auth.signUp({
+      username,
+      password,
+      attributes: { email },
+      autoSignIn: true,
+    });
+  } catch (error) {
+    console.log("error signing up: ", error.message);
+  }
 };
 
 // Get a cookie

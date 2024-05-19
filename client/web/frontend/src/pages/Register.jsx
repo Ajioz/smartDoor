@@ -4,6 +4,7 @@ import { Container, QuickInfo, ContentWrapper } from "../theme/theme";
 import { registerSchema } from "../schemas";
 import bgImg from "../images/bg-intro-desktop.png";
 
+
 const initialValues = {
   name: "",
   username: "",
@@ -11,6 +12,7 @@ const initialValues = {
   password: "",
   confirmPassword: "",
 };
+  
 
 const Register = () => {
   return (
