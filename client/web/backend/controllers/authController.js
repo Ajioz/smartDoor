@@ -15,9 +15,7 @@ import Reset from "../models/resetModel.js";
 
 const base_url = "http://localhost:3000";
 
-/*
- * POST /registration
- */
+/* * POST  --> registration */
 export const signup = async (req, res) => {
   const { name, username, email, password } = req.body;
   try {
@@ -48,9 +46,7 @@ export const signup = async (req, res) => {
   }
 };
 
-/*
- * POST --> login
- */
+/* * POST --> login */
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -161,6 +157,7 @@ export const verifyUserAfterAws = async (req, res) => {
   }
 };
 
+
 // RESEND EMAIL
 export const resendTokenPost = async (req, res) => {
   try {
@@ -219,7 +216,6 @@ export const findUserByEmail = async (req, res) => {
 };
 
 // UPDATE PROFILE FLOW
-
 export const updateProfile = async (req, res) => {
   try {
     const { email, password } = req.body;
