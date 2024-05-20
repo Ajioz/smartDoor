@@ -145,16 +145,16 @@ export const verifyUserAfterAws = async (req, res) => {
     if (validEmail) {
       // Find a matching token
       const user = await User.findOne({ email });
-
-      if (user.isVerified === "verified") {
+      if (user.isVerified === "pending") {
+        return res.status(200).redirect(302, `${base_url}/login`);
+      } else if (user.isVerified === "verified") {
         return res.status(201).redirect(302, `${base_url}/status`);
+      } else {
+        let update = StatusCodes.CREATED;
+        user.isVerified = "verified";                                           // Verify and save the user
+        await user.save();
+        return res.status(update).json({ message: "success", status: update });
       }
-
-      // Verify and save the user
-      user.isVerified = "verified";
-      await user.save();
-      let update = StatusCodes.CREATED;
-      return res.status(update).json({ message: "success", status: update });
     }
   } catch (error) {
     errorHandler(error, res, BadRequestError, NotFoundError);
