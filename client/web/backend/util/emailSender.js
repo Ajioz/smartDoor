@@ -112,7 +112,8 @@ let getEmailTemplate = (token, host) => {
           <main>
             <p style="line-height: 1.5; font-size: 13px; color:#4b6a74; margin-bottom: 10px;">Please confirm it's you.</p>
             <p style="line-height: 1.5; font-size: 13px; color:#4b6a74; margin-bottom: 10px;">
-              You will need to click the below button to proceed on platform
+              You will receive another email containing your secret code, please copy it and keep it safe.
+              Next, click the button provided below in this email to proceed on the platform, and enter the secret code you received into the provided box.
               <a href="https://smartlock.io" style="color:#56737c; text-decoration: underline;">smartlock.io</a> 
             </p>
             <p style="line-height: 1.5; font-size: 13px; color:#4b6a74; margin-bottom: 10px;">

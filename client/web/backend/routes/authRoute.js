@@ -6,7 +6,7 @@ import {
   resendTokenPost,
   findUserByEmail,
   updateProfile,
-  verifyPost,
+  verifyUserAfterAws,
 } from "../controllers/authController.js";
 
 const authRouter = express.Router();
@@ -14,7 +14,7 @@ const authRouter = express.Router();
 authRouter.post("/signup", signup);
 authRouter.post("/login", login);
 authRouter.get("/:tokenId", confirmationPost);
-authRouter.post("/verify", verifyPost);
+authRouter.post("/verify", verifyUserAfterAws);
 authRouter.post("/resend", resendTokenPost);
 authRouter.post("/email", findUserByEmail);
 authRouter.post("/password", updateProfile);

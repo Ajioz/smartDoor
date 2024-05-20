@@ -8,7 +8,7 @@ import {
   Input,
 } from "../theme/theme";
 import { FaArrowLeft, FaTimes } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useGlobalContext } from "../context/context";
 import { handleSubmit } from "../utils/handler";
 import { toast } from "react-toastify";
@@ -23,7 +23,8 @@ const toastParam = {
 };
 
 const Confirmation = (props) => {
-  const { postData, isToken } = useGlobalContext();
+  const { postData } = useGlobalContext();
+  const location = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState({ email: "", status: false });
   const [code, setCode] = useState("");
@@ -33,9 +34,15 @@ const Confirmation = (props) => {
     handleSubmit(action, postData, setEmail, email, hasRun, navigate);
   };
 
+  const decode = (str) => {
+    const decodedStr = decodeURIComponent(str);
+    if (decodedStr === "undefined") return;
+    return JSON.parse(decodedStr);
+  };
+
   const confirmHandler = async () => {
     try {
-      const { username } = isToken();
+      const {email, username } = decode(location.search.split("=")[1]);
       const res = await Auth.confirmSignUp(username, code);
       console.log(res);
       if (res === "SUCCESS") {
@@ -44,6 +51,8 @@ const Confirmation = (props) => {
           toast.success(res, toastParam);
           return navigate("/");
         }
+      } else {
+         toast.warning("This user doesn't exist", toastParam);
       }
       return toast.error("Couldn't confirm user", toastParam);
     } catch (error) {

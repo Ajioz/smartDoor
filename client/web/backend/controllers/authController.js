@@ -82,9 +82,7 @@ export const login = async (req, res) => {
   }
 };
 
-/*
- * GET  --> confirmation
- */
+/* * GET ROUTE --> This is a first step verification exercise */
 export const confirmationPost = async (req, res) => {
   const { tokenId } = req.params;
   const { token, email } = findParams(tokenId);
@@ -110,13 +108,18 @@ export const confirmationPost = async (req, res) => {
       // Verify and save the user
       user.isVerified = "started";
       await user.save();
-      return res.redirect(302, `${base_url}/confirmed`);
+      return res.redirect(
+        302,
+        `${base_url}/confirmed?=${encodeURIComponent(
+          JSON.stringify({ email: user.email, username: user.username })
+        )}`
+      );
     } else {
       if (validEmail) {
         // Find a matching token
         const isToken = await Reset.findOne({ token: tokenId });
 
-        if (!isToken) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may have expired."
+        if (!isToken) return res.redirect(302, `${base_url}/expired`); //"Unable to find a valid token. Your token may has expired."
 
         const user = await User.findOne({ _id: isToken.userId });
 
@@ -134,10 +137,8 @@ export const confirmationPost = async (req, res) => {
   }
 };
 
-/*
- * POST  --> confirmation
- */
-export const verifyPost = async (req, res) => {
+/* * POST ROUTE  --> This route is used to verify a user during reg, after aws has done same */
+export const verifyUserAfterAws = async (req, res) => {
   const { email } = req.body;
   const validEmail = isEmail(email.trim());
   try {
