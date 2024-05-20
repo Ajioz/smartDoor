@@ -46,7 +46,7 @@ const Confirmation = (props) => {
       const res = await Auth.confirmSignUp(username, code);
       console.log(res);
       if (res.message === "SUCCESS") {
-        const { data } = await postData("user/verify", { emailBox });
+        const { data } = await postData("user/verify", { email: emailBox });  //The essence of this email thing is to prevent email name conflict, since 'email' as a name is already being managed by a state
         if (data.status) {
           toast.success(res, toastParam);
           return navigate("/");

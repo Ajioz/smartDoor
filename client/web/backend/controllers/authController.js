@@ -105,7 +105,7 @@ export const confirmationPost = async (req, res) => {
         return res.status(201).redirect(302, `${base_url}/status`);
       }
 
-      // Verify and save the user
+      // start the verification process and save the state against the user
       user.isVerified = "started";
       await user.save();
       return res.redirect(
