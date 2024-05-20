@@ -42,11 +42,11 @@ const Confirmation = (props) => {
 
   const confirmHandler = async () => {
     try {
-      const {email, username } = decode(location.search.split("=")[1]);
+      const { email: emailBox, username } = decode(location.search.split("=")[1]);
       const res = await Auth.confirmSignUp(username, code);
       console.log(res);
-      if (res === "SUCCESS") {
-        const { data } = await postData("user/verify", {email});
+      if (res.message === "SUCCESS") {
+        const { data } = await postData("user/verify", { emailBox });
         if (data.status) {
           toast.success(res, toastParam);
           return navigate("/");
