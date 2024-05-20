@@ -39,7 +39,7 @@ const Confirmation = (props) => {
       const res = await Auth.confirmSignUp(username, code);
       console.log(res);
       if (res === "SUCCESS") {
-        const { data } = await postData("user/validate", {signupString, email});
+        const { data } = await postData("user/verify", {email});
         if (data.status) {
           toast.success(res, toastParam);
           return navigate("/");
@@ -66,7 +66,6 @@ const Confirmation = (props) => {
           <section className="tick">
             {props.imgType ? (
               <>
-                {/* <img src={props.img} alt="tick" /> */}
                 <Input
                   type="text  "
                   value={code}
@@ -82,7 +81,7 @@ const Confirmation = (props) => {
               </>
             ) : (
               <>
-                <img src={props.img} alt="tick" />
+                <img src={props.img} alt="emailBox" />
                 <Input
                   type="email"
                   value={email.email}

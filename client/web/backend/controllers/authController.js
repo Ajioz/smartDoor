@@ -70,7 +70,7 @@ export const login = async (req, res) => {
       throw new UnauthenticatedError("Invalid email or password");
 
     // Make sure the user has been verified
-    if (!user.isVerified)
+    if (user.isVerified !== "verified")
       throw new UnauthenticatedError("Your account has not been verified!");
 
     const token = await user.createJWT(); // createJWT() generates a token
@@ -103,12 +103,12 @@ export const confirmationPost = async (req, res) => {
 
       if (!user) return res.status(201).redirect(302, `${base_url}/register`);
 
-      if (user.isVerified) {
+      if (user.isVerified === "verified") {
         return res.status(201).redirect(302, `${base_url}/status`);
       }
 
       // Verify and save the user
-      user.isVerified = true;
+      user.isVerified = "started";
       await user.save();
       return res.redirect(302, `${base_url}/confirmed`);
     } else {
@@ -128,6 +128,32 @@ export const confirmationPost = async (req, res) => {
           )}`
         );
       }
+    }
+  } catch (error) {
+    errorHandler(error, res, BadRequestError, NotFoundError);
+  }
+};
+
+/*
+ * POST  --> confirmation
+ */
+export const verifyPost = async (req, res) => {
+  const { email } = req.body;
+  const validEmail = isEmail(email.trim());
+  try {
+    if (validEmail) {
+      // Find a matching token
+      const user = await User.findOne({ email });
+
+      if (user.isVerified === "verified") {
+        return res.status(201).redirect(302, `${base_url}/status`);
+      }
+
+      // Verify and save the user
+      user.isVerified = "verified";
+      await user.save();
+      let update = StatusCodes.CREATED;
+      return res.status(update).json({ message: "success", status: update });
     }
   } catch (error) {
     errorHandler(error, res, BadRequestError, NotFoundError);
