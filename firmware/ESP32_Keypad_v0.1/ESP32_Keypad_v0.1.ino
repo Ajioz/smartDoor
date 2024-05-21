@@ -1,7 +1,8 @@
 #include <Keypad.h>
 #include <Adafruit_Fingerprint.h>  
 #include <SoftwareSerial.h>
-#include <EEPROM.h>
+#include <SPIFFS.h>
+
 
 
 SoftwareSerial mySerial(10,9);        // pin #10 is IN from sensor (GREEN wire) and pin #9 is OUT from arduino (WHITE wire)
@@ -16,9 +17,11 @@ const byte ROWS = 4; /* four rows */
 const byte COLS = 4; /* four columns */
 
 
-char input[4];             // an array that will contain the digits that are input
-char password[4];
-byte value[4];
+char input[6];             // an array that will contain the digits that are input
+char password[6];
+byte value[6];
+char storedPasscode[100];   //Array to store passcode once retrieve
+const char* passCodePath = "/passcode.txt";
 
 uint8_t id;
 int menu = 0;               //this controls the menu settings 
@@ -37,15 +40,14 @@ char hexaKeys[ROWS][COLS] = {
 };
 
 //Keypad hardware IO
-byte rowPins[ROWS] = {13, 12, 14, 27}; /* connect to the row pinouts of the keypad */
-byte colPins[COLS] = {26, 25, 33, 32}; /* connect to the column pinouts of the keypad */
-/* initialize an instance of class NewKeypad */
-Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
+byte rowPins[ROWS] = {13, 12, 14, 27};                                              /* connect to the row pinouts of the keypad */
+byte colPins[COLS] = {26, 25, 33, 32};                                              /* connect to the column pinouts of the keypad */
+
+Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);  /* initialize an instance of class NewKeypad */
 
 bool isNumeric(String inputString) {
   // This regex will match any string that contains anything other than digits
   // In Arduino C++, regular expressions are not natively supported, so we'll use a different approach
-
   for (unsigned int i = 0; i < inputString.length(); i++) {
     if (!isDigit(inputString[i])) {
       // If the character is not a digit, return false
@@ -56,6 +58,43 @@ bool isNumeric(String inputString) {
   return true;
 }
 
+// Initialize SPIFFS
+void initSPIFFS() {
+  if (!SPIFFS.begin(true)){
+    Serial.println("An error has occurred while mounting SPIFFS");
+    return;
+  }
+  Serial.println("SPIFFS mounted successfully");
+}
+
+//Read spiff location to retrieve data
+void readMemory(const char* path){ 
+  // Open the connectID file for reading, for the purpose of formating it corectly as a publish topic
+  File file = SPIFFS.open(path, "r");
+  if (!file) {
+    Serial.println("Failed to open file for reading"); return;
+  }
+  // Read the file content
+  size_t bytes_read = file.readBytes(storedPasscode, sizeof(storedPasscode) - 1);
+  storedPasscode[bytes_read] = '\0';                                                // Add null terminator manually
+  file.close();                                                                   // Close the file
+}
+
+// Write file to SPIFFS
+void writeFile(fs::FS &fs, const char * path, const char * message){
+  Serial.printf("Writing file: %s\r\n", path);
+
+  File file = fs.open(path, FILE_WRITE);
+  if(!file){
+    Serial.println("- failed to open file for writing");
+    return;
+  }
+  if(file.print(message)){
+    Serial.println("- file written");
+  } else {
+    Serial.println("- write failed");
+  }
+}
 // Example usage:
 void setup() {
   pinMode(button, INPUT);
@@ -70,7 +109,7 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB
   }
-  
+
   finger.begin(57600);
   if (finger.verifyPassword()) {
     Serial.println("Found fingerprint sensor!");
@@ -78,24 +117,25 @@ void setup() {
     Serial.println("Did not find fingerprint sensor :(");
     while (1) { delay(1); }
   }
-
+  
   //button Code - If the Button is Pressed while setup run (powered on) it programs into the fingerprint memory
   programMode();
   finger.getTemplateCount();
   Serial.print("Total Finger contained ");Serial.print(finger.templateCount); Serial.println(" templates");  
-  
-  if(EEPROM.read(10) != 125){               // EEPROM address 1 should hold smart number which is '125'
-      for(int w=0;w<4;w++){
-        EEPROM.update(w, '0');
-      }
-      Serial.print("Previous Pin is:  "); 
-      eeRead(); 
-      EEPROM.write(10, 125);                                                      // Write to EEPROM we defined Master Card.
-      delay(500);
+
+  initSPIFFS();
+
+  // Load values saved in SPIFFS
+  getTopic(passCodePath);
+
+  if(storedPasscode != 123456){
+//    writeFile(SPIFFS, ssidPath, ssid.c_str());
+    writeFile(SPIFFS, passCodePath, 12345);
   }else{
     Serial.print("Previous Pin is:  "); 
-    eeRead(); 
+    Serial.Println(storedPasscode);
   }
+    
   Serial.println(""); 
   Serial.println("Tap A/B to Begin");
 
@@ -105,7 +145,6 @@ void setup() {
 
 uint8_t readnumber(void) {
   uint8_t num = 0;
-  
   while (num == 0) {
     while (! Serial.available());
     num = Serial.parseInt();
@@ -115,11 +154,14 @@ uint8_t readnumber(void) {
 
 void loop(){
   readKeypad();                 // Handles the Keypad object and switch case to read the inputs and decides the output state and leds based on the input   
-  fingerCheck();
-  getFingerprintIDez();         //For fingerPrint
   if(digitalRead(button)){
     programMode();
   } 
+  if(humanFound){
+    
+  fingerCheck();
+  getFingerprintIDez();         //For fingerPrint
+  }
 }
 
 
