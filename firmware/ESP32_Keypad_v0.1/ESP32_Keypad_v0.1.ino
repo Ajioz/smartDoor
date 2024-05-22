@@ -1,35 +1,33 @@
+#include <SoftwareSerial.h>
 #include <Keypad.h>
 #include <Adafruit_Fingerprint.h>  
-#include <SoftwareSerial.h>
 #include <SPIFFS.h>
 
 
-
-SoftwareSerial mySerial(10,9);        // pin #10 is IN from sensor (GREEN wire) and pin #9 is OUT from arduino (WHITE wire)
+SoftwareSerial mySerial(2,3);        // pin #2 is IN from sensor (GREEN wire) and pin #3 is OUT from arduino (WHITE wire)
+//HardwareSerial serialPort(2); // use UART2
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 //Define hardware IO
-#define greenPin 2
-#define redPin 3
-#define button 8
+#define greenPin 5
+#define redPin 6
+#define button 7
 
 const byte ROWS = 4; /* four rows */
 const byte COLS = 4; /* four columns */
 
+typedef unsigned char byte;
 
-char input[6];             // an array that will contain the digits that are input
-char password[6];
-byte value[6];
-char storedPasscode[100];   //Array to store passcode once retrieve
+char input[6];                                                // an array that will contain the digits that are input
+char storedPasscode[6];                                     //Array to store passcode once retrieve
 const char* passCodePath = "/passcode.txt";
 
 uint8_t id;
 int menu = 0;               //this controls the menu settings 
-int cursorColumn = 0;       //this controls the cursor postition
 int n=0;                    // variable used to point to the bits in the keypad input array
 int check=0;
 int block=0;
-
+bool humanFound = false;
 
 /* define the symbols on the buttons of the keypads */
 char hexaKeys[ROWS][COLS] = {
@@ -126,14 +124,13 @@ void setup() {
   initSPIFFS();
 
   // Load values saved in SPIFFS
-  getTopic(passCodePath);
+  readMemory(passCodePath);
 
-  if(storedPasscode != 123456){
-//    writeFile(SPIFFS, ssidPath, ssid.c_str());
-    writeFile(SPIFFS, passCodePath, 12345);
+  if(storedPasscode != "123456"){
+    writeFile(SPIFFS, passCodePath, "123456");
   }else{
     Serial.print("Previous Pin is:  "); 
-    Serial.Println(storedPasscode);
+    Serial.println(storedPasscode);
   }
     
   Serial.println(""); 
@@ -153,27 +150,27 @@ uint8_t readnumber(void) {
 }
 
 void loop(){
-  readKeypad();                 // Handles the Keypad object and switch case to read the inputs and decides the output state and leds based on the input   
   if(digitalRead(button)){
     programMode();
   } 
   if(humanFound){
-    
-  fingerCheck();
-  getFingerprintIDez();         //For fingerPrint
+    fingerCheck();
+    getFingerprintIDez();         //For fingerPrint
   }
+  readKeypad();                   // Handles the Keypad object and switch case to read the inputs and decides the output state and leds based on the input   
 }
 
 
 void askForCode(){
-  //lcd.print("Enter Pin code");  //prints when the user wants to enter the code
+  //prints when the user wants to enter the code
   Serial.println("Enter Pin code");
-  
 }
 
 void doorOpen(){
+//  Door open info, open logic can go in here
   Serial.println("Door Open");
 }
+
 void readKeypad(){
   char key = customKeypad.getKey();
   if(key)                                       // Check for a valid key.
@@ -183,19 +180,16 @@ void readKeypad(){
       case '0':                                 // Each case is a button that is pressed
         if(menu == 1){                          // the value of "menu" determines the setting parameter and what each button does in that setting  
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='0';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("0");
-          cursorColumn=cursorColumn+1;
           input[n]='0';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='0';
           n=n+1;
         }
@@ -204,19 +198,16 @@ void readKeypad(){
       case '1':
         if(menu == 1){
         Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='1';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("1");
-          cursorColumn=cursorColumn+1;
           input[n]='1';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='1';
           n=n+1;
         }
@@ -225,19 +216,16 @@ void readKeypad(){
       case '2':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='2';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("2");
-          cursorColumn=cursorColumn+1;
           input[n]='2';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='2';
           n=n+1;
         }
@@ -246,19 +234,16 @@ void readKeypad(){
       case '3':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='3';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("3");
-          cursorColumn=cursorColumn+1;
           input[n]='3';
           n=n+1;
         } 
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='3';
           n=n+1;
         }
@@ -267,19 +252,16 @@ void readKeypad(){
       case '4':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='4';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("4");
-          cursorColumn=cursorColumn+1;
           input[n]='4';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='4';
           n=n+1;
         }
@@ -288,19 +270,16 @@ void readKeypad(){
       case '5':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='5';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("5");
-          cursorColumn=cursorColumn+1;
           input[n]='5';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='5';
           n=n+1;
         }
@@ -309,19 +288,16 @@ void readKeypad(){
       case '6':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='6';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("6");
-          cursorColumn=cursorColumn+1;
           input[n]='6';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='6';
           n=n+1;
         }
@@ -330,19 +306,16 @@ void readKeypad(){
       case '8':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='8';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("8");
-          cursorColumn=cursorColumn+1;
           input[n]='8';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='8';
           n=n+1;
         }
@@ -351,19 +324,16 @@ void readKeypad(){
       case '9':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='9';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("9");
-          cursorColumn=cursorColumn+1;
           input[n]='9';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='9';
           n=n+1;
         }
@@ -372,19 +342,16 @@ void readKeypad(){
       case '7':
         if(menu == 1){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='7';
           n=n+1;
         }
         else if(menu == 3){
           Serial.print("7");
-          cursorColumn=cursorColumn+1;
           input[n]='7';
           n=n+1;
         }
         else if(menu == 4){
           Serial.print("*");
-          cursorColumn=cursorColumn+1;
           input[n]='7';
           n=n+1;
         }  
@@ -435,47 +402,51 @@ void readKeypad(){
        return; 
     }
   } 
-  if(menu==1 && n > 3){                             //If the menu is in setting 1 and the input array has been filled with 4 digits then...
+  
+  if(menu==1 && n > 5){                             //If the menu is in setting 1 and the input array has been filled with 4 digits then...
     doorlockCheck();                                //calls the function to check whether the code that was input matches the code that is stored
   }
-  else if(menu==3 && n > 3){
+  
+  else if(menu==3 && n > 5){
     oldCodeCheck();  
   }
-  else if(menu==4 && n > 3){
-    changeToNewCode(password,input);
+  
+  else if(menu==4 && n > 5){
+    changeToNewCode(storedPasscode,input);
     delay(250);
-    eeWrite(password);eeRead();
+    writeFile(SPIFFS, passCodePath, storedPasscode);
+    delay(500); readMemory(passCodePath);
     Serial.println(" "); 
     Serial.println("Code Changed");
     delay(1000);
     reset();
   }
   
-  if(checkCode(password,input) == true){
+  if(checkCode(storedPasscode,input) == true){
       doorOpen();
     delay(50);
   }
 }
 
 
-boolean checkCode(byte *a,byte *b){                   //The function to check whether the contents of the first parameter,an array, match the 
+boolean checkCode(char *a, char *b){                   //The function to check whether the contents of the first parameter,an array, match the 
   int p;                                              //match the contents of the second parameter, also an array.
-  for(p=0; p<4; p++) 
+  for(p=0; p<6; p++) 
     if(a[p]!=b[p]) return false;
     return true;
 }
 
-int changeToNewCode(byte *a, byte *b){
+int changeToNewCode(char *a, char *b){
   int p = 0;
-  for(p=0; p<4; p++){
+  for(p=0; p<6; p++){
     a[p]=b[p];
   } 
   n=0;
 }
 
 int doorlockCheck(){
-  if(n > 3){
-   if(checkCode(password,input) == true){
+  if(n > 5){
+   if(checkCode(storedPasscode,input) == true){
      delay(250);
      Serial.println(""); 
      Serial.println("Correct"); 
@@ -500,14 +471,13 @@ int doorlockCheck(){
        }
    }
   }  
-   cursorColumn=0;
    n=0;
   }
 }
 
 int oldCodeCheck(){
-  if(n > 3){
-   if(checkCode(password,input) == true){
+  if(n > 5){
+   if(checkCode(storedPasscode,input) == true){
      delay(250);  
      Serial.println(""); 
      Serial.println("Correct");  
@@ -522,45 +492,23 @@ int oldCodeCheck(){
    reset();
     } 
    n=0; 
-   cursorColumn=0;
   }
 }
 
 void reset(){
   int i;
-  cursorColumn=0;
   Serial.println("Tap A/B to Begin");  
   menu=0;
   n=0;
-  for(i=0;i<4;i++){
+  for(i=0;i<6;i++){
     input[i]='r';
   }
   digitalWrite(redPin,HIGH);
   digitalWrite(greenPin,LOW);
 }
 
-void eeWrite(byte *a){
-  for(int i=0;i<4;i++){
-    EEPROM.update(i, a[i]);
-  }
-  delay(500);
-}
-
-void eeRead(){
-  for(int i=0; i<4;i++){
-     value[i] = EEPROM.read(i);
-     delay(300);
-  }
-  for(int i=0; i<4;i++){
-      password[i]= (value[i]);          //convert the decimal value to ascii
-  }
-  Serial.print("Safe With Us!");
-  delay(300);
-}
-
 void keyPadReset(){
-  EEPROM.update(10,0);
-  delay(500);
+  writeFile(SPIFFS, passCodePath, "123456");
   Serial.println("System Formatted, Contact Admin!");
   while(1){
   }
