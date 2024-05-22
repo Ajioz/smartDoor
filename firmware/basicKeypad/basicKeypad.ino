@@ -17,9 +17,12 @@ byte colPins[COLS] = {26, 25, 33, 32}; /* connect to the column pinouts of the k
 Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
 
 bool isNumeric(String inputString) {
+  // Check if the string is empty
+  if (inputString.length() == 0) {
+    return false; // Return false for an empty string
+  }
   // This regex will match any string that contains anything other than digits
   // In Arduino C++, regular expressions are not natively supported, so we'll use a different approach
-
   for (unsigned int i = 0; i < inputString.length(); i++) {
     if (!isDigit(inputString[i])) {
       // If the character is not a digit, return false
@@ -29,6 +32,7 @@ bool isNumeric(String inputString) {
   // If all characters are digits, return true
   return true;
 }
+
 
 // Example usage:
 void setup() {

@@ -1,17 +1,19 @@
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
+//#include <Adafruit_Fingerprint.h>  
 #include <Keypad.h>
-#include <Adafruit_Fingerprint.h>  
 #include <SPIFFS.h>
 
 
-SoftwareSerial mySerial(2,3);        // pin #2 is IN from sensor (GREEN wire) and pin #3 is OUT from arduino (WHITE wire)
+//SoftwareSerial mySerial(2,15);        // pin #2 is IN from sensor (GREEN wire) and pin #5 is OUT from arduino (WHITE wire)
 //HardwareSerial serialPort(2); // use UART2
-Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+//Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 //Define hardware IO
-#define greenPin 5
-#define redPin 6
-#define button 7
+//#define greenPin 5
+//#define redPin 6
+//#define button 7
+
+void readKeypad();
 
 const byte ROWS = 4; /* four rows */
 const byte COLS = 4; /* four columns */
@@ -19,7 +21,7 @@ const byte COLS = 4; /* four columns */
 typedef unsigned char byte;
 
 char input[6];                                                // an array that will contain the digits that are input
-char storedPasscode[6];                                     //Array to store passcode once retrieve
+char storedPasscode[7];                                     //Array to store passcode once retrieve
 const char* passCodePath = "/passcode.txt";
 
 uint8_t id;
@@ -44,6 +46,10 @@ byte colPins[COLS] = {26, 25, 33, 32};                                          
 Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);  /* initialize an instance of class NewKeypad */
 
 bool isNumeric(String inputString) {
+  // Check if the string is empty
+  if (inputString.length() == 0) {
+    return false; // Return false for an empty string
+  }
   // This regex will match any string that contains anything other than digits
   // In Arduino C++, regular expressions are not natively supported, so we'll use a different approach
   for (unsigned int i = 0; i < inputString.length(); i++) {
@@ -94,34 +100,22 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
   }
 }
 // Example usage:
-void setup() {
-  pinMode(button, INPUT);
-  pinMode(greenPin,OUTPUT);    
-  pinMode(redPin,OUTPUT);      //set the pin used for the red and green LED's as outputs
-  
-  digitalWrite(button, LOW);
-  digitalWrite(redPin,HIGH);   // intially activate the Red LED to indicate that the door is locked  
-  digitalWrite(greenPin,LOW);    
-  
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB
-  }
+void setup() {  
+    Serial.begin(115200);
+    initSPIFFS();
 
-  finger.begin(57600);
-  if (finger.verifyPassword()) {
-    Serial.println("Found fingerprint sensor!");
-  } else {
-    Serial.println("Did not find fingerprint sensor :(");
-    while (1) { delay(1); }
-  }
-  
-  //button Code - If the Button is Pressed while setup run (powered on) it programs into the fingerprint memory
-  programMode();
-  finger.getTemplateCount();
-  Serial.print("Total Finger contained ");Serial.print(finger.templateCount); Serial.println(" templates");  
-
-  initSPIFFS();
+    //  finger.begin(57600);
+    //  if (finger.verifyPassword()) {
+    //    Serial.println("Found fingerprint sensor!");
+    //  } else {
+    //    Serial.println("Did not find fingerprint sensor :(");
+    //    while (1) { delay(1); }
+    //  }
+      
+      //button Code - If the Button is Pressed while setup run (powered on) it programs into the fingerprint memory
+    //  programMode();
+    //  finger.getTemplateCount();
+    //  Serial.print("Total Finger contained ");Serial.print(finger.templateCount); Serial.println(" templates");  
 
   // Load values saved in SPIFFS
   readMemory(passCodePath);
@@ -136,8 +130,7 @@ void setup() {
   Serial.println(""); 
   Serial.println("Tap A/B to Begin");
 
-  Serial.println(isNumeric("12345"));  // Should print true
-  Serial.println(isNumeric("123a45")); // Should print false
+  //Serial.println(isNumeric(" "));  // Should print true
 }
 
 uint8_t readnumber(void) {
@@ -150,14 +143,15 @@ uint8_t readnumber(void) {
 }
 
 void loop(){
-  if(digitalRead(button)){
-    programMode();
-  } 
-  if(humanFound){
-    fingerCheck();
-    getFingerprintIDez();         //For fingerPrint
-  }
-  readKeypad();                   // Handles the Keypad object and switch case to read the inputs and decides the output state and leds based on the input   
+   readKeypad(); 
+//  if(digitalRead(button)){
+//    programMode();
+//  } 
+//  if(humanFound){
+//    fingerCheck();
+//    getFingerprintIDez();         //For fingerPrint
+//  }
+                   // Handles the Keypad object and switch case to read the inputs and decides the output state and leds based on the input   
 }
 
 
@@ -376,11 +370,11 @@ void readKeypad(){
         check=0;
         Serial.println("Format Cancelled!");
         delay(2000);
-        reset();
+        myReset();
         break;  
          
       case 'D':
-        reset();
+        myReset();
         break;
 
       case '#':
@@ -404,6 +398,8 @@ void readKeypad(){
   } 
   
   if(menu==1 && n > 5){                             //If the menu is in setting 1 and the input array has been filled with 4 digits then...
+    Serial.println("n is : ");
+     Serial.println(n);delay(2000);
     doorlockCheck();                                //calls the function to check whether the code that was input matches the code that is stored
   }
   
@@ -419,7 +415,7 @@ void readKeypad(){
     Serial.println(" "); 
     Serial.println("Code Changed");
     delay(1000);
-    reset();
+    myReset();
   }
   
   if(checkCode(storedPasscode,input) == true){
@@ -436,6 +432,21 @@ boolean checkCode(char *a, char *b){                   //The function to check w
     return true;
 }
 
+bool compareStrings(String input, String passCode) {
+    return input == passCode;
+}
+
+//bool compareStrings(const char* str1, const char* str2) {
+//    // Use strcmp to compare the two strings
+//    // strcmp returns 0 if the strings are equal
+//    if (strcmp(str1, str2) == 0) {
+//        return true;
+//    } else {
+//        return false;
+//    }
+//}
+
+
 int changeToNewCode(char *a, char *b){
   int p = 0;
   for(p=0; p<6; p++){
@@ -445,66 +456,64 @@ int changeToNewCode(char *a, char *b){
 }
 
 int doorlockCheck(){
-  if(n > 5){
-   if(checkCode(storedPasscode,input) == true){
-     delay(250);
-     Serial.println(""); 
-     Serial.println("Correct"); 
-     block=0;
-     //This section is written for performance check
-     digitalWrite(greenPin,HIGH);
-     delay(15000);
-     digitalWrite(greenPin,LOW);
-   }
-  else{
-   delay(250);
-   Serial.println(""); 
-   Serial.println("Invalid Code");
-   block++; 
-   digitalWrite(greenPin,LOW);
-   delay(2000); 
-   if(block<3){
-       reset();
-   }else{
-       Serial.println("You've been blocked"); 
-       while(block==3){
-       }
-   }
-  }  
+  if(n>5){
+
+    String Input = String((char*)input);
+    String passCode = String((char*)storedPasscode);
+    
+    if(compareStrings(passCode, Input) == true){
+      Serial.println("Correct"); 
+    }else Serial.println("Invalid"); 
+//   if(checkCode(storedPasscode,input) == true){
+//     delay(250);
+//     Serial.print("doorlockCheck: "); 
+//     Serial.println("Correct"); 
+//     Serial.print("n is: ");Serial.println(n);
+//     block=0;
+//   }else{
+//     delay(250);
+//     Serial.println(""); 
+//     Serial.println("Invalid Code");
+//     block++; 
+//     delay(2000); 
+//     if(block<3){ myReset(); }else{ Serial.println("You've been blocked"); while(block==3){ } }
+//   }  
    n=0;
+   delay(3000); myReset();
   }
 }
 
 int oldCodeCheck(){
-  if(n > 5){
+  if(n>5){
+    
    if(checkCode(storedPasscode,input) == true){
      delay(250);  
-     Serial.println(""); 
+     Serial.print("oldCodeCheck: "); 
      Serial.println("Correct");  
      Serial.println("Enter new Code"); 
      menu=4;
-   }
-  else{
-   delay(250);
-   Serial.println(""); 
-   Serial.println("Invalid Code!");  
-   delay(2000);
-   reset();
-    } 
+   }else{
+     delay(250);
+     Serial.println(""); 
+     Serial.println("Invalid Code!");  
+     delay(2000);
+     myReset();
+   } 
    n=0; 
   }
+  return n;
 }
 
-void reset(){
+void myReset(){
   int i;
-  Serial.println("Tap A/B to Begin");  
+  Serial.println("reset: --> Tap A/B to Begin");  
   menu=0;
   n=0;
-  for(i=0;i<6;i++){
-    input[i]='r';
+  for (int i = 0; i < 6; i++) {
+    input[i] = '0';
   }
-  digitalWrite(redPin,HIGH);
-  digitalWrite(greenPin,LOW);
+//  digitalWrite(redPin,HIGH);
+//  digitalWrite(greenPin,LOW);
 }
 
 void keyPadReset(){
@@ -514,7 +523,7 @@ void keyPadReset(){
   }
 }
 
-
+/*
 void programMode(){
     if (digitalRead(button) == HIGH) {                                              // when button pressed pin should get high, button connected to vcc
     Serial.println(F("Program Button Pressed"));
@@ -541,7 +550,9 @@ void programMode(){
   }
   delay(1000);
 }
+*/
 
+/*
 uint8_t getFingerprintEnroll() {
   int scan = -1;
   Serial.print("Waiting for valid finger to enroll as #"); Serial.println(id);
@@ -712,9 +723,10 @@ int getFingerprintIDez() {
   Serial.print(" with confidence of "); Serial.println(finger.confidence); 
   
   delay(5000);
-  reset();
+  myReset();
   return finger.fingerID; 
 }
+*/
 
 /*
 int8_t getFingerprintID() {
