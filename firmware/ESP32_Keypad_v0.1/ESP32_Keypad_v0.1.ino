@@ -1,7 +1,7 @@
 //#include <SoftwareSerial.h>
 //#include <Adafruit_Fingerprint.h>  
 #include <Keypad.h>
-#include <SPIFFS.h>
+//#include <SPIFFS.h>
 
 
 //SoftwareSerial mySerial(2,15);        // pin #2 is IN from sensor (GREEN wire) and pin #5 is OUT from arduino (WHITE wire)
@@ -18,13 +18,14 @@ void keyPadReset();
 void myReset();
 int oldCodeCheck();
 int doorlockCheck();
-bool compareStrings(String input, String passCode);
+
+//bool compareStrings(String input, String passCode);
 boolean checkCode(char *a, char *b);
 
 void askForCode(){
   //prints when the user wants to enter the code
-  //  Serial.println("Enter Pin code");
    myReset();
+   Serial.println("Enter Pin code");
 }
 
 void doorOpen(){
@@ -44,11 +45,9 @@ uint8_t readnumber(void) {
 const byte ROWS = 4; /* four rows */
 const byte COLS = 4; /* four columns */
 
-typedef unsigned char byte;
-
-char input[1024];                                                // an array that will contain the digits that are input
-char storedPasscode[1024];                                     //Array to store passcode once retrieve
-const char* passCodePath = "/passcode.txt";
+char input[] = {'0','0','0','0','0','0',};                  // an array that will contain the digits that are input
+//char storedPasscode[7];                                     //Array to store passcode once retrieve
+//const char* passCodePath = "/passcode.txt";
 
 uint8_t id;
 int menu = 0;               //this controls the menu settings 
@@ -125,33 +124,36 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
     Serial.println("- write failed");
   }
 }
+
 // Example usage:
 void setup() {  
-    Serial.begin(115200);
-    initSPIFFS();
-
-    //  finger.begin(57600);
-    //  if (finger.verifyPassword()) {
-    //    Serial.println("Found fingerprint sensor!");
-    //  } else {
-    //    Serial.println("Did not find fingerprint sensor :(");
-    //    while (1) { delay(1); }
-    //  }
-      
-      //button Code - If the Button is Pressed while setup run (powered on) it programs into the fingerprint memory
-    //  programMode();
-    //  finger.getTemplateCount();
-    //  Serial.print("Total Finger contained ");Serial.print(finger.templateCount); Serial.println(" templates");  
-
-  // Load values saved in SPIFFS
+  Serial.begin(115200);
+  initSPIFFS();
+  
+  finger.begin(57600);
+  if (finger.verifyPassword()) {
+    Serial.println("Found fingerprint sensor!");
+  } else {
+    Serial.println("Did not find fingerprint sensor :(");
+    while (1) { delay(1); }
+  }
+  
+  // button Code - If the Button is Pressed while setup run (powered on) it programs into the fingerprint memory
+  programMode();
+  finger.getTemplateCount();
+  Serial.print("Total Finger contained ");Serial.print(finger.templateCount); Serial.println(" templates");  
+  
+  Load values saved in SPIFFS
   readMemory(passCodePath);
-
+  
   if(storedPasscode != "123456"){
     writeFile(SPIFFS, passCodePath, "123456");
+    Serial.println("StoredPasscode is empty"); 
   }else{
     Serial.print("Previous Pin is:  "); 
     Serial.println(storedPasscode);
   }
+  
   Serial.println(""); 
   Serial.println("Tap A/B to Begin"); 
   //Serial.println(isNumeric(" "));  // Should print true
@@ -436,50 +438,39 @@ void readKeypad(){
 
 boolean checkCode(char *a, char *b){                   //The function to check whether the contents of the first parameter,an array, match the 
   if(n>5){
-//  int p;                                              //match the contents of the second parameter, also an array.
-//  for(p=0; p<6; p++) 
-//    if(a[p]!=b[p]) return false;
+  int p;                                              //match the contents of the second parameter, also an array.
+  for(p=0; p<6; p++) 
+    if(a[p]!=b[p]) return false;
     return true;
   }
   return false;
 }
 
-bool compareStrings(String input, String passCode) {
-    return input == passCode;
-}
-
 
 int changeToNewCode(char *a, char *b){
-//  int p = 0;
-//  for(p=0; p<6; p++){
-//    a[p]=b[p];
-//  } 
+  int p = 0;
+  for(p=0; p<6; p++){
+    a[p]=b[p];
+  } 
   n=0;
 }
 
 int doorlockCheck(){
   if(n>5){
-
-//    String Input = String((char*)input);
-//    String passCode = String((char*)storedPasscode);
-    
-    if(compareStrings("123444", "123444") == true){
-      Serial.println("Correct"); 
-    }else Serial.println("Invalid"); 
-//   if(checkCode(storedPasscode,input) == true){
-//     delay(250);
-//     Serial.print("doorlockCheck: "); 
-//     Serial.println("Correct"); 
-//     Serial.print("n is: ");Serial.println(n);
-//     block=0;
-//   }else{
-//     delay(250);
-//     Serial.println(""); 
-//     Serial.println("Invalid Code");
-//     block++; 
-//     delay(2000); 
-//     if(block<3){ myReset(); }else{ Serial.println("You've been blocked"); while(block==3){ } }
-//   }  
+   if(checkCode(storedPasscode,input) == true){
+     delay(250);
+     Serial.print("doorlockCheck: "); 
+     Serial.println("Correct"); 
+     Serial.print("n is: ");Serial.println(n);
+     block=0;
+   }else{
+     delay(250);
+     Serial.println(""); 
+     Serial.println("Invalid Code");
+     block++; 
+     delay(2000); 
+     if(block<3){ myReset(); }else{ Serial.println("You've been blocked"); while(block==3){ } }
+   }  
    n=0;
    delay(3000); myReset();
   }
@@ -506,24 +497,31 @@ int oldCodeCheck(){
 }
 
 void myReset(){
+  Serial.println("Resetting...");delay(2000);
   int i;
-  Serial.println("reset: --> Tap A/B to Begin");  
   menu=0;
   n=0;
-//  strcpy(input, "0000000");
-//  for (int i = 0; i < 6; i++) {
-//    input[i] = '0';
-//  }
+  Serial.println("Comparing...");delay(2000);
+  if (strcmp("123444", "123444") == 0) {
+    Serial.println("code Correct");
+  } else {
+      Serial.println("Invalid");
+  }
+  Serial.println("Tap A/B to Begin");  
+  strcpy(input, "0000000");
+  for (int i = 0; i < 6; i++) {
+    input[i] = '0';
+  }
 //  digitalWrite(redPin,HIGH);
 //  digitalWrite(greenPin,LOW);
 
 }
 
 void keyPadReset(){
-//  writeFile(SPIFFS, passCodePath, "123456");
-//  Serial.println("System Formatted, Contact Admin!");
-//  while(1){
-//  }
+  writeFile(SPIFFS, passCodePath, "123456");
+  Serial.println("System Formatted, Contact Admin!");
+  while(1){
+  }
 }
 
 /*
