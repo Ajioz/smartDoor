@@ -14,6 +14,7 @@ const byte COLS = 4; /* four columns */
 
 char input[] = {'0','0','0','0','0','0'};  
 char storedPassCode[] = "123456";
+const char* passCodePath = "/passcode.txt";
 int menu = 0;                                 //this controls the menu settings 
 int n=0;                                      // variable used to point to the bits in the keypad input array
 int check=0;
@@ -42,6 +43,20 @@ void initSPIFFS() {
     return;
   }
   Serial.println("SPIFFS mounted successfully");
+}
+
+
+//Read spiff location to retrieve data
+void readMemory(const char* path){ 
+  // Open the connectID file for reading, for the purpose of formating it corectly as a publish topic
+  File file = SPIFFS.open(path, "r");
+  if (!file) {
+    Serial.println("Failed to open file for reading"); return;
+  }
+  // Read the file content
+  size_t bytes_read = file.readBytes(storedPassCode, sizeof(storedPassCode) - 1);
+  storedPassCode[bytes_read] = '\0';                                                // Add null terminator manually
+  file.close();                                                                   // Close the file
 }
 
 // Write file to SPIFFS
@@ -108,7 +123,15 @@ bool isNumeric(String inputString) {
 
 void setup() {
   Serial.begin(115200);
+  initSPIFFS();
+
+  //Load values saved in SPIFFS
+  readMemory(passCodePath);
+    
+  Serial.print("Previous Pin is:  "); 
+  Serial.println(storedPassCode);
   Serial.println(""); 
+  
   Serial.println("Tap A/B to Begin"); 
 }
 
@@ -353,6 +376,10 @@ void readKeypad(){
      oldCodeCheck();
   }else if(menu==4 && n > 5){
     changeToNewCode(storedPassCode,input);
+    delay(1000);
+    writeFile(SPIFFS, passCodePath, storedPassCode);
+    delay(1000); readMemory(passCodePath);
+    Serial.println(" "); 
     Serial.println("Code Changed successfully!");
     delay(1000);
     myReset();
@@ -360,7 +387,7 @@ void readKeypad(){
 }
 
 boolean checkCode(char password[], char input[]) {
-  Serial.println("");Serial.println("Comparing..."); delay(2000);
+  Serial.println("");Serial.println("Validating..."); delay(2000);
   int comparisonResult = strcmp(password, input);
   if (comparisonResult == 0) {
       return true; // Explicitly return true for successful comparison
@@ -399,9 +426,7 @@ void doorlockCheck(){
 int oldCodeCheck(){
   if(n>5){
    if(checkCode(storedPassCode, input)){
-     Serial.print("oldCodeCheck: "); 
-     Serial.println("Correct");  
-     delay(2000);
+     Serial.println("Correct"); delay(2000);
      Serial.println("Enter new Code"); 
      menu=4;
    }else{

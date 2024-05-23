@@ -1,7 +1,7 @@
 //#include <SoftwareSerial.h>
 //#include <Adafruit_Fingerprint.h>  
 #include <Keypad.h>
-//#include <SPIFFS.h>
+#include <SPIFFS.h>
 
 
 //SoftwareSerial mySerial(2,15);        // pin #2 is IN from sensor (GREEN wire) and pin #5 is OUT from arduino (WHITE wire)
@@ -143,7 +143,7 @@ void setup() {
   finger.getTemplateCount();
   Serial.print("Total Finger contained ");Serial.print(finger.templateCount); Serial.println(" templates");  
   
-  Load values saved in SPIFFS
+  //Load values saved in SPIFFS
   readMemory(passCodePath);
   
   if(storedPasscode != "123456"){
