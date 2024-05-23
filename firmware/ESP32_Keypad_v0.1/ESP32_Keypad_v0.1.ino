@@ -14,14 +14,40 @@
 //#define button 7
 
 void readKeypad();
+void keyPadReset();
+void myReset();
+int oldCodeCheck();
+int doorlockCheck();
+bool compareStrings(String input, String passCode);
+boolean checkCode(char *a, char *b);
+
+void askForCode(){
+  //prints when the user wants to enter the code
+  //  Serial.println("Enter Pin code");
+   myReset();
+}
+
+void doorOpen(){
+//  Door open info, open logic can go in here
+  Serial.println("Door Open");
+}
+
+uint8_t readnumber(void) {
+  uint8_t num = 0;
+  while (num == 0) {
+    while (! Serial.available());
+    num = Serial.parseInt();
+  }
+  return num;
+}
 
 const byte ROWS = 4; /* four rows */
 const byte COLS = 4; /* four columns */
 
 typedef unsigned char byte;
 
-char input[6];                                                // an array that will contain the digits that are input
-char storedPasscode[7];                                     //Array to store passcode once retrieve
+char input[1024];                                                // an array that will contain the digits that are input
+char storedPasscode[1024];                                     //Array to store passcode once retrieve
 const char* passCodePath = "/passcode.txt";
 
 uint8_t id;
@@ -126,21 +152,12 @@ void setup() {
     Serial.print("Previous Pin is:  "); 
     Serial.println(storedPasscode);
   }
-    
   Serial.println(""); 
-  Serial.println("Tap A/B to Begin");
-
+  Serial.println("Tap A/B to Begin"); 
   //Serial.println(isNumeric(" "));  // Should print true
 }
 
-uint8_t readnumber(void) {
-  uint8_t num = 0;
-  while (num == 0) {
-    while (! Serial.available());
-    num = Serial.parseInt();
-  }
-  return num;
-}
+
 
 void loop(){
    readKeypad(); 
@@ -155,15 +172,7 @@ void loop(){
 }
 
 
-void askForCode(){
-  //prints when the user wants to enter the code
-  Serial.println("Enter Pin code");
-}
 
-void doorOpen(){
-//  Door open info, open logic can go in here
-  Serial.println("Door Open");
-}
 
 void readKeypad(){
   char key = customKeypad.getKey();
@@ -426,42 +435,35 @@ void readKeypad(){
 
 
 boolean checkCode(char *a, char *b){                   //The function to check whether the contents of the first parameter,an array, match the 
-  int p;                                              //match the contents of the second parameter, also an array.
-  for(p=0; p<6; p++) 
-    if(a[p]!=b[p]) return false;
+  if(n>5){
+//  int p;                                              //match the contents of the second parameter, also an array.
+//  for(p=0; p<6; p++) 
+//    if(a[p]!=b[p]) return false;
     return true;
+  }
+  return false;
 }
 
 bool compareStrings(String input, String passCode) {
     return input == passCode;
 }
 
-//bool compareStrings(const char* str1, const char* str2) {
-//    // Use strcmp to compare the two strings
-//    // strcmp returns 0 if the strings are equal
-//    if (strcmp(str1, str2) == 0) {
-//        return true;
-//    } else {
-//        return false;
-//    }
-//}
-
 
 int changeToNewCode(char *a, char *b){
-  int p = 0;
-  for(p=0; p<6; p++){
-    a[p]=b[p];
-  } 
+//  int p = 0;
+//  for(p=0; p<6; p++){
+//    a[p]=b[p];
+//  } 
   n=0;
 }
 
 int doorlockCheck(){
   if(n>5){
 
-    String Input = String((char*)input);
-    String passCode = String((char*)storedPasscode);
+//    String Input = String((char*)input);
+//    String passCode = String((char*)storedPasscode);
     
-    if(compareStrings(passCode, Input) == true){
+    if(compareStrings("123444", "123444") == true){
       Serial.println("Correct"); 
     }else Serial.println("Invalid"); 
 //   if(checkCode(storedPasscode,input) == true){
@@ -485,7 +487,6 @@ int doorlockCheck(){
 
 int oldCodeCheck(){
   if(n>5){
-    
    if(checkCode(storedPasscode,input) == true){
      delay(250);  
      Serial.print("oldCodeCheck: "); 
@@ -509,18 +510,20 @@ void myReset(){
   Serial.println("reset: --> Tap A/B to Begin");  
   menu=0;
   n=0;
-  for (int i = 0; i < 6; i++) {
-    input[i] = '0';
-  }
+//  strcpy(input, "0000000");
+//  for (int i = 0; i < 6; i++) {
+//    input[i] = '0';
+//  }
 //  digitalWrite(redPin,HIGH);
 //  digitalWrite(greenPin,LOW);
+
 }
 
 void keyPadReset(){
-  writeFile(SPIFFS, passCodePath, "123456");
-  Serial.println("System Formatted, Contact Admin!");
-  while(1){
-  }
+//  writeFile(SPIFFS, passCodePath, "123456");
+//  Serial.println("System Formatted, Contact Admin!");
+//  while(1){
+//  }
 }
 
 /*
