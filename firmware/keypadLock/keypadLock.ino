@@ -1,3 +1,13 @@
+//*****************************************************************************//
+//  Name          : Electronic Door Lock                                       //
+//  Author        : Ajiroghene Sunday                                          //
+//  Modified      : Ajiroghene Sunday                                          //
+//  Version       : 1.0                                                        // 
+//  Notes         : An electronic door lock using a keypad, mobile interface   //
+//                : esp32 that controls an electric door strike - IoT enabled  //           
+//*****************************************************************************//
+
+
 #include <Keypad.h>
 #include <SPIFFS.h>
 
@@ -128,10 +138,7 @@ void setup() {
   //Load values saved in SPIFFS
   readMemory(passCodePath);
     
-  Serial.print("Previous Pin is:  "); 
-  Serial.println(storedPassCode);
   Serial.println(""); 
-  
   Serial.println("Tap A/B to Begin"); 
 }
 
