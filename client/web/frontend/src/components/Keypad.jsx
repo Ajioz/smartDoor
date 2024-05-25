@@ -22,8 +22,7 @@ import { details, findItem } from "../utils/handler";
 const DoorSecurityKeypad = (props) => {
   const { control } = useGlobalContext();
   const navigate = useNavigate();
-  const [code, setCode] = useState("");
-  const [hideCode, setHideCode] = useState("");
+  const [code, setCode] = useState({ code: "", hideCode: "" });
 
   const handleEdit = (id, disable, label1, label2) => {
     const { name } = findItem(control, id);
@@ -40,22 +39,23 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
-
   const handleButtonClick = (value) => {
-    setCode((prevCode) => prevCode + value);
-    setHideCode((prevCode) => prevCode + "*");
+    setCode({
+      ...code,
+      code: code.code + value,
+      hideCode: code.hideCode + "*",
+    });
   };
 
   const handleClear = () => {
-    setCode("");
+    setCode({ ...code, code: "", hideCode: "" });
   };
 
   // Replace this function with your authentication logic
   const handleUnlock = (id) => {
     const { dbName } = findItem(control, id);
-    // props.setKeypad({ dbName, code });
-    console.log({ dbName, code });
-    setCode(""); setHideCode("");
+    props.setKeypad({ dbName, code: code.code });
+    setCode({ ...code, code: "", hideCode: "" });
   };
 
   const handleDelete = (id) => {
@@ -91,7 +91,7 @@ const DoorSecurityKeypad = (props) => {
                 onClick={() => details(props.id, control, navigate)}
               />
             </ActionBtnContainer>
-            <Display>{hideCode}</Display>
+            <Display>{code.hideCode}</Display>
             <div>
               <KeypadBtn onClick={() => handleButtonClick("1")}>1</KeypadBtn>
               <KeypadBtn onClick={() => handleButtonClick("2")}>2</KeypadBtn>
