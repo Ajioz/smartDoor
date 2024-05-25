@@ -5,6 +5,7 @@ import {
   FaEllipsisV,
   FaTrash,
   FaUnlock,
+  FaFingerprint,
 } from "react-icons/fa";
 import {
   Display,
@@ -17,12 +18,14 @@ import AddItemBtn from "./AddItemBtn";
 import { useGlobalContext } from "../context/context";
 import { useNavigate } from "react-router-dom";
 import { details, findItem } from "../utils/handler";
+import FingerPrint from "./FingerPrint";
 // import { control } from "../data";
 
 const DoorSecurityKeypad = (props) => {
   const { control } = useGlobalContext();
   const navigate = useNavigate();
   const [code, setCode] = useState({ code: "", hideCode: "" });
+  const [thumb, setThumb] = useState(false);
 
   const handleEdit = (id, disable, label1, label2) => {
     const { name } = findItem(control, id);
@@ -39,7 +42,7 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
-  const handleButtonClick = (value) => {
+  const handleBtn = (value) => {
     setCode({
       ...code,
       code: code.code + value,
@@ -73,6 +76,10 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
+  const callThumb = () => {
+    setThumb(!thumb);
+  };
+
   return (
     <>
       <ExtendContainer width={"220px"}>
@@ -92,32 +99,43 @@ const DoorSecurityKeypad = (props) => {
               />
             </ActionBtnContainer>
             <Display>{code.hideCode}</Display>
-            <div>
-              <KeypadBtn onClick={() => handleButtonClick("1")}>1</KeypadBtn>
-              <KeypadBtn onClick={() => handleButtonClick("2")}>2</KeypadBtn>
-              <KeypadBtn onClick={() => handleButtonClick("3")}>3</KeypadBtn>
-            </div>
-            <div>
-              <KeypadBtn onClick={() => handleButtonClick("4")}>4</KeypadBtn>
-              <KeypadBtn onClick={() => handleButtonClick("5")}>5</KeypadBtn>
-              <KeypadBtn onClick={() => handleButtonClick("6")}>6</KeypadBtn>
-            </div>
-            <div>
-              <KeypadBtn onClick={() => handleButtonClick("7")}>7</KeypadBtn>
-              <KeypadBtn onClick={() => handleButtonClick("8")}>8</KeypadBtn>
-              <KeypadBtn onClick={() => handleButtonClick("9")}>9</KeypadBtn>
-            </div>
-            <div>
-              <KeypadBtn onClick={() => handleButtonClick("0")}>0</KeypadBtn>
-              <KeypadBtn onClick={handleClear}>
-                <FaArrowLeft />
-              </KeypadBtn>
-            </div>
-            <div>
-              <KeypadBtn onClick={() => handleUnlock(props.id)}>
-                <FaUnlock />
-              </KeypadBtn>
-            </div>
+            {!thumb ? (
+              <>
+                <div>
+                  <KeypadBtn onClick={() => handleBtn("1")}>1</KeypadBtn>
+                  <KeypadBtn onClick={() => handleBtn("2")}>2</KeypadBtn>
+                  <KeypadBtn onClick={() => handleBtn("3")}>3</KeypadBtn>
+                </div>
+                <div>
+                  <KeypadBtn onClick={() => handleBtn("4")}>4</KeypadBtn>
+                  <KeypadBtn onClick={() => handleBtn("5")}>5</KeypadBtn>
+                  <KeypadBtn onClick={() => handleBtn("6")}>6</KeypadBtn>
+                </div>
+                <div>
+                  <KeypadBtn onClick={() => handleBtn("7")}>7</KeypadBtn>
+                  <KeypadBtn onClick={() => handleBtn("8")}>8</KeypadBtn>
+                  <KeypadBtn onClick={() => handleBtn("9")}>9</KeypadBtn>
+                </div>
+                <div>
+                  <KeypadBtn onClick={() => handleBtn("0")}>0</KeypadBtn>
+                  <KeypadBtn onClick={handleClear}>
+                    <FaArrowLeft />
+                  </KeypadBtn>
+                  <KeypadBtn onClick={callThumb}>
+                    <FaFingerprint />
+                  </KeypadBtn>
+                </div>
+                <div>
+                  <KeypadBtn onClick={() => handleUnlock(props.id)}>
+                    <FaUnlock />
+                  </KeypadBtn>
+                </div>
+              </>
+            ) : (
+              <>
+                <FingerPrint thumb={callThumb} />
+              </>
+            )}
           </KeypadContainer>
         ) : (
           <AddItemBtn

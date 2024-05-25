@@ -499,20 +499,20 @@ export const VideoPlayerContainer = styled.div`
 `;
 
 export const Dummy = styled.section`
-width: 100%;
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-align-items: center;
-margin: 10px auto;
-background-color: #ddd;
-height: 150px;
-p{
-  color: #333;
-  font-size: 20px;
-  font-family: monospace;
-}
-`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+  background-color: #ddd;
+  height: 150px;
+  p {
+    color: #333;
+    font-size: 20px;
+    font-family: monospace;
+  }
+`;
 export const Video = styled.video`
   width: 100%;
   display: block;
@@ -555,6 +555,16 @@ export const KeypadBtn = styled.button`
     background-color: #333;
     color: #ddd;
   }
+`;
+export const Finger = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 250px;
+  width: 40px;
+  cursor: "pointer";
+  color: #fff;
 `;
 
 export const Line = styled.section`
