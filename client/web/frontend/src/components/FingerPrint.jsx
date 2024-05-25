@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Finger, KeypadBtn } from "../theme/theme";
-import { FaArrowLeft, FaFingerprint } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import styled, { keyframes, css } from "styled-components";
-import thumbPrint from "../images/thumb.svg";
+import thumbPrint from "../images/thumb.jpg";
 
 const pulse = keyframes`
   0%, 100% {
@@ -18,8 +18,9 @@ const Scanner = styled.div`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: transparent;
   background-image: url(${(prop) => prop.thumbImg});
+  background-size: contain;
+  background-repeat: no-repeat;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   ${(props) =>

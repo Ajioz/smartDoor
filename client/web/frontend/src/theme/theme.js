@@ -559,7 +559,7 @@ export const KeypadBtn = styled.button`
 export const Finger = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   height: 250px;
   width: 40px;
