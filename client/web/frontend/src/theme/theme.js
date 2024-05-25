@@ -629,7 +629,7 @@ export const Tag = styled.section`
 
 export const Display = styled.div`
   margin-top: 20px;
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: #fff;
   height: 50px;
 `;

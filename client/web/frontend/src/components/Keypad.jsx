@@ -23,6 +23,7 @@ const DoorSecurityKeypad = (props) => {
   const { control } = useGlobalContext();
   const navigate = useNavigate();
   const [code, setCode] = useState("");
+  const [hideCode, setHideCode] = useState("");
 
   const handleEdit = (id, disable, label1, label2) => {
     const { name } = findItem(control, id);
@@ -42,6 +43,7 @@ const DoorSecurityKeypad = (props) => {
 
   const handleButtonClick = (value) => {
     setCode((prevCode) => prevCode + value);
+    setHideCode((prevCode) => prevCode + "*");
   };
 
   const handleClear = () => {
@@ -51,8 +53,9 @@ const DoorSecurityKeypad = (props) => {
   // Replace this function with your authentication logic
   const handleUnlock = (id) => {
     const { dbName } = findItem(control, id);
-    props.setKeypad({ dbName, code });
-    setCode("");
+    // props.setKeypad({ dbName, code });
+    console.log({ dbName, code });
+    setCode(""); setHideCode("");
   };
 
   const handleDelete = (id) => {
@@ -88,7 +91,7 @@ const DoorSecurityKeypad = (props) => {
                 onClick={() => details(props.id, control, navigate)}
               />
             </ActionBtnContainer>
-            <Display>{code}</Display>
+            <Display>{hideCode}</Display>
             <div>
               <KeypadBtn onClick={() => handleButtonClick("1")}>1</KeypadBtn>
               <KeypadBtn onClick={() => handleButtonClick("2")}>2</KeypadBtn>
