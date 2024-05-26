@@ -8,6 +8,7 @@ const { verify } = verifySign;
 const auth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
+    console.log(authHeader)
     if (!authHeader || !authHeader.startsWith("Bearer")) {
       throw new UnauthenticatedError("Authentication invalid");
     }
@@ -22,6 +23,7 @@ const auth = async (req, res, next) => {
 
     next();
   } catch (error) {
+    // console.log(error)
     res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || "An error occurred during authentication",
     });

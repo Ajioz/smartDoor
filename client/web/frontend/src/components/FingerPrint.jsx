@@ -39,16 +39,17 @@ const Scanner = styled.div`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-image: url(${(prop) => prop.thumbImg});
+  background-image: url(${(prop) => prop.thumb_img});
   background-size: contain;
   background-repeat: no-repeat;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   ${(props) =>
-    props.idle &&
-    css`
-      animation: ${pulse} 2s infinite;
-    `}
+    props.idle
+      ? css`
+          animation: ${pulse} 2s infinite;
+        `
+      : undefined}
 `;
 
 const ScannerInner = styled.div`
@@ -112,7 +113,7 @@ const FingerPrint = ({ callThumb, getScanID, handleUnlock, id }) => {
     if (idle) {
       setIdle(false);
       console.log(scanning);
-      handleUnlock(id, false)
+      handleUnlock(id, false);
       setScanning(true);
       getScanID("ajioziFinger12341!");
       // Simulate scanning process
@@ -130,7 +131,7 @@ const FingerPrint = ({ callThumb, getScanID, handleUnlock, id }) => {
 
   return (
     <Finger>
-      <Scanner idle={idle} onClick={handleScan} thumbImg={thumbPrint}>
+      <Scanner idle={idle} onClick={handleScan} thumb_img={thumbPrint}>
         <ScannerInner>
           <FingerprintPattern />
         </ScannerInner>

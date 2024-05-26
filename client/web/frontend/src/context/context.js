@@ -118,10 +118,17 @@ export const AppProvider = ({ children }) => {
   };
 
   const fingerScanner = async (route, body) => {
+    const { token } = isToken();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer: ${token}`,
+      },
+    };
     try {
       setControl({ ...control, loading: true });
-      const response = await axios.post(`${base_url}/${route}`, body);
-      // console.log(response)
+      const response = await axios.post(`${base_url}/${route}`, body, config);
+      console.log(response);
       setControl({ ...control, loading: false });
       return response.data;
     } catch (error) {
@@ -153,7 +160,7 @@ export const AppProvider = ({ children }) => {
         control,
         ajiozItem,
         fetchData,
-        fingerScanner
+        fingerScanner,
       }}
     >
       {children}

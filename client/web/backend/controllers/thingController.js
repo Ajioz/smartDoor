@@ -53,6 +53,8 @@ export const scanner = async (req, res) => {
       body: { finger },
       user: { userId },
     } = req;
+
+    console.log(finger, userId);
     const user = User.findOne({ _id: userId });
     if (!user) return;
     if (user.fingerID === finger) {

@@ -49,13 +49,6 @@ const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
     [item]
   );
 
-  const isNumeric = (inputString) => {
-    // This regex will match any string that contains anything other than digits
-    let pattern = /[^0-9]/;
-    // If the pattern is found in the inputString, return false
-    const state = !pattern.test(inputString);
-    return state ? inputString : " ";
-  };
 
   // Helper method to check if keypad has value
   const checkState = (obj) => {
@@ -116,7 +109,7 @@ const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
           let rawMessage = payload.toString();
           let parseMessage = JSON.parse(rawMessage);
           findTopic(topic, parseMessage);
-          console.log(topic, parseMessage);
+          // console.log(topic, parseMessage);
           if (parseMessage.sensor_a0) {
             if (isMounted) {
               setValue({ id: topic, msg: parseMessage.sensor_a0 });
@@ -151,8 +144,7 @@ const CloudConnect = ({ item, keypad, setValue, findTopic }) => {
   }, [subscribedTopics]);
 
   const handlePublishRequest = useCallback(() => {
-    const validate = isNumeric(keypad.code);
-    mqttClient.publish(keypad.dbName, validate);
+    mqttClient.publish(keypad.dbName, keypad.code);
   }, [keypad]);
 
   useEffect(() => {

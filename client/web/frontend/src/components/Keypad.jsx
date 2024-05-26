@@ -43,6 +43,14 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
+  const isNumeric = (inputString) => {
+    // This regex will match any string that contains anything other than digits
+    let pattern = /[^0-9]/;
+    // If the pattern is found in the inputString, return false
+    const state = !pattern.test(inputString);
+    return state ? inputString : " ";
+  };
+
   const handleBtn = (value) => {
     setCode({
       ...code,
@@ -59,8 +67,8 @@ const DoorSecurityKeypad = (props) => {
   const handleUnlock = (id, key) => {
     const { dbName, fName } = findItem(control, id);
     key
-      ? props.setKeypad({ dbName, code: code.code })
-      : props.setKeypad({ fName, code: finger });
+      ? props.setKeypad({ dbName: dbName, code: isNumeric(code.code) })
+      : props.setKeypad({ dbName: fName, code: finger });
     setCode({ ...code, code: "", hideCode: "" });
   };
 
