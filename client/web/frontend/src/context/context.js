@@ -128,7 +128,6 @@ export const AppProvider = ({ children }) => {
     try {
       setControl({ ...control, loading: true });
       const response = await axios.post(`${base_url}/${route}`, body, config);
-      console.log(response);
       setControl({ ...control, loading: false });
       return response.data;
     } catch (error) {

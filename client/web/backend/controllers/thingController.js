@@ -53,20 +53,14 @@ export const scanner = async (req, res) => {
       body: { finger },
       user: { userId },
     } = req;
-
-    console.log(finger);
-
-    console.log(userId);
-    
-    const user = User.findOne({ _id: userId });
-    console.log(user);
+    const user = await User.findOne({ _id: userId });
     if (!user) return;
+
     if (user.fingerID === finger) {
-      console.log({ message: "Found", secret: "ru0k1!sat33#" });
       return res.status(StatusCodes.OK).json({ message: "Found", secret: "ru0k1!sat33#" });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
 };

@@ -75,6 +75,7 @@ const DoorSecurityKeypad = (props) => {
   const getScanID = async (finger) => {
     const { secret } = await fingerScanner("thing/finger", { finger });
     setFinger(secret);
+    console.log(secret)
   };
 
   const handleDelete = (id) => {
