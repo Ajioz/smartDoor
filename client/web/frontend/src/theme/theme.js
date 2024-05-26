@@ -1,5 +1,15 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import img from "../images/add_item2.svg";
+
+
+const slideIn = keyframes`
+  from{
+    transform: translateX(100%);
+  }
+  to{
+    transform: translateX(0)
+    }
+`;
 
 export const Container = styled.div`
   width: ${(prop) => prop.width || "100%"};
@@ -550,7 +560,7 @@ export const KeypadBtn = styled.button`
   cursor: pointer;
   color: #fff;
   transition: background-color 0.3s, color 0.3s;
-
+  animation: ${(props) => props.pop && slideIn} 0.1s ease-in-out;
   &:hover {
     background-color: #333;
     color: #ddd;

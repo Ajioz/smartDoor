@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { KeypadBtn } from "../theme/theme";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaKeyboard } from "react-icons/fa";
 import styled, { keyframes, css } from "styled-components";
 import thumbPrint from "../images/thumb.jpg";
 
@@ -15,7 +15,7 @@ const pulse = keyframes`
 
 const slideIn = keyframes`
   from{
-    transform: translateX(-100%);
+    transform: translateX(100%);
   }
   to{
     transform: translateX(0)
@@ -31,7 +31,7 @@ const Finger = styled.div`
   width: 40px;
   cursor: "pointer";
   color: #fff;
-  animation: slideIn 0.5s ease-in-out
+  animation: ${slideIn} 0.1s ease-in-out;
 `;
 
 const Scanner = styled.div`
@@ -95,7 +95,15 @@ const IconCross = styled.div`
   }
 `;
 
-const FingerPrint = ({ thumb }) => {
+const Text = styled.p`
+  font-size: 9px;
+  width: 100px;
+  color: #fff;
+  text-align: center;
+  text-transform: capitalize;
+`;
+
+const FingerPrint = ({ callThumb }) => {
   const [idle, setIdle] = useState(true);
   const [scanning, setScanning] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -132,8 +140,9 @@ const FingerPrint = ({ thumb }) => {
           <IconCross />
         </Feedback>
       </Scanner>
-      <KeypadBtn onClick={thumb}>
-        <FaArrowLeft />
+      <Text>Download Mobile App to use this feature</Text>
+      <KeypadBtn onClick={() => callThumb(true)}>
+        <FaKeyboard />
       </KeypadBtn>
     </Finger>
   );

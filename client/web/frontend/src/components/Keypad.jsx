@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import {
   Display,
-  KeypadBtn,
+  KeypadBtn as Btn,
   KeypadContainer,
   ExtendContainer,
   ActionBtnContainer,
@@ -25,7 +25,7 @@ const DoorSecurityKeypad = (props) => {
   const { control } = useGlobalContext();
   const navigate = useNavigate();
   const [code, setCode] = useState({ code: "", hideCode: "" });
-  const [thumb, setThumb] = useState(false);
+  const [thumb, setThumb] = useState({ thumb: false, pop: false });
 
   const handleEdit = (id, disable, label1, label2) => {
     const { name } = findItem(control, id);
@@ -76,8 +76,8 @@ const DoorSecurityKeypad = (props) => {
     //handleItem(delete, id, disable, label1, label2, category, name, action);
   };
 
-  const callThumb = () => {
-    setThumb(!thumb);
+  const callThumb = (prop) => {
+    setThumb({ ...thumb, thumb: !thumb.thumb, pop: prop });
   };
 
   return (
@@ -99,41 +99,41 @@ const DoorSecurityKeypad = (props) => {
               />
             </ActionBtnContainer>
             <Display>{code.hideCode}</Display>
-            {!thumb ? (
+            {!thumb.thumb ? (
               <>
                 <div>
-                  <KeypadBtn onClick={() => handleBtn("1")}>1</KeypadBtn>
-                  <KeypadBtn onClick={() => handleBtn("2")}>2</KeypadBtn>
-                  <KeypadBtn onClick={() => handleBtn("3")}>3</KeypadBtn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("1")}>1</Btn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("2")}>2</Btn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("3")}>3</Btn>
                 </div>
                 <div>
-                  <KeypadBtn onClick={() => handleBtn("4")}>4</KeypadBtn>
-                  <KeypadBtn onClick={() => handleBtn("5")}>5</KeypadBtn>
-                  <KeypadBtn onClick={() => handleBtn("6")}>6</KeypadBtn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("4")}>4</Btn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("5")}>5</Btn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("6")}>6</Btn>
                 </div>
                 <div>
-                  <KeypadBtn onClick={() => handleBtn("7")}>7</KeypadBtn>
-                  <KeypadBtn onClick={() => handleBtn("8")}>8</KeypadBtn>
-                  <KeypadBtn onClick={() => handleBtn("9")}>9</KeypadBtn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("7")}>7</Btn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("8")}>8</Btn>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("9")}>9</Btn>
                 </div>
                 <div>
-                  <KeypadBtn onClick={() => handleBtn("0")}>0</KeypadBtn>
-                  <KeypadBtn onClick={handleClear}>
+                  <Btn pop={thumb.pop} onClick={() => handleBtn("0")}>0</Btn>
+                  <Btn pop={thumb.pop} onClick={handleClear}>
                     <FaArrowLeft />
-                  </KeypadBtn>
-                  <KeypadBtn onClick={callThumb}>
+                  </Btn>
+                  <Btn pop={thumb.pop} onClick={() => callThumb(false)}>
                     <FaFingerprint />
-                  </KeypadBtn>
+                  </Btn>
                 </div>
                 <div>
-                  <KeypadBtn onClick={() => handleUnlock(props.id)}>
+                  <Btn pop={thumb.pop} onClick={() => handleUnlock(props.id)}>
                     <FaUnlock />
-                  </KeypadBtn>
+                  </Btn>
                 </div>
               </>
             ) : (
               <>
-                <FingerPrint thumb={callThumb} />
+                <FingerPrint callThumb={callThumb} />
               </>
             )}
           </KeypadContainer>
