@@ -4,7 +4,7 @@ import img from "../images/add_item2.svg";
 
 const slideIn = keyframes`
   from{
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
   to{
     transform: translateX(0)

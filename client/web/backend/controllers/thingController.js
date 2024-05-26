@@ -1,4 +1,5 @@
 import Thing from "../models/ThingModel.js";
+import User from "../models/UserModel.js";
 import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/badRequest.js";
 import NotFoundError from "../errors/notFound.js";
@@ -46,6 +47,23 @@ export const createThing = async (req, res) => {
   }
 };
 
+export const scanner = async (req, res) => {
+  try {
+    const {
+      body: { finger },
+      user: { userId },
+    } = req;
+    const user = User.findOne({ _id: userId });
+    if (!user) return;
+    if (user.fingerID === finger) {
+      return res.status(StatusCodes.OK).json({ message: "Found", secret: "ru0k1!sat33#" });
+    }
+  } catch (error) {
+    console.error(error);
+    errorHandler(error, res, NotFoundError, BadRequestError);
+  }
+};
+
 export const updateThing = async (req, res) => {
   try {
     const {
@@ -65,7 +83,9 @@ export const updateThing = async (req, res) => {
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
 
-    return res.status(StatusCodes.CREATED).json({message: `Successfully updated ${thingName}`, thing});
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ message: `Successfully updated ${thingName}`, thing });
   } catch (error) {
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
@@ -85,9 +105,9 @@ export const deleteThing = async (req, res) => {
 
     if (!thing) throw new NotFoundError(`No thing with id: ${thingId}`);
 
-     return res
-       .status(StatusCodes.CREATED)
-       .json({ message: "Successfully Removed item" });
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ message: "Successfully Removed item" });
   } catch (error) {
     console.log(error);
     errorHandler(error, res, NotFoundError, BadRequestError);

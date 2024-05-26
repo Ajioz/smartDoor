@@ -117,6 +117,30 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const fingerScanner = async (route, body) => {
+    try {
+      setControl({ ...control, loading: true });
+      const response = await axios.post(`${base_url}/${route}`, body);
+      // console.log(response)
+      setControl({ ...control, loading: false });
+      return response.data;
+    } catch (error) {
+      setControl({ ...control, loading: false });
+      if (error.response && error.response.status === 400) {
+        console.error(
+          "Error fetching user data:",
+          error.response.data.message || "No such user in database"
+        );
+        return error.response.data;
+      }
+      if (error.response && error.response.status === 401) {
+        return error.response.data;
+      } else {
+        console.error("Unexpected error:", error.response.data.message);
+      }
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -129,6 +153,7 @@ export const AppProvider = ({ children }) => {
         control,
         ajiozItem,
         fetchData,
+        fingerScanner
       }}
     >
       {children}

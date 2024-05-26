@@ -35,7 +35,14 @@ const UserSchema = new Schema({
     required: [true, "Please provide password"],
     minLength: 6,
   },
-  isVerified: { type: String, default: "pending" },
+  isVerified: {
+    type: String,
+    default: "pending",
+  },
+  fingerID: {
+    type: String,
+    default: "none",
+  },
 });
 
 UserSchema.pre("save", async function (next) {

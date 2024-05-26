@@ -7,7 +7,7 @@ import {
   FaSignOutAlt,
   FaPlus,
   FaHome,
-  FaDev,
+  FaFingerprint,
 } from "react-icons/fa";
 
 const logOut = () => {
@@ -31,8 +31,8 @@ export const links = [
   {
     id: 3,
     url: "/auth",
-    text: "AuthDisplay",
-    icon: <FaDev />,
+    text: "FingerPrint",
+    icon: <FaFingerprint />,
   },
   {
     id: 4,
@@ -66,7 +66,7 @@ export const social = [
   },
 
   {
-    id: 6,
+    id: 4,
     color: "#eee",
     click: logOut,
     icon: <FaSignOutAlt />,

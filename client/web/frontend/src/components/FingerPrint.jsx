@@ -103,7 +103,7 @@ const Text = styled.p`
   text-transform: capitalize;
 `;
 
-const FingerPrint = ({ callThumb }) => {
+const FingerPrint = ({ callThumb, getScanID, handleUnlock, id }) => {
   const [idle, setIdle] = useState(true);
   const [scanning, setScanning] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -111,14 +111,15 @@ const FingerPrint = ({ callThumb }) => {
   const handleScan = () => {
     if (idle) {
       setIdle(false);
+      console.log(scanning);
+      handleUnlock(id, false)
       setScanning(true);
-
+      getScanID("ajioziFinger12341!");
       // Simulate scanning process
       setTimeout(() => {
         setScanning(false);
         const success = Math.random() > 0.5; // Random success/failure
         setFeedback(success ? "success" : "failure");
-
         setTimeout(() => {
           setFeedback(null);
           setIdle(true);
