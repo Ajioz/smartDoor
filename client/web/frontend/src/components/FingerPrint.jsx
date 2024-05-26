@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Finger, KeypadBtn } from "../theme/theme";
+import { KeypadBtn } from "../theme/theme";
 import { FaArrowLeft } from "react-icons/fa";
 import styled, { keyframes, css } from "styled-components";
 import thumbPrint from "../images/thumb.jpg";
@@ -11,6 +11,27 @@ const pulse = keyframes`
   50% {
     box-shadow: 0 0 40px rgba(0, 150, 255, 1);
   }
+`;
+
+const slideIn = keyframes`
+  from{
+    transform: translateX(-100%);
+  }
+  to{
+    transform: translateX(0)
+    }
+`;
+
+const Finger = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 250px;
+  width: 40px;
+  cursor: "pointer";
+  color: #fff;
+  animation: slideIn 0.5s ease-in-out
 `;
 
 const Scanner = styled.div`

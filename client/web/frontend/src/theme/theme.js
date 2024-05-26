@@ -556,16 +556,6 @@ export const KeypadBtn = styled.button`
     color: #ddd;
   }
 `;
-export const Finger = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  height: 250px;
-  width: 40px;
-  cursor: "pointer";
-  color: #fff;
-`;
 
 export const Line = styled.section`
   height: 4px;
