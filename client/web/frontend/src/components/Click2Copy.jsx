@@ -23,7 +23,7 @@ const ClickToCopy = ({ item }) => {
         // item has fixed amount of iterable based on the registered device on user account
         // however, each item has dbName and fName, which we intend to make into separate ite
         // I attempted straight process but could not achieve the purpose, hence I have to adopt th
-        //procedural programming approach
+        // procedural programming approach
         const db_name = item.map((detail) => ({
           dbName: detail.dbName,
         }));
