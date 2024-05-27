@@ -1,59 +1,34 @@
-//#include <SoftwareSerial.h>
-//#include <Adafruit_Fingerprint.h>  
+//*****************************************************************************//
+//  Name          : Electronic Door Lock                                       //
+//  Author        : Ajiroghene Sunday                                          //
+//  Modified      : Ajiroghene Sunday                                          //
+//  Version       : 1.0                                                        // 
+//  Notes         : An electronic door lock using a keypad, mobile interface   //
+//                : esp32 that controls an electric door strike - IoT enabled  //           
+//*****************************************************************************//
+
+
 #include <Keypad.h>
 #include <SPIFFS.h>
 
-
-//SoftwareSerial mySerial(2,15);        // pin #2 is IN from sensor (GREEN wire) and pin #5 is OUT from arduino (WHITE wire)
-//HardwareSerial serialPort(2); // use UART2
-//Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
-
-//Define hardware IO
-//#define greenPin 5
-//#define redPin 6
-//#define button 7
-
 void readKeypad();
-void keyPadReset();
-void myReset();
+boolean checkCode(char password[], char input[]);
 int oldCodeCheck();
-int doorlockCheck();
+void doorlockCheck();
+int changeToNewCode(byte *a, byte *b);
 
-//bool compareStrings(String input, String passCode);
-boolean checkCode(char *a, char *b);
-
-void askForCode(){
-  //prints when the user wants to enter the code
-   myReset();
-   Serial.println("Enter Pin code");
-}
-
-void doorOpen(){
-//  Door open info, open logic can go in here
-  Serial.println("Door Open");
-}
-
-uint8_t readnumber(void) {
-  uint8_t num = 0;
-  while (num == 0) {
-    while (! Serial.available());
-    num = Serial.parseInt();
-  }
-  return num;
-}
 
 const byte ROWS = 4; /* four rows */
 const byte COLS = 4; /* four columns */
 
-char input[] = {'0','0','0','0','0','0',};                  // an array that will contain the digits that are input
-//char storedPasscode[7];                                     //Array to store passcode once retrieve
-//const char* passCodePath = "/passcode.txt";
 
-uint8_t id;
-int menu = 0;               //this controls the menu settings 
-int n=0;                    // variable used to point to the bits in the keypad input array
+char input[] = {'0','0','0','0','0','0'};  
+char storedPassCode[] = "123456";
+const char* passCodePath = "/passcode.txt";
+int menu = 0;                                 //this controls the menu settings 
+int n=0;                                      // variable used to point to the bits in the keypad input array
 int check=0;
-int block=0;
+int block = 0;
 bool humanFound = false;
 
 /* define the symbols on the buttons of the keypads */
@@ -66,26 +41,10 @@ char hexaKeys[ROWS][COLS] = {
 
 //Keypad hardware IO
 byte rowPins[ROWS] = {13, 12, 14, 27};                                              /* connect to the row pinouts of the keypad */
-byte colPins[COLS] = {26, 25, 33, 32};                                              /* connect to the column pinouts of the keypad */
+byte colPins[COLS] = {26, 25, 33, 32};  
 
-Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);  /* initialize an instance of class NewKeypad */
+Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
-bool isNumeric(String inputString) {
-  // Check if the string is empty
-  if (inputString.length() == 0) {
-    return false; // Return false for an empty string
-  }
-  // This regex will match any string that contains anything other than digits
-  // In Arduino C++, regular expressions are not natively supported, so we'll use a different approach
-  for (unsigned int i = 0; i < inputString.length(); i++) {
-    if (!isDigit(inputString[i])) {
-      // If the character is not a digit, return false
-      return false;
-    }
-  }
-  // If all characters are digits, return true
-  return true;
-}
 
 // Initialize SPIFFS
 void initSPIFFS() {
@@ -96,6 +55,7 @@ void initSPIFFS() {
   Serial.println("SPIFFS mounted successfully");
 }
 
+
 //Read spiff location to retrieve data
 void readMemory(const char* path){ 
   // Open the connectID file for reading, for the purpose of formating it corectly as a publish topic
@@ -104,8 +64,8 @@ void readMemory(const char* path){
     Serial.println("Failed to open file for reading"); return;
   }
   // Read the file content
-  size_t bytes_read = file.readBytes(storedPasscode, sizeof(storedPasscode) - 1);
-  storedPasscode[bytes_read] = '\0';                                                // Add null terminator manually
+  size_t bytes_read = file.readBytes(storedPassCode, sizeof(storedPassCode) - 1);
+  storedPassCode[bytes_read] = '\0';                                                // Add null terminator manually
   file.close();                                                                   // Close the file
 }
 
@@ -125,61 +85,71 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
   }
 }
 
-// Example usage:
-void setup() {  
+
+void askForCode(){
+  //prints when the user wants to enter the code
+   Serial.println("Enter Pin code");
+}
+             
+void doorOpen(){
+//  Door open info, open logic can go in here
+  Serial.println("Door Open");
+}
+
+void myReset(){
+  delay(2000);
+  menu=0;
+  n=0;
+  Serial.println("Tap A/B to Begin");  
+}
+
+uint8_t readnumber(void) {
+  uint8_t num = 0;
+  while (num == 0) {
+    while (! Serial.available());
+    num = Serial.parseInt();
+  }
+  return num;
+}
+
+bool isNumeric(String inputString) {
+  // Check if the string is empty
+  if (inputString.length() == 0) {
+    return false; // Return false for an empty string
+  }
+  // This regex will match any string that contains anything other than digits
+  // In Arduino C++, regular expressions are not natively supported, so we'll use a different approach
+  for (unsigned int i = 0; i < inputString.length(); i++) {
+    if (!isDigit(inputString[i])) {
+      // If the character is not a digit, return false
+      return false;
+    }
+  }
+  // If all characters are digits, return true
+  return true;
+}
+
+
+
+void setup() {
   Serial.begin(115200);
   initSPIFFS();
-  
-  finger.begin(57600);
-  if (finger.verifyPassword()) {
-    Serial.println("Found fingerprint sensor!");
-  } else {
-    Serial.println("Did not find fingerprint sensor :(");
-    while (1) { delay(1); }
-  }
-  
-  // button Code - If the Button is Pressed while setup run (powered on) it programs into the fingerprint memory
-  programMode();
-  finger.getTemplateCount();
-  Serial.print("Total Finger contained ");Serial.print(finger.templateCount); Serial.println(" templates");  
-  
+
   //Load values saved in SPIFFS
   readMemory(passCodePath);
-  
-  if(storedPasscode != "123456"){
-    writeFile(SPIFFS, passCodePath, "123456");
-    Serial.println("StoredPasscode is empty"); 
-  }else{
-    Serial.print("Previous Pin is:  "); 
-    Serial.println(storedPasscode);
-  }
-  
+    
   Serial.println(""); 
   Serial.println("Tap A/B to Begin"); 
-  //Serial.println(isNumeric(" "));  // Should print true
 }
 
-
-
-void loop(){
-   readKeypad(); 
-//  if(digitalRead(button)){
-//    programMode();
-//  } 
-//  if(humanFound){
-//    fingerCheck();
-//    getFingerprintIDez();         //For fingerPrint
-//  }
-                   // Handles the Keypad object and switch case to read the inputs and decides the output state and leds based on the input   
+void loop() {
+    readKeypad(); 
 }
-
-
 
 
 void readKeypad(){
   char key = customKeypad.getKey();
-  if(key)                                       // Check for a valid key.
-  {
+  if(key){                                      // Check for a valid key.
     switch (key)
     {
       case '0':                                 // Each case is a button that is pressed
@@ -394,7 +364,7 @@ void readKeypad(){
           Serial.println("Tap # again or C to Cancel");
           check++;
         }else{
-          keyPadReset();check=0;
+          check=0;
         }       
         break; 
          
@@ -407,81 +377,63 @@ void readKeypad(){
        return; 
     }
   } 
-  
   if(menu==1 && n > 5){                             //If the menu is in setting 1 and the input array has been filled with 4 digits then...
-    Serial.println("n is : ");
-     Serial.println(n);delay(2000);
-    doorlockCheck();                                //calls the function to check whether the code that was input matches the code that is stored
-  }
-  
-  else if(menu==3 && n > 5){
-    oldCodeCheck();  
-  }
-  
-  else if(menu==4 && n > 5){
-    changeToNewCode(storedPasscode,input);
-    delay(250);
-    writeFile(SPIFFS, passCodePath, storedPasscode);
-    delay(500); readMemory(passCodePath);
+     doorlockCheck();
+  }else if(menu==3 && n > 5){
+     oldCodeCheck();
+  }else if(menu==4 && n > 5){
+    changeToNewCode(storedPassCode,input);
+    delay(1000);
+    writeFile(SPIFFS, passCodePath, storedPassCode);
+    delay(1000); readMemory(passCodePath);
     Serial.println(" "); 
-    Serial.println("Code Changed");
+    Serial.println("Code Changed successfully!");
     delay(1000);
     myReset();
   }
-  
-  if(checkCode(storedPasscode,input) == true){
-      doorOpen();
-    delay(50);
+}
+
+boolean checkCode(char password[], char input[]) {
+  Serial.println("");Serial.println("Validating..."); delay(2000);
+  int comparisonResult = strcmp(password, input);
+  if (comparisonResult == 0) {
+      return true; // Explicitly return true for successful comparison
+  } else {
+      return false; // Explicitly return false for failed comparison
   }
 }
 
 
-boolean checkCode(char *a, char *b){                   //The function to check whether the contents of the first parameter,an array, match the 
+void doorlockCheck(){
   if(n>5){
-  int p;                                              //match the contents of the second parameter, also an array.
-  for(p=0; p<6; p++) 
-    if(a[p]!=b[p]) return false;
-    return true;
-  }
-  return false;
-}
-
-
-int changeToNewCode(char *a, char *b){
-  int p = 0;
-  for(p=0; p<6; p++){
-    a[p]=b[p];
-  } 
-  n=0;
-}
-
-int doorlockCheck(){
-  if(n>5){
-   if(checkCode(storedPasscode,input) == true){
-     delay(250);
-     Serial.print("doorlockCheck: "); 
-     Serial.println("Correct"); 
-     Serial.print("n is: ");Serial.println(n);
+   //calls the function to check whether the code that was input matches the code that is stored    
+   if(checkCode(storedPassCode, input)){
+     Serial.print("Code Correct | "); Serial.println("Oepening Door");  
+     delay(2500);
+     Serial.println("Door Opened!");
      block=0;
+     myReset();
    }else{
      delay(250);
-     Serial.println(""); 
      Serial.println("Invalid Code");
      block++; 
      delay(2000); 
-     if(block<3){ myReset(); }else{ Serial.println("You've been blocked"); while(block==3){ } }
+     
+     if(block<=3){
+        myReset(); 
+     }else{ 
+        Serial.println("You've been blocked"); 
+        while(block==3){ } 
+     }  
    }  
-   n=0;
-   delay(3000); myReset();
   }
 }
 
+
 int oldCodeCheck(){
   if(n>5){
-   if(checkCode(storedPasscode,input) == true){
-     delay(250);  
-     Serial.print("oldCodeCheck: "); 
-     Serial.println("Correct");  
+   if(checkCode(storedPassCode, input)){
+     Serial.println("Correct"); delay(2000);
      Serial.println("Enter new Code"); 
      menu=4;
    }else{
@@ -496,301 +448,13 @@ int oldCodeCheck(){
   return n;
 }
 
-void myReset(){
-  Serial.println("Resetting...");delay(2000);
-  int i;
-  menu=0;
+int changeToNewCode(char *a, char *b){
+  Serial.println(""); Serial.println("Wait while we do the change!");
+  delay(2500);
+  int p = 0;
+  for(p=0; p<6; p++){
+    a[p]=b[p];
+  } 
   n=0;
-  Serial.println("Comparing...");delay(2000);
-  if (strcmp("123444", "123444") == 0) {
-    Serial.println("code Correct");
-  } else {
-      Serial.println("Invalid");
-  }
-  Serial.println("Tap A/B to Begin");  
-  strcpy(input, "0000000");
-  for (int i = 0; i < 6; i++) {
-    input[i] = '0';
-  }
-//  digitalWrite(redPin,HIGH);
-//  digitalWrite(greenPin,LOW);
-
+  return n;
 }
-
-void keyPadReset(){
-  writeFile(SPIFFS, passCodePath, "123456");
-  Serial.println("System Formatted, Contact Admin!");
-  while(1){
-  }
-}
-
-/*
-void programMode(){
-    if (digitalRead(button) == HIGH) {                                              // when button pressed pin should get high, button connected to vcc
-    Serial.println(F("Program Button Pressed"));
-    Serial.println(F("You have 15 seconds to Cancel"));
-    Serial.println(F("This will be add new finger to the system and cannot be undone"));
-    delay(15000);                                                                 // Give user enough time to cancel operation
-   
-    finger.getTemplateCount();
-    Serial.print("Sensor contains "); Serial.print(finger.templateCount); Serial.println(" templates");
-
-    if (digitalRead(button) == HIGH) {                                            // If button still be pressed, wipe EEPROM
-      Serial.println("Ready to enroll a fingerprint!");
-      Serial.println("Please type in the ID # (from 1 to 127) you want to save this finger as...");
-      id = readnumber();
-      if (id == 0) {                                                              // ID #0 not allowed, try again!
-          return;
-      }
-      Serial.print("Enrolling ID #");
-      Serial.println(id);
-  
-      while (!  getFingerprintEnroll() );
-    }
-    else {Serial.println("ProgramMode Cancelled");}                                // Show some feedback that the wipe button did not pressed for 15 seconds
-  }
-  delay(1000);
-}
-*/
-
-/*
-uint8_t getFingerprintEnroll() {
-  int scan = -1;
-  Serial.print("Waiting for valid finger to enroll as #"); Serial.println(id);
-  while (scan != FINGERPRINT_OK) {
-    scan = finger.getImage();
-    switch (scan) {
-    case FINGERPRINT_OK:
-      Serial.println("Image taken");
-      break;
-    case FINGERPRINT_NOFINGER:
-      Serial.println(".");
-      break;
-    case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
-      break;
-    case FINGERPRINT_IMAGEFAIL:
-      Serial.println("Imaging error");
-      break;
-    default:
-      Serial.println("Unknown error");
-      break;
-    }
-  }
-
-  // OK success!
-
-  scan = finger.image2Tz(1);
-  switch (scan) {
-    case FINGERPRINT_OK:
-      Serial.println("Image converted");
-      break;
-    case FINGERPRINT_IMAGEMESS:
-      Serial.println("Image too messy");
-      return scan;
-    case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
-      return scan;
-    case FINGERPRINT_FEATUREFAIL:
-      Serial.println("Could not find fingerprint features");
-      return scan;
-    case FINGERPRINT_INVALIDIMAGE:
-      Serial.println("Could not find fingerprint features");
-      return scan;
-    default:
-      Serial.println("Unknown error");
-      return scan;
-  }
-  
-  Serial.println("Remove finger");
-  delay(2000);
-  scan = 0;
-  while (scan != FINGERPRINT_NOFINGER) {
-    scan = finger.getImage();
-  }
-  Serial.print("ID "); Serial.println(id);
-  scan = -1;
-  Serial.println("Place same finger again");
-  while (scan != FINGERPRINT_OK) {
-    scan = finger.getImage();
-    switch (scan) {
-    case FINGERPRINT_OK:
-      Serial.println("Image taken");
-      break;
-    case FINGERPRINT_NOFINGER:
-      Serial.print(".");
-      break;
-    case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
-      break;
-    case FINGERPRINT_IMAGEFAIL:
-      Serial.println("Imaging error");
-      break;
-    default:
-      Serial.println("Unknown error");
-      break;
-    }
-  }
-
-  // OK success!
-
-  scan = finger.image2Tz(2);
-  switch (scan) {
-    case FINGERPRINT_OK:
-      Serial.println("Image converted");
-      break;
-    case FINGERPRINT_IMAGEMESS:
-      Serial.println("Image too messy");
-      return scan;
-    case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
-      return scan;
-    case FINGERPRINT_FEATUREFAIL:
-      Serial.println("Could not find fingerprint features");
-      return scan;
-    case FINGERPRINT_INVALIDIMAGE:
-      Serial.println("Could not find fingerprint features");
-      return scan;
-    default:
-      Serial.println("Unknown error");
-      return scan;
-  }
-  
-  // OK converted!
-  Serial.print("Creating model for #");  Serial.println(id);
-  
-  scan = finger.createModel();
-  if (scan == FINGERPRINT_OK) {
-    Serial.println("Prints matched!");
-  } else if (scan == FINGERPRINT_PACKETRECIEVEERR) {
-    Serial.println("Communication error");
-    return scan;
-  } else if (scan == FINGERPRINT_ENROLLMISMATCH) {
-    Serial.println("Fingerprints did not match");
-    return scan;
-  } else {
-    Serial.println("Unknown error");
-    return scan;
-  }   
-  
-  Serial.print("ID "); Serial.println(id);
-  scan = finger.storeModel(id);
-  if (scan == FINGERPRINT_OK) {
-    Serial.println("Stored!");
-  } else if (scan == FINGERPRINT_PACKETRECIEVEERR) {
-    Serial.println("Communication error");
-    return scan;
-  } else if (scan == FINGERPRINT_BADLOCATION) {
-    Serial.println("Could not store in that location");
-    return scan;
-  } else if (scan == FINGERPRINT_FLASHERR) {
-    Serial.println("Error writing to flash");
-    return scan;
-  } else {
-    Serial.println("Unknown error");
-    return scan;
-  }   
-}
-
-void fingerCheck(){
-  if (finger.verifyPassword()) {
-    Serial.println("Found Sensor");
-  }
-  else {
-    Serial.println("Did not find fingerprint sensor :(");
-    while (1);
-  }
-  Serial.println("Waiting...");
-  return ;
-}
-
-
-// returns -1 if failed, otherwise returns ID #
-int getFingerprintIDez() {
-  uint8_t p = finger.getImage();
-  if (p != FINGERPRINT_OK)  return -1;
-
-  p = finger.image2Tz();
-  if (p != FINGERPRINT_OK)  return -1;
-
-  p = finger.fingerFastSearch();
-  if (p != FINGERPRINT_OK)  return -1;
-  
-  // found a match!
-  digitalWrite(greenPin,HIGH);
-  digitalWrite(redPin,LOW);
-  
-  Serial.print("Found ID #"); Serial.print(finger.fingerID); 
-  Serial.print(" with confidence of "); Serial.println(finger.confidence); 
-  
-  delay(5000);
-  myReset();
-  return finger.fingerID; 
-}
-*/
-
-/*
-int8_t getFingerprintID() {
-  uint8_t p = finger.getImage();
-  switch (p) {
-    case FINGERPRINT_OK:
-      Serial.println("Image taken");
-      break;
-    case FINGERPRINT_NOFINGER:
-      Serial.println("No finger detected");
-      return p;
-    case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
-      return p;
-    case FINGERPRINT_IMAGEFAIL:
-      Serial.println("Imaging error");
-      return p;
-    default:
-      Serial.println("Unknown error");
-      return p;
-  }
-
-  // OK success!
-
-  p = finger.image2Tz();
-  switch (p) {
-    case FINGERPRINT_OK:
-      Serial.println("Image converted");
-      break;
-    case FINGERPRINT_IMAGEMESS:
-      Serial.println("Image too messy");
-      return p;
-    case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
-      return p;
-    case FINGERPRINT_FEATUREFAIL:
-      Serial.println("Could not find fingerprint features");
-      return p;
-    case FINGERPRINT_INVALIDIMAGE:
-      Serial.println("Could not find fingerprint features");
-      return p;
-    default:
-      Serial.println("Unknown error");
-      return p;
-  }
-  
-  // OK converted!
-  p = finger.fingerFastSearch();
-  if (p == FINGERPRINT_OK) {
-    Serial.println("Found a print match!");
-  } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
-    Serial.println("Communication error");
-    return p;
-  } else if (p == FINGERPRINT_NOTFOUND) {
-    Serial.println("Did not find a match");
-    return p;
-  } else {
-    Serial.println("Unknown error");
-    return p;
-  }   
-  
-  // found a match!
-  Serial.print("Found ID #"); Serial.print(finger.fingerID); 
-  Serial.print(" with confidence of "); Serial.println(finger.confidence); 
-}
-*/
