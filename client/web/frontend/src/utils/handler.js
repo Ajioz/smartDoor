@@ -255,3 +255,11 @@ const decodeToken = (token) => {
     console.error("Error decoding token:", error);
   }
 };
+
+export const isNumeric = (inputString) => {
+  // This regex will match any string that contains anything other than digits
+  let pattern = /[^0-9]/;
+  // If the pattern is found in the inputString, return false
+  const state = !pattern.test(inputString);
+  return state ? inputString : " ";
+};

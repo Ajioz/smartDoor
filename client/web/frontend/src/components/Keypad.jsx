@@ -17,7 +17,7 @@ import {
 import AddItemBtn from "./AddItemBtn";
 import { useGlobalContext } from "../context/context";
 import { useNavigate } from "react-router-dom";
-import { details, findItem } from "../utils/handler";
+import { details, findItem, isNumeric } from "../utils/handler";
 import FingerPrint from "./FingerPrint";
 // import { control } from "../data";
 
@@ -41,14 +41,6 @@ const DoorSecurityKeypad = (props) => {
       "EDIT"
     );
     //handleItem(delete, id, disable, label1, label2, category, name, action);
-  };
-
-  const isNumeric = (inputString) => {
-    // This regex will match any string that contains anything other than digits
-    let pattern = /[^0-9]/;
-    // If the pattern is found in the inputString, return false
-    const state = !pattern.test(inputString);
-    return state ? inputString : " ";
   };
 
   const handleBtn = (value) => {
@@ -75,7 +67,6 @@ const DoorSecurityKeypad = (props) => {
   const getScanID = async (finger) => {
     const { secret } = await fingerScanner("thing/finger", { finger });
     setFinger(secret);
-    console.log(secret)
   };
 
   const handleDelete = (id) => {
