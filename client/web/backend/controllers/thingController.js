@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import Thing from "../models/ThingModel.js";
 import User from "../models/UserModel.js";
 import { StatusCodes } from "http-status-codes";
@@ -57,7 +59,9 @@ export const scanner = async (req, res) => {
     if (!user) return;
 
     if (user.fingerID === finger) {
-      return res.status(StatusCodes.OK).json({ message: "Found", secret: "ru0k1!sat33#" });
+      return res
+        .status(StatusCodes.OK)
+        .json({ message: "Found", secret: process.env.SECRET });
     }
   } catch (error) {
     // console.error(error);
