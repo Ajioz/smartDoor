@@ -76,7 +76,7 @@ const Text = styled.p`
 const FingerPrint = ({ callThumb, getScanID, handleUnlock, id }) => {
   const handleScan = () => {
     handleUnlock(id, false);
-    getScanID("finger");
+    getScanID("ajioziFinger12341!");
   };
 
   return (
