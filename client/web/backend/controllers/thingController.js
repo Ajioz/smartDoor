@@ -7,7 +7,7 @@ import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/badRequest.js";
 import NotFoundError from "../errors/notFound.js";
 import { errorHandler } from "../util/errorHandler.js";
-// import fs from "fs";
+
 
 export const getUserThings = async (req, res) => {
   try {
@@ -54,9 +54,12 @@ export const scanner = async (req, res) => {
     // Load the private key and passphrase from environment variables
     const privateKey = process.env.PRIVATE_KEY.replace(/\\n/g, "\n"); // Handle multiline key
     const publicKey = process.env.PUBLIC_KEY.replace(/\\n/g, "\n");
-    /* Production approach */
-    // const privateKey = fs.readFileSync(process.env.PRIVATE_KEY, "utf8");
-    // const publicKey = fs.readFileSync(process.env.PUBLIC_KEY, "utf8");
+    /* 
+      // Production approach 
+      import fs from "fs";
+      const privateKey = fs.readFileSync(process.env.PRIVATE_KEY, "utf8");
+      const publicKey = fs.readFileSync(process.env.PUBLIC_KEY, "utf8");
+    */
     const passphrase = process.env.PASSPHRASE;
     const payload = process.env.PAYLOAD;
 
