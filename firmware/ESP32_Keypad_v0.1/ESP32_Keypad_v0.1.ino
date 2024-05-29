@@ -7,6 +7,15 @@
 //                : esp32 that controls an electric door strike - IoT enabled  //           
 //*****************************************************************************//
 
+/*
+//RSA library by armbed
+#include "rsa.h"
+#include <mbedtls/rsa.h>
+#include <mbedtls/pem.h>
+#include <mbedtls/sha256.h>
+#include <mbedtls/base64.h>
+*/
+
 #include "secrets.h"
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
@@ -18,9 +27,15 @@
 #define AWS_IOT_PUBLISH_TOPIC   "esp32/pub"
 #define AWS_IOT_SUBSCRIBE_TOPIC "esp32/sub"
 
+
+// These would be received from your server
+const char encryptedMessage[] = "YOUR_BASE64_ENCRYPTED_MESSAGE_HERE";
+const char signature[] = "YOUR_BASE64_SIGNATURE_HERE";
+
 WiFiClientSecure net = WiFiClientSecure();
 PubSubClient client(net);
 
+//void decrypt();
 void readKeypad();
 boolean checkCode(char password[], char input[]);
 int oldCodeCheck();
@@ -532,3 +547,73 @@ int changeToNewCode(char *a, char *b){
   n=0;
   return n;
 }
+
+
+/*
+void decrypt() {  
+  // Prepare mbedtls structures
+  mbedtls_rsa_context rsa;
+  mbedtls_rsa_init(&rsa, MBEDTLS_RSA_PKCS_V15, 0);
+  mbedtls_pk_context pk;
+  mbedtls_pk_init(&pk);
+
+  // Parse the public key for verifying the signature
+  if (mbedtls_pk_parse_public_key(&pk, (const unsigned char*)publicKey, strlen(publicKey) + 1) != 0) {
+    Serial.println("Failed to parse public key");
+    return;
+  }
+
+  // Copy the parsed RSA context
+  if (mbedtls_rsa_copy(&rsa, mbedtls_pk_rsa(pk)) != 0) {
+    Serial.println("Failed to copy RSA context");
+    return;
+  }
+
+  // Decode the base64 signature
+  unsigned char decodedSignature[256];
+  size_t decodedSignatureLen;
+  if (mbedtls_base64_decode(decodedSignature, sizeof(decodedSignature), &decodedSignatureLen, (const unsigned char*)signature, strlen(signature)) != 0) {
+    Serial.println("Failed to decode base64 signature");
+    return;
+  }
+
+  // Verify the signature
+  unsigned char hash[32];
+  mbedtls_sha256((const unsigned char*)encryptedMessage, strlen(encryptedMessage), hash, 0);
+  if (mbedtls_rsa_pkcs1_verify(&rsa, NULL, NULL, MBEDTLS_RSA_PUBLIC, MBEDTLS_MD_SHA256, 32, hash, decodedSignature) != 0) {
+    Serial.println("Failed to verify signature");
+    return;
+  }
+  Serial.println("Signature verified successfully!");
+
+  // Parse the private key for decrypting the message
+  if (mbedtls_pk_parse_key(&pk, (const unsigned char*)privateKey, strlen(privateKey) + 1, NULL, 0) != 0) {
+    Serial.println("Failed to parse private key");
+    return;
+  }
+
+  // Decode the base64 encrypted message
+  unsigned char decodedEncryptedMessage[256];
+  size_t decodedEncryptedMessageLen;
+  if (mbedtls_base64_decode(decodedEncryptedMessage, sizeof(decodedEncryptedMessage), &decodedEncryptedMessageLen, (const unsigned char*)encryptedMessage, strlen(encryptedMessage)) != 0) {
+    Serial.println("Failed to decode base64 encrypted message");
+    return;
+  }
+
+  // Decrypt the message
+  unsigned char decryptedMessage[256];
+  size_t decryptedMessageLen;
+  if (mbedtls_pk_decrypt(&pk, decodedEncryptedMessage, decodedEncryptedMessageLen, decryptedMessage, &decryptedMessageLen, sizeof(decryptedMessage), NULL, NULL) != 0) {
+    Serial.println("Failed to decrypt message");
+    return;
+  }
+
+  decryptedMessage[decryptedMessageLen] = '\0'; // Null-terminate the decrypted message
+  Serial.print("Decrypted message: ");
+  Serial.println((char*)decryptedMessage);
+
+  // Free mbedtls structures
+  mbedtls_rsa_free(&rsa);
+  mbedtls_pk_free(&pk);
+}
+*/

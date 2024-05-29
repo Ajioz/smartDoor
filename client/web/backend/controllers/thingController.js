@@ -1,11 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
+import crypto from "crypto";
 import Thing from "../models/ThingModel.js";
 import User from "../models/UserModel.js";
 import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/badRequest.js";
 import NotFoundError from "../errors/notFound.js";
 import { errorHandler } from "../util/errorHandler.js";
+import fs from "fs";
 
 export const getUserThings = async (req, res) => {
   try {
@@ -51,20 +53,41 @@ export const createThing = async (req, res) => {
 
 export const scanner = async (req, res) => {
   try {
+    // Load the private key and passphrase from environment variables
+    const privateKey = process.env.PRIVATE_KEY.replace(/\\n/g, "\n"); // Handle multiline key
+    const publicKey = process.env.PUBLIC_KEY.replace(/\\n/g, "\n");
+    // const privateKey = fs.readFileSync(process.env.PRIVATE_KEY, "utf8");
+    // const publicKey = fs.readFileSync(process.env.PUBLIC_KEY, "utf8");
+    const passphrase = process.env.PASSPHRASE;
+    const payload = process.env.PAYLOAD;
+
     const {
       body: { finger },
       user: { userId },
     } = req;
+
+    // Encrypt the message with the public key
+    const encryptedPayload = crypto
+      .publicEncrypt(publicKey, Buffer.from(payload))
+      .toString("base64");
+
+    // Sign the message
+    const sign = crypto.createSign("SHA256");
+    sign.update(encryptedPayload);
+    sign.end();
+
+    const signature = sign.sign({ key: privateKey, passphrase }, "base64");
+
     const user = await User.findOne({ _id: userId });
     if (!user) return;
 
     if (user.fingerID === finger) {
       return res
         .status(StatusCodes.OK)
-        .json({ message: "Found", secret: process.env.SECRET });
+        .json({ payload: encryptedPayload, signature });
     }
   } catch (error) {
-    // console.error(error);
+    console.error(error.message);
     errorHandler(error, res, NotFoundError, BadRequestError);
   }
 };
